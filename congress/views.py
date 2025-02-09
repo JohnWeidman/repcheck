@@ -1,6 +1,8 @@
 from django.shortcuts import render
 
 # Create your views here.
+def congress(request):
+    return render(request, "congress/congress.html")
 
 def house_not_home(request):
     return render(request, "congress/house.html")

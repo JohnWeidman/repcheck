@@ -154,7 +154,7 @@ html,
   -o-tab-size: 4;
      tab-size: 4;
   /* 3 */
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: Helvetica, Arial, sans-serif;
   /* 4 */
   font-feature-settings: normal;
   /* 5 */
@@ -820,6 +820,70 @@ html {
 }
 
 :root {
+  --p: 65.6968% 0.144466 237.46759;
+  --b2: 63.8352% 0.012764 196.837704;
+  --b3: 59.0304% 0.011803 196.837704;
+  --in: 72.06% 0.191 231.6;
+  --su: 64.8% 0.150 160;
+  --wa: 84.71% 0.199 83.87;
+  --er: 71.76% 0.221 22.18;
+  --bc: 13.728% 0.002745 196.837704;
+  --pc: 13.1394% 0.028893 237.46759;
+  --sc: 14.5107% 0.033085 63.05132;
+  --ac: 90.296% 0.040116 15.957403;
+  --nc: 17.4992% 0.035818 92.679838;
+  --inc: 0% 0 0;
+  --suc: 0% 0 0;
+  --wac: 0% 0 0;
+  --erc: 0% 0 0;
+  --rounded-box: 1rem;
+  --rounded-btn: 0.5rem;
+  --rounded-badge: 1.9rem;
+  --animation-btn: 0.25s;
+  --animation-input: .2s;
+  --btn-focus-scale: 0.95;
+  --border-btn: 1px;
+  --tab-border: 1px;
+  --tab-radius: 0.5rem;
+  --s: 72.5533% 0.165425 63.05132;
+  --a: 51.48% 0.200579 15.957403;
+  --n: 87.496% 0.179089 92.679838;
+  --b1: 68.64% 0.013724 196.837704;
+}
+
+[data-theme=WMATA] {
+  --p: 65.6968% 0.144466 237.46759;
+  --b2: 63.8352% 0.012764 196.837704;
+  --b3: 59.0304% 0.011803 196.837704;
+  --in: 72.06% 0.191 231.6;
+  --su: 64.8% 0.150 160;
+  --wa: 84.71% 0.199 83.87;
+  --er: 71.76% 0.221 22.18;
+  --bc: 13.728% 0.002745 196.837704;
+  --pc: 13.1394% 0.028893 237.46759;
+  --sc: 14.5107% 0.033085 63.05132;
+  --ac: 90.296% 0.040116 15.957403;
+  --nc: 17.4992% 0.035818 92.679838;
+  --inc: 0% 0 0;
+  --suc: 0% 0 0;
+  --wac: 0% 0 0;
+  --erc: 0% 0 0;
+  --rounded-box: 1rem;
+  --rounded-btn: 0.5rem;
+  --rounded-badge: 1.9rem;
+  --animation-btn: 0.25s;
+  --animation-input: .2s;
+  --btn-focus-scale: 0.95;
+  --border-btn: 1px;
+  --tab-border: 1px;
+  --tab-radius: 0.5rem;
+  --s: 72.5533% 0.165425 63.05132;
+  --a: 51.48% 0.200579 15.957403;
+  --n: 87.496% 0.179089 92.679838;
+  --b1: 68.64% 0.013724 196.837704;
+}
+
+[data-theme=retro] {
   color-scheme: light;
   --inc: 90.923% 0.043042 262.880917;
   --suc: 12.541% 0.033982 149.213788;
@@ -1305,6 +1369,18 @@ html {
     }
   }
 
+  .btn-outline.btn-accent:hover {
+    --tw-text-opacity: 1;
+    color: var(--fallback-ac,oklch(var(--ac)/var(--tw-text-opacity)));
+  }
+
+  @supports (color: color-mix(in oklab, black, black)) {
+    .btn-outline.btn-accent:hover {
+      background-color: color-mix(in oklab, var(--fallback-a,oklch(var(--a)/1)) 90%, black);
+      border-color: color-mix(in oklab, var(--fallback-a,oklch(var(--a)/1)) 90%, black);
+    }
+  }
+
   .btn-disabled:hover,
     .btn[disabled]:hover,
     .btn:disabled:hover {
@@ -1785,6 +1861,10 @@ input.tab:checked + .tab-content,
   .btn-secondary {
     --btn-color: var(--fallback-s);
   }
+
+  .btn-accent {
+    --btn-color: var(--fallback-a);
+  }
 }
 
 @supports (color: color-mix(in oklab, black, black)) {
@@ -1796,6 +1876,11 @@ input.tab:checked + .tab-content,
   .btn-outline.btn-secondary.btn-active {
     background-color: color-mix(in oklab, var(--fallback-s,oklch(var(--s)/1)) 90%, black);
     border-color: color-mix(in oklab, var(--fallback-s,oklch(var(--s)/1)) 90%, black);
+  }
+
+  .btn-outline.btn-accent.btn-active {
+    background-color: color-mix(in oklab, var(--fallback-a,oklch(var(--a)/1)) 90%, black);
+    border-color: color-mix(in oklab, var(--fallback-a,oklch(var(--a)/1)) 90%, black);
   }
 }
 
@@ -1819,12 +1904,22 @@ input.tab:checked + .tab-content,
   .btn-secondary {
     --btn-color: var(--s);
   }
+
+  .btn-accent {
+    --btn-color: var(--a);
+  }
 }
 
 .btn-secondary {
   --tw-text-opacity: 1;
   color: var(--fallback-sc,oklch(var(--sc)/var(--tw-text-opacity)));
   outline-color: var(--fallback-s,oklch(var(--s)/1));
+}
+
+.btn-accent {
+  --tw-text-opacity: 1;
+  color: var(--fallback-ac,oklch(var(--ac)/var(--tw-text-opacity)));
+  outline-color: var(--fallback-a,oklch(var(--a)/1));
 }
 
 .btn.glass {
@@ -1873,6 +1968,16 @@ input.tab:checked + .tab-content,
 .btn-outline.btn-secondary.btn-active {
   --tw-text-opacity: 1;
   color: var(--fallback-sc,oklch(var(--sc)/var(--tw-text-opacity)));
+}
+
+.btn-outline.btn-accent {
+  --tw-text-opacity: 1;
+  color: var(--fallback-a,oklch(var(--a)/var(--tw-text-opacity)));
+}
+
+.btn-outline.btn-accent.btn-active {
+  --tw-text-opacity: 1;
+  color: var(--fallback-ac,oklch(var(--ac)/var(--tw-text-opacity)));
 }
 
 .btn.btn-disabled,
@@ -2642,6 +2747,14 @@ details.collapse summary::-webkit-details-marker {
   padding-right: 0.313rem;
 }
 
+.badge-lg {
+  height: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding-left: 0.688rem;
+  padding-right: 0.688rem;
+}
+
 .btn-lg {
   height: 4rem;
   min-height: 4rem;
@@ -2925,10 +3038,6 @@ details.collapse summary::-webkit-details-marker {
   flex-direction: column;
 }
 
-.place-items-center {
-  place-items: center;
-}
-
 .content-start {
   align-content: flex-start;
 }
@@ -2945,8 +3054,16 @@ details.collapse summary::-webkit-details-marker {
   gap: 1rem;
 }
 
+.text-pretty {
+  text-wrap: pretty;
+}
+
 .rounded-box {
   border-radius: var(--rounded-box, 1rem);
+}
+
+.rounded-xl {
+  border-radius: 0.75rem;
 }
 
 .border {
@@ -2958,24 +3075,28 @@ details.collapse summary::-webkit-details-marker {
   background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity, 1)));
 }
 
+.bg-base-200 {
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity, 1)));
+}
+
 .bg-gray-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));
 }
 
+.bg-primary {
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-p,oklch(var(--p)/var(--tw-bg-opacity, 1)));
+}
+
+.bg-transparent {
+  background-color: transparent;
+}
+
 .bg-secondary {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-s,oklch(var(--s)/var(--tw-bg-opacity, 1)));
-}
-
-.bg-base-300 {
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-bg-opacity, 1)));
-}
-
-.bg-base-200 {
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity, 1)));
 }
 
 .p-2 {
@@ -2984,6 +3105,19 @@ details.collapse summary::-webkit-details-marker {
 
 .p-4 {
   padding: 1rem;
+}
+
+.p-8 {
+  padding: 2rem;
+}
+
+.p-12 {
+  padding: 3rem;
+}
+
+.px-12 {
+  padding-left: 3rem;
+  padding-right: 3rem;
 }
 
 .text-center {
@@ -3026,24 +3160,9 @@ details.collapse summary::-webkit-details-marker {
   letter-spacing: 0em;
 }
 
-.text-red-600 {
+.text-white {
   --tw-text-opacity: 1;
-  color: rgb(220 38 38 / var(--tw-text-opacity, 1));
-}
-
-.text-primary {
-  --tw-text-opacity: 1;
-  color: var(--fallback-p,oklch(var(--p)/var(--tw-text-opacity, 1)));
-}
-
-.text-secondary {
-  --tw-text-opacity: 1;
-  color: var(--fallback-s,oklch(var(--s)/var(--tw-text-opacity, 1)));
-}
-
-.text-primary-content {
-  --tw-text-opacity: 1;
-  color: var(--fallback-pc,oklch(var(--pc)/var(--tw-text-opacity, 1)));
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
 .shadow {
@@ -3052,15 +3171,280 @@ details.collapse summary::-webkit-details-marker {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.drop-shadow-md {
-  --tw-drop-shadow: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 .ease-in-out {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover\:btn:hover {
+  display: inline-flex;
+  height: 3rem;
+  min-height: 3rem;
+  flex-shrink: 0;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--rounded-btn, 0.5rem);
+  border-color: transparent;
+  border-color: oklch(var(--btn-color, var(--b2)) / var(--tw-border-opacity));
+  padding-left: 1rem;
+  padding-right: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1em;
+  gap: 0.5rem;
+  font-weight: 600;
+  text-decoration-line: none;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  border-width: var(--border-btn, 1px);
+  transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+  --tw-text-opacity: 1;
+  color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  outline-color: var(--fallback-bc,oklch(var(--bc)/1));
+  background-color: oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity));
+  --tw-bg-opacity: 1;
+  --tw-border-opacity: 1;
+}
+
+.hover\:btn:hover[disabled],.hover\:btn:hover:disabled {
+  pointer-events: none;
+}
+
+:where(.hover\:btn:hover:is(input[type="checkbox"])),
+:where(.hover\:btn:hover:is(input[type="radio"])) {
+  width: auto;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
+
+.hover\:btn:hover:is(input[type="checkbox"]):after,.hover\:btn:hover:is(input[type="radio"]):after {
+  --tw-content: attr(aria-label);
+  content: var(--tw-content);
+}
+
+@media (hover: hover) {
+  .hover\:btn:hover:hover {
+    --tw-border-opacity: 1;
+    border-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-border-opacity)));
+    --tw-bg-opacity: 1;
+    background-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-bg-opacity)));
+  }
+
+  @supports (color: color-mix(in oklab, black, black)) {
+    .hover\:btn:hover:hover {
+      background-color: color-mix(
+            in oklab,
+            oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity, 1)) 90%,
+            black
+          );
+      border-color: color-mix(
+            in oklab,
+            oklch(var(--btn-color, var(--b2)) / var(--tw-border-opacity, 1)) 90%,
+            black
+          );
+    }
+  }
+
+  @supports not (color: oklch(0% 0 0)) {
+    .hover\:btn:hover:hover {
+      background-color: var(--btn-color, var(--fallback-b2));
+      border-color: var(--btn-color, var(--fallback-b2));
+    }
+  }
+
+  .hover\:btn:hover:hover {
+    --tw-border-opacity: 1;
+    border-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-border-opacity)));
+    --tw-bg-opacity: 1;
+    background-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-bg-opacity)));
+  }
+
+  @supports (color: color-mix(in oklab, black, black)) {
+    .hover\:btn:hover:hover {
+      background-color: color-mix(
+            in oklab,
+            oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity, 1)) 90%,
+            black
+          );
+      border-color: color-mix(
+            in oklab,
+            oklch(var(--btn-color, var(--b2)) / var(--tw-border-opacity, 1)) 90%,
+            black
+          );
+    }
+  }
+
+  @supports not (color: oklch(0% 0 0)) {
+    .hover\:btn:hover:hover {
+      background-color: var(--btn-color, var(--fallback-b2));
+      border-color: var(--btn-color, var(--fallback-b2));
+    }
+  }
+
+  .hover\:btn:hover:hover {
+    --tw-border-opacity: 1;
+    border-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-border-opacity)));
+    --tw-bg-opacity: 1;
+    background-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-bg-opacity)));
+  }
+
+  @supports (color: color-mix(in oklab, black, black)) {
+    .hover\:btn:hover:hover {
+      background-color: color-mix(
+            in oklab,
+            oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity, 1)) 90%,
+            black
+          );
+      border-color: color-mix(
+            in oklab,
+            oklch(var(--btn-color, var(--b2)) / var(--tw-border-opacity, 1)) 90%,
+            black
+          );
+    }
+  }
+
+  @supports not (color: oklch(0% 0 0)) {
+    .hover\:btn:hover:hover {
+      background-color: var(--btn-color, var(--fallback-b2));
+      border-color: var(--btn-color, var(--fallback-b2));
+    }
+  }
+
+  .hover\:btn:hover.glass:hover {
+    --glass-opacity: 25%;
+    --glass-border-opacity: 15%;
+  }
+
+  .hover\:btn-ghost:hover:hover {
+    border-color: transparent;
+  }
+
+  @supports (color: oklch(0% 0 0)) {
+    .hover\:btn-ghost:hover:hover {
+      background-color: var(--fallback-bc,oklch(var(--bc)/0.2));
+    }
+  }
+
+  .hover\:btn-ghost:hover:hover {
+    border-color: transparent;
+  }
+
+  @supports (color: oklch(0% 0 0)) {
+    .hover\:btn-ghost:hover:hover {
+      background-color: var(--fallback-bc,oklch(var(--bc)/0.2));
+    }
+  }
+
+  .hover\:btn:hover[disabled]:hover,.hover\:btn:hover:disabled:hover {
+    --tw-border-opacity: 0;
+    background-color: var(--fallback-n,oklch(var(--n)/var(--tw-bg-opacity)));
+    --tw-bg-opacity: 0.2;
+    color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
+    --tw-text-opacity: 0.2;
+  }
+
+  @supports (color: color-mix(in oklab, black, black)) {
+    .hover\:btn:hover:is(input[type="checkbox"]:checked):hover,.hover\:btn:hover:is(input[type="radio"]:checked):hover {
+      background-color: color-mix(in oklab, var(--fallback-p,oklch(var(--p)/1)) 90%, black);
+      border-color: color-mix(in oklab, var(--fallback-p,oklch(var(--p)/1)) 90%, black);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hover\:btn:hover {
+    animation: button-pop var(--animation-btn, 0.25s) ease-out;
+  }
+}
+
+.hover\:btn:hover:active:hover,.hover\:btn:hover:active:focus {
+  animation: button-pop 0s ease-out;
+  transform: scale(var(--btn-focus-scale, 0.97));
+}
+
+@supports not (color: oklch(0% 0 0)) {
+  .hover\:btn:hover {
+    background-color: var(--btn-color, var(--fallback-b2));
+    border-color: var(--btn-color, var(--fallback-b2));
+  }
+}
+
+.hover\:btn:hover:focus-visible {
+  outline-style: solid;
+  outline-width: 2px;
+  outline-offset: 2px;
+}
+
+.hover\:btn:hover.glass {
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  outline-color: currentColor;
+}
+
+.hover\:btn:hover.glass.btn-active {
+  --glass-opacity: 25%;
+  --glass-border-opacity: 15%;
+}
+
+.hover\:btn-ghost:hover {
+  border-width: 1px;
+  border-color: transparent;
+  background-color: transparent;
+  color: currentColor;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  outline-color: currentColor;
+}
+
+.hover\:btn-ghost:hover.btn-active {
+  border-color: transparent;
+  background-color: var(--fallback-bc,oklch(var(--bc)/0.2));
+}
+
+.hover\:btn:hover.btn-disabled,.hover\:btn:hover[disabled],.hover\:btn:hover:disabled {
+  --tw-border-opacity: 0;
+  background-color: var(--fallback-n,oklch(var(--n)/var(--tw-bg-opacity)));
+  --tw-bg-opacity: 0.2;
+  color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
+  --tw-text-opacity: 0.2;
+}
+
+.hover\:btn:hover:is(input[type="checkbox"]:checked),.hover\:btn:hover:is(input[type="radio"]:checked) {
+  --tw-border-opacity: 1;
+  border-color: var(--fallback-p,oklch(var(--p)/var(--tw-border-opacity)));
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-p,oklch(var(--p)/var(--tw-bg-opacity)));
+  --tw-text-opacity: 1;
+  color: var(--fallback-pc,oklch(var(--pc)/var(--tw-text-opacity)));
+}
+
+.hover\:btn:hover:is(input[type="checkbox"]:checked):focus-visible,.hover\:btn:hover:is(input[type="radio"]:checked):focus-visible {
+  outline-color: var(--fallback-p,oklch(var(--p)/1));
+}
+
+.join > :where(*:not(:first-child)):is(.hover\:btn:hover) {
+  margin-inline-start: calc(var(--border-btn) * -1);
+}
+
+.join.join-vertical > :where(*:not(:first-child)):is(.hover\:btn:hover) {
+  margin-top: calc(var(--border-btn) * -1);
+}
+
+.join.join-horizontal > :where(*:not(:first-child)):is(.hover\:btn:hover) {
+  margin-inline-start: calc(var(--border-btn) * -1);
+  margin-top: 0px;
 }

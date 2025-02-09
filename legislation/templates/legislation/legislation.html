@@ -1,8 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1 class="flex flex-col items-center justify-center text-4xl mt-6">Welcome to Capitol Hill</h1>
-    <div class="flex items-center justify-center gap-4 p-4">
-        <button class="btn btn-primary btn-lg"><a href="{% url 'bills' %}">Bills</a></button>
-        <button class="btn btn-secondary btn-lg"><a href="{% url 'laws' %}">Laws</a></button>
+    <div class="flex flex-col items-center justify-center h-screen mx-auto p-4 rounded-xl">
+        <div class="badge-secondary rounded-xl px-12">
+            <h1 class="text-4xl mt-6 font-bold">Welcome to Capitol Hill</h1>
+            <div class="flex justify-center items-center gap-4 p-4">
+                <button hx-get="{% url 'bills' %}" hx-target="#content" hx-push-url="/bills/" class="btn btn-primary btn-lg">
+                   Bills
+                </button>
+                <button hx-get="{% url 'laws' %}" hx-target="#content" hx-push-url="/laws/" class="btn btn-accent btn-lg">
+                    Laws
+                </button>
+            </div>
+        </div>
     </div>
 {% endblock content %}
