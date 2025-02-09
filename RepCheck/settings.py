@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'core',
     'citizens',
     'congress',
+    'legislation',
 ]
 
 TAILWIND_APP_NAME = 'theme'
