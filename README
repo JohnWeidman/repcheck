@@ -1,0 +1,8 @@
+Alright buddy, here are some notes so you don't forget what you have done.
+
+
+Dev Steps:
+1. Activate venv from /PersonalProjects/repcheck run source venv/bin/activate
+2. Start python server with python3 manage.py runserver
+3. Start Tailwind server with python3 manage.py tailwind start
+4. 
