@@ -1,4 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="flex flex-col items-center justify-center h-screen">This is where the legislation landing page will be.</div>
+    <h1 class="flex flex-col items-center justify-center text-4xl mt-6">Welcome to Capitol Hill</h1>
+    <div class="flex items-center justify-center gap-4 p-4">
+        <button class="btn btn-primary btn-lg"><a href="{% url 'bills' %}">Bills</a></button>
+        <button class="btn btn-secondary btn-lg"><a href="{% url 'laws' %}">Laws</a></button>
+    </div>
 {% endblock content %}
