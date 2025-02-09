@@ -12,7 +12,7 @@
 	</head>
 
 	<body class="leading-normal tracking-normal">
-		<div class="navbar bg-base-100">
+		<div class="navbar bg-base-200">
 			<div class="navbar-start">
 			  <div class="dropdown">
 				<div tabindex="0" role="button" class="btn btn-ghost btn-circle">
@@ -25,21 +25,21 @@
 					<path
 					  stroke-linecap="round"
 					  stroke-linejoin="round"
-					  stroke-width="2"
+					  stroke-width="3"
 					  d="M4 6h16M4 12h16M4 18h7" />
 				  </svg>
 				</div>
 				<ul
 				  tabindex="0"
 				  class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-				  <li><a>Homepage</a></li>
-				  <li><a>Portfolio</a></li>
-				  <li><a>About</a></li>
+				  <li><a>Home</a></li>
+				  <li><a>Profile</a></li>
+				  <li><a>Logout</a></li>
 				</ul>
 			  </div>
 			</div>
 			<div class="navbar-center">
-			  <a class="btn btn-ghost text-xl">daisyUI</a>
+			  <a class="btn btn-secondary text-xl">RepCheck</a>
 			</div>
 			<div class="navbar-end">
 			  <button class="btn btn-ghost btn-circle">
@@ -76,7 +76,7 @@
 			</div>
 		  </div>
 	{% block content %}
-	
+	{% comment %} Page content goes here {% endcomment %}
 	{% endblock content %}
 	</body>
 </html>
