@@ -1,0 +1,4 @@
+Django==5.1.5
+django-tailwind==3.8.0
+django-tailwind-cli==2.21.1
+django-browser-reload>=1.17.0,<2.0
