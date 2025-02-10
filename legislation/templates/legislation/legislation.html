@@ -4,10 +4,10 @@
         <div class="badge-secondary rounded-xl px-12">
             <h1 class="text-4xl mt-6 font-bold">Welcome to Capitol Hill</h1>
             <div class="flex justify-center items-center gap-4 p-4">
-                <button hx-get="{% url 'bills' %}" hx-target="#content" hx-push-url="/bills/" class="btn btn-primary btn-lg">
+                <button hx-get="{% url 'bills' %}" hx-target="#content" hx-push-url="true" class="btn btn-primary btn-lg">
                    Bills
                 </button>
-                <button hx-get="{% url 'laws' %}" hx-target="#content" hx-push-url="/laws/" class="btn btn-accent btn-lg">
+                <button hx-get="{% url 'laws' %}" hx-target="#content" hx-push-url="true" class="btn btn-accent btn-lg">
                     Laws
                 </button>
             </div>

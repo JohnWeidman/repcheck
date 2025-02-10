@@ -21,7 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("__reload__/", include("django_browser_reload.urls")),
     path('', include('core.urls')),
-    path('citizens', include('citizens.urls')),
-    path('congress', include('congress.urls')),
-    path('legislation', include('legislation.urls'))
+    path('citizens/', include('citizens.urls')),
+    path('congress/', include('congress.urls')),
+    path('legislation/', include('legislation.urls'))
 ]

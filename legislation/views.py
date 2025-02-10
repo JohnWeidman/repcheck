@@ -1,12 +1,14 @@
 from django.shortcuts import render
 
-# Create your views here.
-
 def legislation_landing_page(request):
     return render(request, 'legislation/legislation.html')
 
 def im_just_a_bill(request):
-    return render(request, 'legislation/bills.html')
+    if request.headers.get("HX-Request"):
+        return render(request, "legislation/partials/bills.html")
+    return render(request, "legislation/bills.html")
 
 def laws(request):
-    return render(request, 'legislation/laws.html')
+    if request.headers.get("HX-Request"):
+        return render(request, "legislation/partials/laws.html")
+    return render(request, "legislation/laws.html")

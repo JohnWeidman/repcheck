@@ -1,7 +1,4 @@
+{% extends "base.html" %}
 {% block content %}
-    <div class="flex flex-col items-center justify-center h-screen">
-        <div class="badge-secondary rounded-xl p-8">
-            <div class="font-bold">This is where content about laws will live.</div>
-        </div>
-    </div>
+    {% include "legislation/partials/laws.html" %}
 {% endblock content %}
