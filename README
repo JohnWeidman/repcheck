@@ -1,8 +1,41 @@
-Alright buddy, here are some notes so you don't forget what you have done.
+# RepCheck
 
+RepCheck is a tool designed to help track and analyze congressional representatives and legislation in the United States Congress.
 
-Dev Steps:
-1. Activate venv from /PersonalProjects/repcheck run source venv/bin/activate
-2. Start python server with python3 manage.py runserver
-3. Start Tailwind server with python3 manage.py tailwind start
-4. 
+## Features
+
+- Track voting records of representatives
+- Monitor current and pending legislation
+- Search representatives by state and district
+- View legislative progress and updates
+- Analyze voting patterns
+- Use AI to provide plain English explinations of legislation
+
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/repcheck.git
+
+# Navigate to directory
+cd repcheck
+
+# Create virtual environment (optional) will be a docker container in the future
+python -m venv venv
+source venv/bin/activate  # On Windows use: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+## Usage
+
+Instructions on how to use RepCheck will be added soon.
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)

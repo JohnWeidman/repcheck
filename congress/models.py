@@ -5,7 +5,6 @@ class Congress(models.Model):
     congress_number = models.IntegerField(unique=True)
     start_date = models.DateField()
     end_date = models.DateField()
-    last_updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-congress_number']
