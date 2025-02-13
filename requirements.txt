@@ -1,6 +1,11 @@
-Django==5.1.5
+celery==5.4.0
+cookiecutter==2.6.0
+django-browser-reload==1.17.0
 django-tailwind==3.8.0
-django-tailwind-cli==2.21.1
-django-browser-reload>=1.17.0,<2.0
-psycopg2-binary==2.9.6
+Django==5.1.6
+djlint==1.36.4
+gunicorn==23.0.0
+pip-tools==7.4.1  
+pipdeptree==2.25.0
+psycopg2-binary==2.9.10
 python-dotenv==1.0.1
