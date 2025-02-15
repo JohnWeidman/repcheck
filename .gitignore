@@ -1,5 +1,6 @@
 venv
-.env
+.env.dev
+.env.prod
 
 # Ignore Python cache files  
 __pycache__/  

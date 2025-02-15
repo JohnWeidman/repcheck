@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: repcheck_web
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - .env.prod
+    environment:
+      DJANGO_ENV: ${DJANGO_ENV}
+    command: ["gunicorn", "--workers=3", "--bind", "0.0.0.0:8000", "RepCheck.wsgi:application"]
+
+  db:
+    image: postgres:13
+    container_name: repcheck_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env.prod
+
+volumes:
+  postgres_data:
+      driver: local
