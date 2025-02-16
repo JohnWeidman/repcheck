@@ -15,7 +15,8 @@ services:
     environment:
       DJANGO_ENV: ${DJANGO_ENV}
     command: ["gunicorn", "--workers=3", "--bind", "0.0.0.0:8000", "RepCheck.wsgi:application"]
-
+    volumes:
+      - static_volume:/app/staticfiles  
   db:
     image: postgres:13
     container_name: repcheck_db

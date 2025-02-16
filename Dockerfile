@@ -40,7 +40,7 @@ RUN python manage.py tailwind build
 EXPOSE 8000
 
 # Use environment variable to determine the run command (development or production)
-ARG DJANGO_ENV=development
+ARG DJANGO_ENV=production
 CMD if [ "$DJANGO_ENV" = "production" ]; then \
         echo "Running collectstatic for production..."; \
         python manage.py collectstatic --noinput; \
