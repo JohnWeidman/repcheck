@@ -16,7 +16,7 @@ RUN apt-get update \
     && apt-get install -y nodejs \
     && apt-get clean
 
-RUN apt-get install npm
+RUN apt-get install npm -y
 
 RUN npm install 
 # Copy the requirements file into the container
