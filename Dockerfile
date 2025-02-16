@@ -16,16 +16,6 @@ RUN apt-get update \
     && apt-get install -y nodejs \
     && apt-get clean
 
-RUN apt-get install -y npm
-#Verify npm and node install
-RUN node -v && npm -v
-
-#Install npm dependencies
-COPY theme/static_src/package.json /app/theme/static_src/
-
-WORKDIR theme/static_src
-RUN npm install
-
 # Copy the requirements file into the container
 COPY requirements.txt /app/
 RUN ls /app
