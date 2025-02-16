@@ -12,20 +12,32 @@ WORKDIR /app
 # Install system dependencies (for building and compiling packages like psycopg2)
 RUN apt-get update \
     && apt-get install -y --no-install-recommends gcc libpq-dev \
+    && curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+    && apt-get install -y nodejs \
     && apt-get clean
+
+RUN apt-get install -y npm
+#Verify npm and node install
+RUN node -v && npm -v
+
+#Install npm dependencies
+COPY theme/static_src/package.json /app/theme/static_src/
+
+WORKDIR theme/static_src
+RUN npm install
 
 # Copy the requirements file into the container
 COPY requirements.txt /app/
-
+RUN ls /app
+WORKDIR /app
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the project into the container
 COPY . /app/
 
-
-# Collect static files (for production use)
-RUN python manage.py collectstatic --noinput
+#Run Tailwind Build
+RUN python manage.py tailwind build
 
 # Expose the port the app will run on
 EXPOSE 8000
