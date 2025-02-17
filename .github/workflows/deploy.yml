@@ -1,1 +1,42 @@
-testing
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: appleboy/ssh-action@v0.1.3
+        with:
+          host: 192.168.1.223
+          username: jackweidman
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          port: 22
+
+      - name: Stop and remove existing containers
+        run: |
+          ssh -o StrictHostKeyChecking=no 'jackweidman@192.168.1.223' << 'EOF'
+            docker-compose down
+          EOF
+
+      - name: Pull latest changes
+        run: |
+          ssh -o StrictHostKeyChecking=no 'jackweidman@192.168.1.223' << 'EOF'
+            cd repcheck/
+            git pull origin production
+          EOF
+
+      - name: Rebuild and start the containers
+        run: |
+          ssh -o StrictHostKeyChecking=no 'jackweidman@192.168.1.223' << 'EOF'
+            cd /path/to/your/project
+            docker-compose up --build -d
+          EOF
