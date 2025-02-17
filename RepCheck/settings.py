@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG") == "True"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")  # Get from .env, split into a list
+ALLOWED_HOSTS = ["rep-check.com", "www.rep-check.com", "repcheck_web", "localhost", "127.0.0.1"]  # Get from .env, split into a list
 
 CONGRESS_API_KEY=os.getenv("CONGRESS_API_KEY")
 # Application definition
