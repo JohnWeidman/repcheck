@@ -1,16 +1,41 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="flex flex-col items-center justify-center h-screen mx-auto p-4">
-    <div class="badge-secondary rounded-xl px-12 drop-shadow-xl shadow-black">
-        <h1 class="text-3xl mt-6 font-bold text-nowrap md:text-4xl">Welcome to Congress</h1>
-        <div class="flex justify-center items-center gap-4 p-4">
-            <button hx-get="{% url 'house' %}" hx-target="#content" hx-push-url="true" class="btn btn-primary btn-lg">
-               House<br/>of<br/>Representatives
-            </button>
-            <button hx-get="{% url 'senate' %}" hx-target="#content" hx-push-url="true" class="btn btn-accent btn-lg">
-                Senate
-            </button>
+    <section class="flex flex-col mt-72 h-screen bg-zinc-100">
+        <div class="z-10 mt-10 p-4 rounded-xl bg-zinc-100 drop-shadow-md shadow-black border-2 w-1/3 text-center justify-center items-center mx-auto">
+            <h1 class="text-3xl mt-6 font-bold md:text-4xl">Welcome to Congress</h1>
+            <div class="card-normal rounded-xl p-8 drop-shadow-xl shadow-black">
+                <div class="flex justify-center items-center gap-10 p-4">
+                    <select class="select select-bordered bg-secondary select-lg w-full max-w-xs"
+                            name="congress"
+                            id="congress"
+                            required
+                            >
+                        <option class="justify-center" value="">Select a Congress</option>
+                        {% for congress in congresses %}
+                            <option class="justify-center" value="{{ congress.id }}">
+                                #{{ congress.congress_number }} | {{ congress.start_date|date:"Y" }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <h2 class="text-2xl font-bold p-4">Select a Chamber</h2>
+                <div class="flex justify-center items-center gap-10 p-4">
+                    <button hx-get="{% url 'house' %}?congress="
+                            hx-target="#content"
+                            hx-push-url="true"
+                            hx-vals='js:{"congress": document.getElementById("congress").value}'
+                            class="btn btn-accent btn-lg">
+                        <span class="text-2xl text-white">House</span>
+                    </button>
+                    <button hx-get="{% url 'senate' %}?congress="
+                            hx-target="#content"
+                            hx-push-url="true"
+                            hx-vals='js:{"congress": document.getElementById("congress").value}'
+                            class="btn btn-accent btn-lg">
+                        <span class="text-2xl text-white">Senate</span>
+                    </button>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    </section>
 {% endblock content %}
