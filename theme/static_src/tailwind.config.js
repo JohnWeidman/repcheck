@@ -68,6 +68,7 @@ module.exports = {
                 "accent": "#BF0D3E",
                 "neutral": "#FFD100",
                 "base-100": "#919D9D",
+                "info" : "#4A412A"
             },
          },
         "retro",
