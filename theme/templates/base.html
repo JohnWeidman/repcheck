@@ -31,21 +31,21 @@
                             </svg>
                         </div>
                         <ul tabindex="0"
-                            class="menu menu-sm dropdown-content bg-secondary rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                            class="menu menu-sm dropdown-content bg-info rounded-box z-[1] mt-3 w-32 p-2 shadow text-white">
                             <li>
                                 <a href="{% url 'home' %}">Home</a>
                             </li>
                             <li>
-                                <a>Profile</a>
+                                <a class="bg-accent">Profile</a>
                             </li>
                             <li>
-                                <a href="{% url 'congress' %}">Congress</a>
+                                <a class="bg-secondary" href="{% url 'congress' %}">Congress</a>
                             </li>
                             <li>
-                                <a href="{% url 'legislation_landing_page' %}">Legislation</a>
+                                <a class="bg-primary" href="{% url 'legislation_landing_page' %}">Legislation</a>
                             </li>
                             <li>
-                                <a>Logout</a>
+                                <a class="bg-base-100">Logout</a>
                             </li>
                         </ul>
                     </div>
@@ -78,11 +78,19 @@
                     </button>
                 </div>
             </div>
-            <div id="content">
+            <section id="content" class="bg-zinc-100 mt-72">
                 {% block content %}
                     {% comment %} Page content goes here {% endcomment %}
                 {% endblock content %}
-            </div>
+            </section>
         </div>
+
     </body>
+    <footer class="footer footer-center bg-base-300 text-base-content p-4">
+        <aside>
+          <p class="font-semibold">Copyright © 2025 - All right reserved by RepCheck</p>
+          <p class="font-semibold">Backgound image generously provided by Goldstreet Photography | <a target="_blank" rel="noopener noreferrer" href="https://www.etsy.com/shop/goldstreet?">Etsy Shop</a></p>
+          
+        </aside>
+      </footer>
 </html>
