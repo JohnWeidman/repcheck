@@ -17,8 +17,7 @@ jobs:
         with:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PUBLIC_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
 
       - name: Stop and remove existing containers
