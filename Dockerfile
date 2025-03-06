@@ -33,6 +33,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the project into the container
 COPY . /app/
 
+# Run collectstatic (for production setup)
+RUN python manage.py collectstatic --noinput
+
 # Run Tailwind Build
 RUN python manage.py tailwind build
 
@@ -40,11 +43,6 @@ RUN python manage.py tailwind build
 EXPOSE 8000
 
 # Use environment variable to determine the run command (development or production)
-ARG DJANGO_ENV=production
-CMD if [ "$DJANGO_ENV" = "production" ]; then \
-        echo "Running collectstatic for production..."; \
-        python manage.py collectstatic --noinput; \
-        exec gunicorn --workers=3 --bind 0.0.0.0:8000 RepCheck.wsgi:application; \
-    else \
-        exec python manage.py runserver 0.0.0.0:8000; \
-    fi
+CMD exec gunicorn --workers=3 --bind 0.0.0.0:8000 RepCheck.wsgi:application
+
+# End of Dockerfile
