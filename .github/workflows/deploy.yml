@@ -12,30 +12,35 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v3
 
-      - name: Set up SSH
-        uses: appleboy/ssh-action@v0.1.3
-        with:
-          host: ${{ secrets.VM_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
+      - name: Install Cloudflared
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cloudflared
+
+      - name: Set up SSH with Cloudflare Tunnel
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "Host ${{ secrets.VM_HOST }}" >> ~/.ssh/config
+          echo "  ProxyCommand cloudflared access ssh --hostname ${{ secrets.VM_HOST }}" >> ~/.ssh/config
 
       - name: Stop and remove existing containers
         run: |
-          ssh -o StrictHostKeyChecking=no 'jackweidman@192.168.1.223' << 'EOF'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} << 'EOF'
             docker-compose down
           EOF
 
       - name: Pull latest changes
         run: |
-          ssh -o StrictHostKeyChecking=no 'jackweidman@192.168.1.223' << 'EOF'
-            cd repcheck/
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} << 'EOF'
+            cd /home/${{ secrets.SSH_USERNAME }}/repcheck/
             git pull origin production
           EOF
 
       - name: Rebuild and start the containers
         run: |
-          ssh -o StrictHostKeyChecking=no 'jackweidman@192.168.1.223' << 'EOF'
-            cd /path/to/your/project
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} << 'EOF'
+            cd /home/${{ secrets.SSH_USERNAME }}/repcheck/
             docker-compose up --build -d
           EOF
