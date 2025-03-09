@@ -30,19 +30,20 @@ jobs:
 
       - name: Stop and remove existing containers
         run: |
-          docker-compose down
+          ssh -T -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} << 'EOF'
+            docker-compose down
           EOF
 
       - name: Pull latest changes
         run: |
-          ssh -t -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} << 'EOF'
+          ssh -T -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} << 'EOF'
             cd /home/${{ secrets.SSH_USERNAME }}/repcheck/
             git pull origin production
           EOF
 
       - name: Rebuild and start the containers
         run: |
-          ssh -t -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} << 'EOF'
+          ssh -T -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} << 'EOF'
             cd /home/${{ secrets.SSH_USERNAME }}/repcheck/
             docker-compose up --build -d
           EOF
