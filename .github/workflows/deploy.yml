@@ -30,8 +30,7 @@ jobs:
 
       - name: Stop and remove existing containers
         run: |
-          ssh -t -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} << 'EOF'
-            docker-compose down
+          docker-compose down
           EOF
 
       - name: Pull latest changes
