@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - production
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -26,7 +27,9 @@ jobs:
           echo "${{ secrets.CLOUDFLARE_CERT }}" > ~/.cloudflared/cert.pem
           chmod 600 ~/.cloudflared/cert.pem
 
-          
+      - name: Check Cloudflare Tunnel Status
+        run: cloudflared tunnel list
+
       - name: Set up SSH with Cloudflare Tunnel
         run: |
           mkdir -p ~/.ssh
@@ -34,29 +37,24 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           echo "Host ${{ secrets.VM_HOST }}" >> ~/.ssh/config
           echo "  ProxyCommand cloudflared access ssh --hostname ${{ secrets.VM_HOST }}" >> ~/.ssh/config
-          
-      - name: Check if cloudflared is running
-        run: |
-          cloudflared tunnel list
-      
+
       - name: Debug SSH
         run: |
           ls -la ~/.ssh
           head -n 5 ~/.ssh/id_rsa
           ssh -o StrictHostKeyChecking=no -o ProxyCommand="cloudflared access ssh --hostname ${{ secrets.VM_HOST }}" ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} "echo 'SSH connection successful'"
-      
+
       - name: Stop and remove existing containers
         run: |
           ssh -o StrictHostKeyChecking=no -o ProxyCommand="cloudflared access ssh --hostname ${{ secrets.VM_HOST }}" ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} \
           "cd /home/${{ secrets.SSH_USERNAME }}/repcheck && docker-compose down"
-        
+
       - name: Pull latest changes
         run: |
           ssh -o StrictHostKeyChecking=no -o ProxyCommand="cloudflared access ssh --hostname ${{ secrets.VM_HOST }}" ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} \
           "cd /home/${{ secrets.SSH_USERNAME }}/repcheck && git pull origin production"
-      
+
       - name: Rebuild and start the containers
         run: |
           ssh -o StrictHostKeyChecking=no -o ProxyCommand="cloudflared access ssh --hostname ${{ secrets.VM_HOST }}" ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} \
           "cd /home/${{ secrets.SSH_USERNAME }}/repcheck && docker-compose up --build -d"
-        
