@@ -30,22 +30,20 @@ jobs:
         run: |
           cloudflared tunnel list
 
-      - name: Set up SSH Key
+      - name: Set up SSH with Cloudflare Tunnel
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan ssh.rep-check.com >> ~/.ssh/known_hosts
-          cat <<EOF > ~/.ssh/config
-          Host ssh.rep-check.com
-            ProxyCommand cloudflared access ssh --hostname ssh.rep-check.com
-            IdentityFile ~/.ssh/id_rsa
-          EOF
+          echo "Host ${{ secrets.VM_HOST }}" >> ~/.ssh/config
+          echo "ProxyCommand cloudflared access ssh --hostname ${{ secrets.VM_HOST }}" >> ~/.ssh/config
       
-      - name: Debug SSH Key
-        run: ls -la ~/.ssh && cat ~/.ssh/config
-  
-
+      - name: Debug SSH
+        run: |
+          ls -la ~/.ssh
+          cat ~/.ssh/id_rsa
+          cat ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh -v -o StrictHostKeyChecking=no -o ProxyCommand="cloudflared access ssh --hostname ${{ secrets.VM_HOST }}" ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} "echo 'SSH connection successful'"
       - name: Stop and remove existing containers
         run: |
           ssh -v -o StrictHostKeyChecking=no -o ProxyCommand="cloudflared access ssh --hostname ${{ secrets.VM_HOST }}" ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} "docker-compose down"
