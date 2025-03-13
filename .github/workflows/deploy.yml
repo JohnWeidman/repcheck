@@ -30,13 +30,21 @@ jobs:
         run: |
           cloudflared tunnel list
 
-      - name: Set up SSH with Cloudflare Tunnel
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          echo "Host ${{ secrets.VM_HOST }}" >> ~/.ssh/config
-          echo "  ProxyCommand cloudflared access ssh --hostname ${{ secrets.VM_HOST }}" >> ~/.ssh/config
+          - name: Set up SSH Key
+          run: |
+            mkdir -p ~/.ssh
+            echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh-keyscan ssh.rep-check.com >> ~/.ssh/known_hosts
+            cat <<EOF > ~/.ssh/config
+            Host ssh.rep-check.com
+              ProxyCommand cloudflared access ssh --hostname ssh.rep-check.com
+              IdentityFile ~/.ssh/id_rsa
+            EOF
+      
+      - name: Debug SSH Key
+        run: ls -la ~/.ssh && cat ~/.ssh/config
+  
 
       - name: Stop and remove existing containers
         run: |
