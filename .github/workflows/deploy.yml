@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - production
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -12,30 +13,48 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v3
 
-      - name: Set up SSH
-        uses: appleboy/ssh-action@v0.1.3
-        with:
-          host: ${{ secrets.VM_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
+      - name: Install Cloudflared
+        run: |
+          sudo mkdir -p --mode=0755 /usr/share/keyrings
+          curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg | sudo tee /usr/share/keyrings/cloudflare-main.gpg >/dev/null
+          echo "deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflared $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflared.list
+          sudo apt-get update
+          sudo apt-get install -y cloudflared
+
+      - name: Set up Cloudflare Origin Cert
+        run: |
+          mkdir -p ~/.cloudflared
+          echo "${{ secrets.CLOUDFLARE_CERT }}" > ~/.cloudflared/cert.pem
+          chmod 600 ~/.cloudflared/cert.pem
+
+      - name: Check Cloudflare Tunnel Status
+        run: cloudflared tunnel list
+
+      - name: Set up SSH with Cloudflare Tunnel
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "Host ${{ secrets.VM_HOST }}" >> ~/.ssh/config
+          echo "  ProxyCommand cloudflared access ssh --hostname ${{ secrets.VM_HOST }}" >> ~/.ssh/config
+
+      - name: Debug SSH
+        run: |
+          ls -la ~/.ssh
+          head -n 5 ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no -o ProxyCommand="cloudflared access ssh --hostname ${{ secrets.VM_HOST }}" ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} "echo 'SSH connection successful'"
 
       - name: Stop and remove existing containers
         run: |
-          ssh -o StrictHostKeyChecking=no 'jackweidman@192.168.1.223' << 'EOF'
-            docker-compose down
-          EOF
+          ssh -o StrictHostKeyChecking=no -o ProxyCommand="cloudflared access ssh --hostname ${{ secrets.VM_HOST }}" ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} \
+          "cd /home/${{ secrets.SSH_USERNAME }}/repcheck && docker-compose down"
 
       - name: Pull latest changes
         run: |
-          ssh -o StrictHostKeyChecking=no 'jackweidman@192.168.1.223' << 'EOF'
-            cd repcheck/
-            git pull origin production
-          EOF
+          ssh -o StrictHostKeyChecking=no -o ProxyCommand="cloudflared access ssh --hostname ${{ secrets.VM_HOST }}" ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} \
+          "cd /home/${{ secrets.SSH_USERNAME }}/repcheck && git pull origin production"
 
       - name: Rebuild and start the containers
         run: |
-          ssh -o StrictHostKeyChecking=no 'jackweidman@192.168.1.223' << 'EOF'
-            cd /path/to/your/project
-            docker-compose up --build -d
-          EOF
+          ssh -o StrictHostKeyChecking=no -o ProxyCommand="cloudflared access ssh --hostname ${{ secrets.VM_HOST }}" ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} \
+          "cd /home/${{ secrets.SSH_USERNAME }}/repcheck && docker-compose up --build -d"
