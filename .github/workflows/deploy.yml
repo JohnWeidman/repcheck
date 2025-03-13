@@ -46,7 +46,7 @@ jobs:
         run: |
           ls -la ~/.ssh
           head -n 5 ~/.ssh/id_rsa
-          ssh -o StrictHostKeyChecking=no -o ProxyCommand="cloudflared access ssh --hostname ${{ secrets.VM_HOST }}" ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} "echo 'SSH connection successful'"
+          ssh -v -o StrictHostKeyChecking=no -o ProxyCommand="cloudflared access ssh --hostname ${{ secrets.VM_HOST }}" ${{ secrets.SSH_USERNAME }}@${{ secrets.VM_HOST }} "echo 'SSH connection successful'"
 
       - name: Stop and remove existing containers
         run: |
