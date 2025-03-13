@@ -20,6 +20,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y cloudflared
 
+      - name: Set up Cloudflare Origin Cert
+        run: |
+          mkdir -p ~/.cloudflared
+          echo "${{ secrets.CLOUDFLARE_CERT }}" > ~/.cloudflared/cert.pem
+          chmod 600 ~/.cloudflared/cert.pem
+
       - name: Check if cloudflared is running
         run: |
           cloudflared tunnel list
