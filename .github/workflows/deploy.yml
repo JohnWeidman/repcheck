@@ -27,6 +27,10 @@ jobs:
           echo "${{ secrets.CLOUDFLARE_CERT }}" > ~/.cloudflared/cert.pem
           chmod 600 ~/.cloudflared/cert.pem
 
+      - name: Test Cloudflare Tunnel SSH
+        run: |
+          cloudflared access ssh --hostname ${{ secrets.VM_HOST }}
+        
       - name: Check Cloudflare Tunnel Status
         run: cloudflared tunnel list
 
