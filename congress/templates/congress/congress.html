@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-    <section class="flex flex-col mt-72 h-screen bg-zinc-100">
-        <div class="z-10 mt-10 p-4 rounded-xl bg-zinc-100 drop-shadow-md shadow-black border-2 w-1/3 text-center justify-center items-center mx-auto">
+    <section class="grid sm:grid-cols-2 grid-cols-1 mt-72 h-screen bg-zinc-100">
+        <div class="mt-10 p-4 rounded-xl h-96 bg-zinc-100 drop-shadow-md shadow-black border-2 sm:max-w-full w-11/12 text-center justify-center items-center mx-auto">
             <h1 class="text-3xl mt-6 font-bold md:text-4xl">Welcome to Congress</h1>
-            <div class="card-normal rounded-xl p-8 drop-shadow-xl shadow-black">
+            <div class="drop-shadow-xl shadow-black">
                 <div class="flex justify-center items-center gap-10 p-4">
                     <select class="select select-bordered bg-secondary select-lg w-full max-w-xs"
                             name="congress"
@@ -37,5 +37,8 @@
                 </div>
             </div>
         </div>
-    </section>
+        <div class="m-10 p-4 rounded-xl h-96 bg-zinc-100 drop-shadow-md shadow-black border-2 sm:max-w-full w-11/12 text-center justify-center items-center mx-auto">
+        Maybe a carousel of something here? Members who have sponsored legislation that is currently in progress?
+        </div>
+        </section>
 {% endblock content %}
