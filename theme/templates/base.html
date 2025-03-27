@@ -13,10 +13,8 @@
         <script src="https://unpkg.com/htmx.org@1.7.0"></script>
         {% tailwind_css %}
     </head>
-    <body style="background-image: url('{% static 'theme/images/backgroundrepcheck.webp' %}');
-                 background-size: cover;
-                 background-position: center;
-                 background-repeat: no-repeat">
+    <body class="min-h-screen flex flex-col bg-fixed bg-cover bg-center bg-no-repeat"
+          style="background-image: url('{% static 'theme/images/backgroundrepcheck.webp' %}')">
         <div class="bg-base-100 bg-opacity-80">
             <div class="navbar bg-secondary drop-shadow-xl shadow-black">
                 <div class="navbar-start">
@@ -78,19 +76,21 @@
                     </button>
                 </div>
             </div>
-            <section id="content" class="bg-zinc-100 mt-72">
+            <div id="content" class="bg-zinc-100 flex-grow m-36 rounded-xl">
                 {% block content %}
                     {% comment %} Page content goes here {% endcomment %}
                 {% endblock content %}
-            </section>
+            </div>
         </div>
-
+        <footer class="footer footer-center mt-auto bg-base-300 text-base-content p-4">
+            <aside>
+                <p class="font-semibold">Copyright © 2025 - All right reserved by RepCheck</p>
+                <p class="font-semibold">
+                    Backgound image generously provided by Goldstreet Photography | <a target="_blank"
+    rel="noopener noreferrer"
+    href="https://www.etsy.com/shop/goldstreet?">Etsy Shop</a>
+                </p>
+            </aside>
+        </footer>
     </body>
-    <footer class="footer footer-center bg-base-300 text-base-content p-4">
-        <aside>
-          <p class="font-semibold">Copyright © 2025 - All right reserved by RepCheck</p>
-          <p class="font-semibold">Backgound image generously provided by Goldstreet Photography | <a target="_blank" rel="noopener noreferrer" href="https://www.etsy.com/shop/goldstreet?">Etsy Shop</a></p>
-          
-        </aside>
-      </footer>
 </html>
