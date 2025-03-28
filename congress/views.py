@@ -1,10 +1,15 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Congress
+from .models import Congress, Member, Membership
 
 # Create your views here.
 def congress(request):
-    congresses = Congress.objects.all()
-    return render(request, "congress/congress.html", {"congresses": congresses})
+    context = {
+        "congresses": Congress.objects.all(),
+        "members": Member.objects.all(),
+        "membership": Membership.objects.all(),
+
+    }
+    return render(request, "congress/congress.html", context)
 
 def house_not_home(request):
     congress_id = request.GET.get("congress")
