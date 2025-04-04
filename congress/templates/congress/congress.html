@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="bg-zinc-100 drop-shadow-md shadow-black border-2 rounded-2xl">
+    <section class="bg-zinc-100 drop-shadow-md shadow-black border-2 rounded-2xl">
         <div class="flex justify-center items-center">
             <h1 class="text-3xl mt-6 font-bold md:text-5xl">Welcome to Congress</h1>
         </div>
@@ -59,7 +59,8 @@
                     <section class="overflow-y-scroll h-96">
                         <table class="table-xs table w-full text-center">
                             <thead class="sticky top-0 bg-gray-300">
-                                <tr class="bg-gray-200">
+                                <tr class="bg-gray-200 border border-gray-400">
+                                    <th>Count</th>
                                     <th class="border border-gray-400 px-4 py-2">Name</th>
                                     <th class="border border-gray-400 px-4 py-2">State</th>
                                     <th class="border border-gray-400 px-4 py-2">Party</th>
@@ -67,13 +68,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for membership in membership %}
-                                    <tr>
-                                        <td class="border border-gray-400 px-4 py-2">{{ membership.member.name }}</td>
-                                        <td class="border border-gray-400 px-4 py-2">{{ membership.member.state }}</td>
-                                        <td class="border border-gray-400 px-4 py-2">{{ membership.party }}</td>
-                                        <td class="border border-gray-400 px-4 py-2">{{ membership.chamber }}</td>
-                                    </tr>
+                                {% for member in members %}
+                                    {% with member.membership_set.first as membership %}
+                                        <tr>
+                                            <td class="border border-gray-400 px-4 py-2">{{ forloop.counter }}</td>
+                                            <td class="border border-gray-400 px-4 py-2">{{ member.name }}</td>
+                                            <td class="border border-gray-400 px-4 py-2">{{ member.state }}</td>
+                                            <td class="border border-gray-400 px-4 py-2">
+                                                
+                                                    {{ membership.party }}
+                                            </td>
+                                            <td class="border border-gray-400 px-4 py-2">
+                                                    {{ membership.chamber }}
+                                            </td>
+                                        </tr>
+                                    {% endwith %}
                                 {% empty %}
                                     <tr>
                                         <td colspan="4" class="border border-gray-400 px-4 py-2">No members found.</td>

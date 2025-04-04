@@ -1,4 +1,5 @@
 import requests
+import json
 import os
 from datetime import datetime
 from django.core.management.base import BaseCommand
@@ -68,11 +69,10 @@ def save_members(members_data):
     for member in members_data:
         bioguide_id = member.get("bioguideId") 
         name = member.get("name")
-        image_url = member.get("imageUrl")
-        image_attribution = member.get("imageAttribution")
+        image_url = member.get("depiction" , {}).get("imageUrl", "No Image URL Provided")
+        image_attribution = member.get("depiction" , {}).get("attribution", "No Attribution Provided")
         state = member.get("state")
 
-        # Create or update the Member entry
         member_obj, _ = Member.objects.update_or_create(
             bioguide_id=bioguide_id,
             defaults={
@@ -95,11 +95,13 @@ def save_members(members_data):
             try:
                 member_details = future.result()
                 if member_details:
+                    print(f"Member details {member_details} fetched for {bioguide_id}")
                     save_memberships(member_obj, member_details)
                     print(f"Saved Member {bioguide_id} ({member_obj.name})")
             except Exception as e:
                 print(f"Error processing member {bioguide_id}: {e}")
 
+"""Not saving memberships in congresses that are not in the database"""
 
 def fetch_member_details(bioguide_id):
     """Fetches details about a single member, including terms and leadership."""
@@ -109,12 +111,15 @@ def fetch_member_details(bioguide_id):
     if response.status_code == 200:
         return response.json().get("member", {})
     else:
+        print(f"Response: {response.json()}")
         print(f"Error fetching member details for {bioguide_id}: {response.status_code}")
         return None
 
 
 def save_memberships(member, member_data):
-    """Saves membership history for a given member."""
+    """Saves membership history for a given member. 
+       Creates multiple entries for different terms."""
+    
     for term in member_data.get("terms", []):
         congress_number = term.get("congress")
         chamber = term.get("chamber")
@@ -122,6 +127,7 @@ def save_memberships(member, member_data):
         end_year = term.get("endYear", None)
         state_code = term.get("stateCode", "")
         district = term.get("district", None) if chamber == "House" else None
+
 
         # Ensure Congress exists
         congress, _ = Congress.objects.get_or_create(congress_number=congress_number)

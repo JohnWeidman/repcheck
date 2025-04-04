@@ -1,14 +1,27 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Congress, Member, Membership
+from django.db.models import Prefetch
 
 # Create your views here.
 def congress(request):
+    unique_members = Member.objects.prefetch_related(
+        Prefetch("membership_set", queryset=Membership.objects.order_by("-member").distinct())
+    )
+    with open("membership_set.txt", "w") as file:
+        for member in unique_members:
+            file.write(f"{member}\n")
     context = {
         "congresses": Congress.objects.all(),
-        "members": Member.objects.all(),
+        "members": unique_members,
         "membership": Membership.objects.all(),
-
     }
+
+    with open("debug_membership.txt", "w") as file:
+        for membership in context["membership"]:
+            file.write(f"{membership}\n")
+        file.write("\n\n\n")
+        for member in context["members"]:
+            file.write(f"{member}\n")
     return render(request, "congress/congress.html", context)
 
 def house_not_home(request):
