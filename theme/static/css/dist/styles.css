@@ -2904,18 +2904,6 @@ details.collapse summary::-webkit-details-marker {
   padding-bottom: 0.5rem;
 }
 
-.table-xs :not(thead):not(tfoot) tr {
-  font-size: 0.75rem;
-  line-height: 1rem;
-}
-
-.table-xs :where(th, td) {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
-}
-
 .sr-only {
   position: absolute;
   width: 1px;
@@ -2956,10 +2944,6 @@ details.collapse summary::-webkit-details-marker {
   position: sticky;
 }
 
-.top-0 {
-  top: 0px;
-}
-
 .z-\[1\] {
   z-index: 1;
 }
@@ -2972,17 +2956,13 @@ details.collapse summary::-webkit-details-marker {
   margin: 2rem;
 }
 
+.m-96 {
+  margin: 24rem;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
-}
-
-.mb-10 {
-  margin-bottom: 2.5rem;
-}
-
-.mt-10 {
-  margin-top: 2.5rem;
 }
 
 .mt-20 {
@@ -3007,6 +2987,18 @@ details.collapse summary::-webkit-details-marker {
 
 .mt-auto {
   margin-top: auto;
+}
+
+.mb-96 {
+  margin-bottom: 24rem;
+}
+
+.mb-10 {
+  margin-bottom: 2.5rem;
+}
+
+.mb-32 {
+  margin-bottom: 8rem;
 }
 
 .block {
@@ -3047,6 +3039,32 @@ details.collapse summary::-webkit-details-marker {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-dvh {
+  height: 100dvh;
+}
+
+.h-svh {
+  height: 100svh;
+}
+
+.h-1\/2 {
+  height: 50%;
+}
+
+.h-auto {
+  height: auto;
+}
+
+.max-h-max {
+  max-height: -moz-max-content;
+  max-height: max-content;
+}
+
+.max-h-fit {
+  max-height: -moz-fit-content;
+  max-height: fit-content;
 }
 
 .min-h-screen {
@@ -3117,8 +3135,8 @@ details.collapse summary::-webkit-details-marker {
   justify-self: center;
 }
 
-.overflow-y-scroll {
-  overflow-y: scroll;
+.rounded-2xl {
+  border-radius: 1rem;
 }
 
 .rounded-box {
@@ -3129,21 +3147,12 @@ details.collapse summary::-webkit-details-marker {
   border-radius: 0.75rem;
 }
 
-.rounded-2xl {
-  border-radius: 1rem;
-}
-
 .border {
   border-width: 1px;
 }
 
 .border-2 {
   border-width: 2px;
-}
-
-.border-gray-400 {
-  --tw-border-opacity: 1;
-  border-color: rgb(156 163 175 / var(--tw-border-opacity, 1));
 }
 
 .bg-accent {
@@ -3159,16 +3168,6 @@ details.collapse summary::-webkit-details-marker {
 .bg-base-300 {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-bg-opacity, 1)));
-}
-
-.bg-gray-200 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));
-}
-
-.bg-gray-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(209 213 219 / var(--tw-bg-opacity, 1));
 }
 
 .bg-gray-50 {
@@ -3189,11 +3188,6 @@ details.collapse summary::-webkit-details-marker {
 .bg-secondary {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-s,oklch(var(--s)/var(--tw-bg-opacity, 1)));
-}
-
-.bg-white {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
 .bg-zinc-100 {
@@ -3236,16 +3230,6 @@ details.collapse summary::-webkit-details-marker {
 .px-12 {
   padding-left: 3rem;
   padding-right: 3rem;
-}
-
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.py-2 {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
 }
 
 .text-center {

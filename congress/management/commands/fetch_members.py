@@ -35,7 +35,7 @@ def fetch_members():
 
     while True:
         url = f"{BASE_URL}/member?api_key={API_KEY}&offset={offset}"
-        response = requests.get(url) 
+        response = requests.get(url)
 
         if response.status_code != 200:
             tqdm.write(f"❌ Error fetching data: {response.status_code}")
@@ -48,29 +48,32 @@ def fetch_members():
         if "members" in data:
             members.extend(data["members"])
             tqdm.write(f"Fetched {len(members)} members from page {offset//20 + 1}.")
-            
+
         else:
             tqdm.write("❌ No members found in response.")
             break
-        
+
         if next_page:
             offset += 20
         else:
             tqdm.write(f"No next page. Ending fetch.")
             break
-    
+
     tqdm.write(f"Total members fetched: {len(members)}")
     return members
+
 
 def save_members(members_data):
     """Saves member data to the database with multithreading for fetching details."""
     members_to_process = []
 
     for member in members_data:
-        bioguide_id = member.get("bioguideId") 
+        bioguide_id = member.get("bioguideId")
         name = member.get("name")
-        image_url = member.get("depiction" , {}).get("imageUrl", "No Image URL Provided")
-        image_attribution = member.get("depiction" , {}).get("attribution", "No Attribution Provided")
+        image_url = member.get("depiction", {}).get("imageUrl", "No Image URL Provided")
+        image_attribution = member.get("depiction", {}).get(
+            "attribution", "No Attribution Provided"
+        )
         state = member.get("state")
 
         member_obj, _ = Member.objects.update_or_create(
@@ -81,14 +84,17 @@ def save_members(members_data):
                 "image_attribution": image_attribution,
                 "last_updated": datetime.now(),
                 "state": state,
-            }
+            },
         )
 
         members_to_process.append((bioguide_id, member_obj))
 
     # Fetch member details in parallel
     with ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
-        future_to_member = {executor.submit(fetch_member_details, m_id): (m_id, m_obj) for m_id, m_obj in members_to_process}
+        future_to_member = {
+            executor.submit(fetch_member_details, m_id): (m_id, m_obj)
+            for m_id, m_obj in members_to_process
+        }
 
         for future in as_completed(future_to_member):
             bioguide_id, member_obj = future_to_member[future]
@@ -101,7 +107,9 @@ def save_members(members_data):
             except Exception as e:
                 print(f"Error processing member {bioguide_id}: {e}")
 
+
 """Not saving memberships in congresses that are not in the database"""
+
 
 def fetch_member_details(bioguide_id):
     """Fetches details about a single member, including terms and leadership."""
@@ -112,14 +120,16 @@ def fetch_member_details(bioguide_id):
         return response.json().get("member", {})
     else:
         print(f"Response: {response.json()}")
-        print(f"Error fetching member details for {bioguide_id}: {response.status_code}")
+        print(
+            f"Error fetching member details for {bioguide_id}: {response.status_code}"
+        )
         return None
 
 
 def save_memberships(member, member_data):
-    """Saves membership history for a given member. 
-       Creates multiple entries for different terms."""
-    
+    """Saves membership history for a given member.
+    Creates multiple entries for different terms."""
+
     for term in member_data.get("terms", []):
         congress_number = term.get("congress")
         chamber = term.get("chamber")
@@ -128,13 +138,15 @@ def save_memberships(member, member_data):
         state_code = term.get("stateCode", "")
         district = term.get("district", None) if chamber == "House" else None
 
-
         # Ensure Congress exists
         congress, _ = Congress.objects.get_or_create(congress_number=congress_number)
 
         # Determine party at the time
         party_history = member_data.get("partyHistory", [])
-        party = next((p["partyName"] for p in party_history if p["startYear"] <= start_year), "Unknown")
+        party = next(
+            (p["partyName"] for p in party_history if p["startYear"] <= start_year),
+            "Unknown",
+        )
 
         # Create or update Membership record
         Membership.objects.update_or_create(
@@ -146,5 +158,5 @@ def save_memberships(member, member_data):
                 "district": district,
                 "start_year": start_year,
                 "end_year": end_year,
-            }
+            },
         )

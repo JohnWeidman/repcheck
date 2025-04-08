@@ -9,13 +9,13 @@
         <meta name="description"
               content="A website to help citizens engage with, track, and understand what actually happens in Congress">
         <meta name="keywords"
-              content="politics, congress, citizens, laws, bills, taxes, infrastructure, stocks, FTC, SEC, ">
+              content="politics, congress, citizens, laws, bills, taxes, infrastructure, stocks, FTC, SEC">
         <script src="https://unpkg.com/htmx.org@1.7.0"></script>
         {% tailwind_css %}
     </head>
-    <body class="min-h-screen flex flex-col bg-fixed bg-cover bg-center bg-no-repeat"
+    <body class="h-screen flex flex-col bg-fixed bg-cover bg-center bg-no-repeat"
           style="background-image: url('{% static 'theme/images/backgroundrepcheck.webp' %}')">
-        <div class="bg-base-100 bg-opacity-80">
+        <div class="bg-base-100 bg-opacity-80 min-h-screen">
             <div class="navbar bg-secondary drop-shadow-xl shadow-black">
                 <div class="navbar-start">
                     <div class="dropdown">
@@ -76,7 +76,7 @@
                     </button>
                 </div>
             </div>
-            <div id="content" class="bg-zinc-100 flex-grow m-36 rounded-xl">
+            <div id="content" class="bg-zinc-100 m-36 rounded-xl">
                 {% block content %}
                     {% comment %} Page content goes here {% endcomment %}
                 {% endblock content %}

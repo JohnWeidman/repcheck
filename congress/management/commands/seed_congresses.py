@@ -5,12 +5,13 @@ from datetime import datetime
 
 class Command(BaseCommand):
     help = "Seeds the Congress model with initial data."
+
     def handle(self, *args, **kwargs):
         self.stdout.write("Seeding Congress model with initial data...")
 
         start_year = 1789
         current_year = datetime.now().year
-        congress_number = 1 
+        congress_number = 1
 
         while start_year <= current_year:
             end_year = start_year + 2
@@ -18,9 +19,13 @@ class Command(BaseCommand):
             Congress.objects.update_or_create(
                 congress_number=congress_number,
                 defaults={
-                    "start_date": datetime.strptime(f"{start_year}-01-03", "%Y-%m-%d").date(),
-                    "end_date": datetime.strptime(f"{end_year}-01-03", "%Y-%m-%d").date(),
-                }
+                    "start_date": datetime.strptime(
+                        f"{start_year}-01-03", "%Y-%m-%d"
+                    ).date(),
+                    "end_date": datetime.strptime(
+                        f"{end_year}-01-03", "%Y-%m-%d"
+                    ).date(),
+                },
             )
             self.stdout.write(
                 self.style.SUCCESS(
