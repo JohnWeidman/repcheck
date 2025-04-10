@@ -4,22 +4,10 @@ from django.db.models import Prefetch, Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
-# Create your views here.
 def congress(request):
-    unique_members = Member.objects.order_by("name").prefetch_related(
-        Prefetch("membership_set", queryset=Membership.objects.distinct())
-    )
-
-    paginator = Paginator(unique_members, 10)  # Show 10 members per page
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-
     context = {
         "congresses": Congress.objects.all(),
-        "members": page_obj,
-        "membership": Membership.objects.all(),
     }
-
     return render(request, "congress/congress.html", context)
 
 
@@ -38,10 +26,6 @@ def house_not_home(request):
         else []
     )
 
-    with open("house_members_debug.txt", "w") as f:
-        for member in house_members:
-            f.write(f"{member.name}\n")
-
     p = Paginator(house_members, 10)
     try:
         members_page = p.page(page)
@@ -58,7 +42,6 @@ def house_not_home(request):
 
     if request.headers.get("HX-Request"):
         return render(request, "congress/partials/house_partial.html", context)
-    # This return statement below might be redundant?
     return render(request, "congress/house.html", context)
 
 
@@ -76,10 +59,6 @@ def i_am_the_senate(request):
         if congress
         else []
     )
-
-    with open("senate_members_debug.txt", "w") as f:
-        for member in senate_members:
-            f.write(f"{member.name}\n")
 
     p = Paginator(senate_members, 10)
     try:
