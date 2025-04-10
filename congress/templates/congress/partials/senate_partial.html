@@ -1,7 +1,57 @@
 {% block content %}
-    <div class="flex flex-col items-center h-screen">
-        <div class="badge-secondary rounded-xl p-8 mt-20 drop-shadow-xl shadow-black">
-            <div class="font-bold text-xl">This is where content about Senators Members of the {{ congress_number }} Congress will live!</div>
+    {% load congress_extras %}
+    <div class="flex flex-col items-center">
+        <div class="text-3xl mt-6 font-bold md:text-5xl">House Members of the {{ congress_number|ordinal }} Congress</div>
+        <div class="badge-secondary m-10 rounded-xl p-8 drop-shadow-xl shadow-black w-3/4">
+            <div class="overflow-x-auto">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>State</th>
+                            <th>Party</th>
+                        </tr>
+                    </thead>
+                    <tbody id="members-table" hx-target="#members-table" hx-swap="outerHTML">
+                        {% if senate_members|length == 0 %}
+                            <tr>
+                                <td colspan="5" class="text-center">No members found.</td>
+                            </tr>
+                        {% endif %}
+                        {% for member in senate_members %}
+                            <tr class="hover text-xl">
+                                <th>{{ forloop.counter }}</th>
+                                <th>
+                                    <img src={{ member.image_url }} alt="" height="" width="150">
+                                </th>
+                                <td>{{ member.name }}</td>
+                                <td>{{ member.state }}</td>
+                                <td>{{ member.party }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="pagination join flex justify-center items-center mt-4">
+                    {% if senate_members.has_previous %}
+                        <a href="?congress={{ congress_id }}&page={{ senate_members.previous_page_number }}">
+                            <button class="join-item btn">«</button>
+                        </a>
+                    {% endif %}
+                    <button class="join-item btn disabled">
+                        <span class="current">Page {{ senate_members.number }} of {{ senate_members.paginator.num_pages }}</span>
+                    </button>
+                    {% if senate_members.has_next %}
+                        <a hx-push-url="true"
+                           href="?congress={{ congress_id }}&page={{ senate_members.next_page_number }}"
+                           hx-target="#members-table"
+                           hx-swap="outerHTML">
+                            <button class="join-item btn">»</button>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock content %}

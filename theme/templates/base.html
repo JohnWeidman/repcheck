@@ -13,9 +13,9 @@
         <script src="https://unpkg.com/htmx.org@1.7.0"></script>
         {% tailwind_css %}
     </head>
-    <body class="h-screen flex flex-col bg-fixed bg-cover bg-center bg-no-repeat"
+    <body class="flex flex-col bg-fixed bg-cover bg-center"
           style="background-image: url('{% static 'theme/images/backgroundrepcheck.webp' %}')">
-        <div class="bg-base-100 bg-opacity-80 min-h-screen">
+        <div class="bg-base-100 bg-opacity-80 flex-grow flex flex-col">
             <div class="navbar bg-secondary drop-shadow-xl shadow-black">
                 <div class="navbar-start">
                     <div class="dropdown">
@@ -76,7 +76,7 @@
                     </button>
                 </div>
             </div>
-            <div id="content" class="bg-zinc-100 m-36 rounded-xl">
+            <div id="content" class="bg-zinc-100 flex-grow m-36 rounded-xl">
                 {% block content %}
                     {% comment %} Page content goes here {% endcomment %}
                 {% endblock content %}
