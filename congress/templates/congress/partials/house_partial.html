@@ -22,7 +22,7 @@
                         {% endif %}
                         {% for member in house_members %}
                             <tr class="hover text-xl">
-                                <th>{{ forloop.counter }}</th>
+                                <th>{{ forloop.counter|add:house_members.start_index|add:"-1" }}</th>
                                 <th>
                                     <img src={{ member.image_url }} alt="" height="" width="150">
                                 </th>

@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Congress, Member, Membership
-from django.db.models import Prefetch, Q
+from django.db.models import Count
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -11,28 +11,39 @@ def congress(request):
     return render(request, "congress/congress.html", context)
 
 
+from django.db.models import OuterRef, Subquery
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+
 def house_not_home(request):
     congress_id = request.GET.get("congress")
     page = request.GET.get("page")
     congress = get_object_or_404(Congress, id=congress_id) if congress_id else None
     chamber = "House of Representatives"
-    house_members = (
-        Member.objects.filter(
-            membership__congress=congress_id, membership__chamber=chamber
-        )
-        .distinct("name")
-        .order_by("name")
-        if congress
-        else []
-    )
 
-    p = Paginator(house_members, 10)
+    if congress:
+        membership_qs = Membership.objects.filter(
+            congress=congress_id, chamber=chamber, member=OuterRef("pk")
+        ).order_by("-start_year")
+
+        house_members = (
+            Member.objects.filter(
+                membership__congress=congress_id, membership__chamber=chamber
+            )
+            .distinct()
+            .annotate(party=Subquery(membership_qs.values("party")[:1]))
+            .order_by("state", "name")
+        )
+    else:
+        house_members = Member.objects.none()
+
+    paginator = Paginator(house_members, 10)
     try:
-        members_page = p.page(page)
+        members_page = paginator.page(page)
     except PageNotAnInteger:
-        members_page = p.page(1)
+        members_page = paginator.page(1)
     except EmptyPage:
-        members_page = p.page(p.num_pages)
+        members_page = paginator.page(paginator.num_pages)
 
     context = {
         "congress_number": congress.congress_number if congress else "Unknown",
@@ -53,9 +64,7 @@ def i_am_the_senate(request):
     senate_members = (
         Member.objects.filter(
             membership__congress=congress_id, membership__chamber=chamber
-        )
-        .distinct("name")
-        .order_by("name")
+        ).order_by("state")
         if congress
         else []
     )
