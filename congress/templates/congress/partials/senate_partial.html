@@ -33,21 +33,35 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                <div class="pagination join flex justify-center items-center mt-4">
+                <div class="pagination flex justify-center items-center mt-4">
                     {% if senate_members.has_previous %}
-                        <a href="?congress={{ congress_id }}&page={{ senate_members.previous_page_number }}">
-                            <button class="join-item btn">«</button>
+                        <a href="?congress={{ congress_id }}&page=1"
+                           class="btn flex justify-center items-center">
+                            <button>First</button>
                         </a>
                     {% endif %}
-                    <button class="join-item btn disabled">
-                        <span class="current">Page {{ senate_members.number }} of {{ senate_members.paginator.num_pages }}</span>
-                    </button>
+                    <div class="join m-2">
+                        {% if senate_members.has_previous %}
+                            <a href="?congress={{ congress_id }}&page={{ senate_members.previous_page_number }}">
+                                <button class="join-item btn">«</button>
+                            </a>
+                        {% endif %}
+                        <button class="join-item btn disabled">
+                            <span class="current">Page {{ senate_members.number }} of {{ senate_members.paginator.num_pages }}</span>
+                        </button>
+                        {% if senate_members.has_next %}
+                            <a hx-push-url="true"
+                               href="?congress={{ congress_id }}&page={{ senate_members.next_page_number }}"
+                               hx-target="#members-table"
+                               hx-swap="outerHTML">
+                                <button class="join-item btn">»</button>
+                            </a>
+                        {% endif %}
+                    </div>
                     {% if senate_members.has_next %}
-                        <a hx-push-url="true"
-                           href="?congress={{ congress_id }}&page={{ senate_members.next_page_number }}"
-                           hx-target="#members-table"
-                           hx-swap="outerHTML">
-                            <button class="join-item btn">»</button>
+                        <a href="?congress={{ congress_id }}&page={{ senate_members.paginator.num_pages }}"
+                        class="btn flex justify-center items-center">
+                            <button>Last</button>
                         </a>
                     {% endif %}
                 </div>

@@ -3073,8 +3073,12 @@ details.collapse summary::-webkit-details-marker {
   z-index: 1;
 }
 
-.m-20 {
-  margin: 5rem;
+.m-10 {
+  margin: 2.5rem;
+}
+
+.m-2 {
+  margin: 0.5rem;
 }
 
 .m-36 {
@@ -3083,10 +3087,6 @@ details.collapse summary::-webkit-details-marker {
 
 .m-8 {
   margin: 2rem;
-}
-
-.m-10 {
-  margin: 2.5rem;
 }
 
 .mx-auto {
@@ -3110,12 +3110,16 @@ details.collapse summary::-webkit-details-marker {
   margin-top: 1.5rem;
 }
 
+.mt-auto {
+  margin-top: auto;
+}
+
 .mt-8 {
   margin-top: 2rem;
 }
 
-.mt-auto {
-  margin-top: auto;
+.mt-10 {
+  margin-top: 2.5rem;
 }
 
 .block {
@@ -3156,10 +3160,6 @@ details.collapse summary::-webkit-details-marker {
 
 .h-screen {
   height: 100vh;
-}
-
-.min-h-screen {
-  min-height: 100vh;
 }
 
 .w-11\/12 {
@@ -3216,6 +3216,10 @@ details.collapse summary::-webkit-details-marker {
 
 .justify-center {
   justify-content: center;
+}
+
+.justify-items-center {
+  justify-items: center;
 }
 
 .gap-10 {
@@ -3308,10 +3312,6 @@ details.collapse summary::-webkit-details-marker {
 
 .bg-center {
   background-position: center;
-}
-
-.bg-no-repeat {
-  background-repeat: no-repeat;
 }
 
 .p-2 {

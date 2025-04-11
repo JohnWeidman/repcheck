@@ -61,13 +61,20 @@ def i_am_the_senate(request):
     page = request.GET.get("page")
     congress = get_object_or_404(Congress, id=congress_id) if congress_id else None
     chamber = "Senate"
-    senate_members = (
-        Member.objects.filter(
-            membership__congress=congress_id, membership__chamber=chamber
-        ).order_by("state")
-        if congress
-        else []
-    )
+
+    if congress:
+        membership_qs = Membership.objects.filter(
+            congress=congress_id, chamber=chamber, member=OuterRef("pk")
+        ).order_by("-start_year")
+
+        senate_members = (
+            Member.objects.filter(
+                membership__congress=congress_id, membership__chamber=chamber
+            )
+            .distinct()
+            .annotate(party=Subquery(membership_qs.values("party")[:1]))
+            .order_by("state", "name")
+        )
 
     p = Paginator(senate_members, 10)
     try:
