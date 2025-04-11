@@ -1,23 +1,94 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Congress
+from .models import Congress, Member, Membership
+from django.db.models import Count
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-# Create your views here.
+
 def congress(request):
-    congresses = Congress.objects.all()
-    return render(request, "congress/congress.html", {"congresses": congresses})
+    context = {
+        "congresses": Congress.objects.all(),
+    }
+    return render(request, "congress/congress.html", context)
+
+
+from django.db.models import OuterRef, Subquery
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 def house_not_home(request):
     congress_id = request.GET.get("congress")
+    page = request.GET.get("page")
     congress = get_object_or_404(Congress, id=congress_id) if congress_id else None
-    context={"congress_number": congress.congress_number if congress else "Unknown"}
+    chamber = "House of Representatives"
+
+    if congress:
+        membership_qs = Membership.objects.filter(
+            congress=congress_id, chamber=chamber, member=OuterRef("pk")
+        ).order_by("-start_year")
+
+        house_members = (
+            Member.objects.filter(
+                membership__congress=congress_id, membership__chamber=chamber
+            )
+            .distinct()
+            .annotate(party=Subquery(membership_qs.values("party")[:1]))
+            .order_by("state", "name")
+        )
+    else:
+        house_members = Member.objects.none()
+
+    paginator = Paginator(house_members, 10)
+    try:
+        members_page = paginator.page(page)
+    except PageNotAnInteger:
+        members_page = paginator.page(1)
+    except EmptyPage:
+        members_page = paginator.page(paginator.num_pages)
+
+    context = {
+        "congress_number": congress.congress_number if congress else "Unknown",
+        "house_members": members_page,
+        "congress_id": congress_id,
+    }
+
     if request.headers.get("HX-Request"):
         return render(request, "congress/partials/house_partial.html", context)
     return render(request, "congress/house.html", context)
 
+
 def i_am_the_senate(request):
     congress_id = request.GET.get("congress")
+    page = request.GET.get("page")
     congress = get_object_or_404(Congress, id=congress_id) if congress_id else None
-    context={"congress_number": congress.congress_number if congress else "Unknown"}
+    chamber = "Senate"
+
+    if congress:
+        membership_qs = Membership.objects.filter(
+            congress=congress_id, chamber=chamber, member=OuterRef("pk")
+        ).order_by("-start_year")
+
+        senate_members = (
+            Member.objects.filter(
+                membership__congress=congress_id, membership__chamber=chamber
+            )
+            .distinct()
+            .annotate(party=Subquery(membership_qs.values("party")[:1]))
+            .order_by("state", "name")
+        )
+
+    p = Paginator(senate_members, 10)
+    try:
+        members_page = p.page(page)
+    except PageNotAnInteger:
+        members_page = p.page(1)
+    except EmptyPage:
+        members_page = p.page(p.num_pages)
+
+    context = {
+        "congress_number": congress.congress_number if congress else "Unknown",
+        "senate_members": members_page,
+        "congress_id": congress_id,
+    }
     if request.headers.get("HX-Request"):
         return render(request, "congress/partials/senate_partial.html", context)
     return render(request, "congress/senate.html", context)
