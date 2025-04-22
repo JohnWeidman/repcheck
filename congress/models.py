@@ -1,5 +1,5 @@
 from django.db import models
-
+from phonenumber_field.modelfields import PhoneNumberField
 
 class Congress(models.Model):
     id = models.AutoField(primary_key=True)
@@ -33,12 +33,13 @@ class Membership(models.Model):
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
     congress = models.ForeignKey(Congress, on_delete=models.CASCADE)
     chamber = models.CharField(
-        max_length=10, choices=[("Senate", "Senate"), ("House", "House")]
+        max_length=25, choices=[("Senate", "Senate"), ("House", "House")]
     )
     party = models.CharField(max_length=50)
     district = models.IntegerField(null=True, blank=True)
     start_year = models.IntegerField()
     end_year = models.IntegerField(null=True, blank=True)
+    # New field to track leadership roles?
 
     class Meta:
         unique_together = (
@@ -48,3 +49,22 @@ class Membership(models.Model):
 
     def __str__(self):
         return f"{self.member.name} ({self.chamber} - {self.party}, {self.congress})"
+
+
+class MemberDetails(models.Model):
+    id = models.AutoField(primary_key=True)
+    member = models.OneToOneField(Member, on_delete=models.CASCADE)
+    birthday = models.DateField(null=True, blank=True)
+    website_url = models.URLField(null=True)
+    phone_number = PhoneNumberField( null=True, blank=True)
+    open_secrets_id = models.CharField(max_length=50, null=True, blank=True)
+    twitter_handle = models.CharField(max_length=50, null=True, blank=True)
+    facebook_handle = models.CharField(max_length=50, null=True, blank=True)
+    youtube_id = models.CharField(max_length=50, null=True, blank=True)
+    instagram_handle = models.CharField(max_length=50, null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Member Details"
+
+    def __str__(self):
+        return f"Details for {self.member.name}"

@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Congress, Member, Membership
-from django.db.models import Count
+from .models import Congress, Member, Membership, MemberDetails
+from django.db.models import OuterRef, Subquery
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -11,10 +11,6 @@ def congress(request):
     return render(request, "congress/congress.html", context)
 
 
-from django.db.models import OuterRef, Subquery
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
-
 def house_not_home(request):
     congress_id = request.GET.get("congress")
     page = request.GET.get("page")
@@ -23,7 +19,7 @@ def house_not_home(request):
 
     if congress:
         membership_qs = Membership.objects.filter(
-            congress=congress_id, chamber=chamber, member=OuterRef("pk")
+            congress=congress_id, chamber=chamber, member=OuterRef("pk") 
         ).order_by("-start_year")
 
         house_members = (
@@ -34,6 +30,7 @@ def house_not_home(request):
             .annotate(party=Subquery(membership_qs.values("party")[:1]))
             .order_by("state", "name")
         )
+
     else:
         house_members = Member.objects.none()
 
@@ -44,7 +41,7 @@ def house_not_home(request):
         members_page = paginator.page(1)
     except EmptyPage:
         members_page = paginator.page(paginator.num_pages)
-
+    
     context = {
         "congress_number": congress.congress_number if congress else "Unknown",
         "house_members": members_page,
@@ -92,3 +89,9 @@ def i_am_the_senate(request):
     if request.headers.get("HX-Request"):
         return render(request, "congress/partials/senate_partial.html", context)
     return render(request, "congress/senate.html", context)
+
+def details(request, pk):
+    member = get_object_or_404(Member, pk=pk)
+    member_details = get_object_or_404(MemberDetails, member=member)
+    context = {'member_details': member_details}
+    return render(request, 'member_detail.html', context)
