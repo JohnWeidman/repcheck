@@ -30,7 +30,7 @@
                                          width="150">
                                 </th>
                                 <td>
-                                    <a hx-get="{% url "detail" member.pk %}">{{ member.name }}</a>
+                                    <a href="{% url "detail" member.pk %}">{{ member.name }}</a>
                                 </td>
                                 <td>{{ member.state }}</td>
                                 <td>{{ member.party }}</td>

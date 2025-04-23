@@ -67,4 +67,4 @@ class MemberDetails(models.Model):
         verbose_name_plural = "Member Details"
 
     def __str__(self):
-        return f"Details for {self.member.name}"
+        return f"{self.member.name}"

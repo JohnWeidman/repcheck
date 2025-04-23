@@ -9,7 +9,7 @@ class Command(BaseCommand):
     help = "Fetches historical legislators data from YAML file."
 
     def handle(self, *args, **kwargs):
-        main_path = "data/congress-legislators/legislators-current.yaml"
+        main_path = "data/congress-legislators/legislators-historical.yaml"
         full_path = os.path.abspath(main_path)
         print(f"Looking for YAML at: {full_path}")
 
@@ -54,9 +54,9 @@ class Command(BaseCommand):
             except Member.DoesNotExist:
                 self.stdout.write(f"Member with bioguide ID {bioguide_id} not found.")
                 continue
-            
+            print(legislator.get("terms", [{}])[-1].get("url", ""))
             birthday = legislator.get("bio", {}).get("birthday", {})
-            website_url = legislator.get("terms", [{}])[-1].get("website", "")
+            website_url = legislator.get("terms", [{}])[-1].get("url", "")
             phone_number = legislator.get("terms", [{}])[-1].get("phone", "")
             open_secrets_id = legislator.get("id", {}).get("opensecrets", "")
             twitter_handle = social.get("twitter", "")
@@ -64,7 +64,7 @@ class Command(BaseCommand):
             youtube_id = social.get("youtube", "")
             instagram_handle = social.get("instagram", "")
             try:
-                member_details, created = MemberDetails.objects.get_or_create(
+                member_details, created = MemberDetails.objects.update_or_create(
                     member=member,
                     defaults={
                         "birthday": birthday,

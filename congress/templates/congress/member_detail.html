@@ -1,1 +1,17 @@
-Hello
+{% extends "base.html" %}
+{% block content %}
+    <div class="flex flex-col items-center">
+        <div class="text-3xl mt-10 font-bold md:text-5xl">{{ member.name }}</div>
+        <div class="badge-secondary m-10 rounded-xl p-8 drop-shadow-xl shadow-black w-3/4">
+            <img src="{{ member.image_url }}"
+                 alt="Member of Congress"
+                 height=""
+                 width=""
+                 class="rounded-xl mx-auto">
+        </div>
+        <div>
+
+            <a href="{{ member_details.website_url }}">Website</a>
+        </div>
+    </div>
+{% endblock content %}

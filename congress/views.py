@@ -19,7 +19,7 @@ def house_not_home(request):
 
     if congress:
         membership_qs = Membership.objects.filter(
-            congress=congress_id, chamber=chamber, member=OuterRef("pk") 
+            congress=congress_id, chamber=chamber, member=OuterRef("pk")
         ).order_by("-start_year")
 
         house_members = (
@@ -41,7 +41,7 @@ def house_not_home(request):
         members_page = paginator.page(1)
     except EmptyPage:
         members_page = paginator.page(paginator.num_pages)
-    
+
     context = {
         "congress_number": congress.congress_number if congress else "Unknown",
         "house_members": members_page,
@@ -90,8 +90,10 @@ def i_am_the_senate(request):
         return render(request, "congress/partials/senate_partial.html", context)
     return render(request, "congress/senate.html", context)
 
+
 def details(request, pk):
     member = get_object_or_404(Member, pk=pk)
     member_details = get_object_or_404(MemberDetails, member=member)
-    context = {'member_details': member_details}
-    return render(request, 'member_detail.html', context)
+
+    context = {"member_details": member_details, "member": member}
+    return render(request, "congress/member_detail.html", context)
