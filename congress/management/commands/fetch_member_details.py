@@ -54,7 +54,6 @@ class Command(BaseCommand):
             except Member.DoesNotExist:
                 self.stdout.write(f"Member with bioguide ID {bioguide_id} not found.")
                 continue
-            print(legislator.get("terms", [{}])[-1].get("url", ""))
             birthday = legislator.get("bio", {}).get("birthday", {})
             website_url = legislator.get("terms", [{}])[-1].get("url", "")
             phone_number = legislator.get("terms", [{}])[-1].get("phone", "")
@@ -63,6 +62,7 @@ class Command(BaseCommand):
             facebook_handle = social.get("facebook", "")
             youtube_id = social.get("youtube", "")
             instagram_handle = social.get("instagram", "")
+            wikipedia = legislator.get("id", {}).get("wikipedia", "")
             try:
                 member_details, created = MemberDetails.objects.update_or_create(
                     member=member,
@@ -75,6 +75,7 @@ class Command(BaseCommand):
                         "facebook_handle": facebook_handle,
                         "youtube_id": youtube_id,
                         "instagram_handle": instagram_handle,
+                        "wikipedia": wikipedia,
                     },
                 )
                 if created:

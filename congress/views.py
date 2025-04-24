@@ -96,5 +96,10 @@ def details(request, pk):
     member_details = get_object_or_404(MemberDetails, member=member)
     member.last_name = member.name.split(",")[0] #should probably just load this in the model
     member.first_name = member.name.split(",")[1] if len(member.name.split(",")) > 1 else ""
+    member_details.twitter_url = f"https://twitter.com/{member_details.twitter_handle}" if member_details.twitter_handle else None
+    member_details.facebook_url = f"https://www.facebook.com/{member_details.facebook_handle}" if member_details.facebook_handle else None
+    member_details.instagram_url = f"https://www.instagram.com/{member_details.instagram_handle}" if member_details.instagram_handle else None
+    member_details.youtube_url = f"https://www.youtube.com/{member_details.youtube_id}" if member_details.youtube_id else None
+    member_details.open_secrets_url = f"https://www.opensecrets.org/members-of-congress/summary?cid={member_details.open_secrets_id}" if member_details.open_secrets_id else None
     context = {"member_details": member_details, "member": member}
     return render(request, "congress/member_detail.html", context)

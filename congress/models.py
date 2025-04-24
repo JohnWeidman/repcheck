@@ -57,12 +57,12 @@ class MemberDetails(models.Model):
     birthday = models.DateField(null=True, blank=True)
     website_url = models.URLField(null=True)
     phone_number = PhoneNumberField( null=True, blank=True)
-    # contact_form = models.URLField(null=True, blank=True)
     open_secrets_id = models.CharField(max_length=50, null=True, blank=True)
     twitter_handle = models.CharField(max_length=50, null=True, blank=True)
     facebook_handle = models.CharField(max_length=50, null=True, blank=True)
     youtube_id = models.CharField(max_length=50, null=True, blank=True)
     instagram_handle = models.CharField(max_length=50, null=True, blank=True)
+    wikipedia = models.URLField(null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Member Details"
