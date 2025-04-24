@@ -94,6 +94,7 @@ def i_am_the_senate(request):
 def details(request, pk):
     member = get_object_or_404(Member, pk=pk)
     member_details = get_object_or_404(MemberDetails, member=member)
-
+    member.last_name = member.name.split(",")[0] #should probably just load this in the model
+    member.first_name = member.name.split(",")[1] if len(member.name.split(",")) > 1 else ""
     context = {"member_details": member_details, "member": member}
     return render(request, "congress/member_detail.html", context)

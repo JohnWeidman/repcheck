@@ -21,7 +21,8 @@
                             </tr>
                         {% endif %}
                         {% for member in house_members %}
-                            <tr class="hover text-xl">
+                            <tr class="hover text-xl"
+                                onclick="window.location.href='{% url "detail" member.pk %}'">
                                 <th>{{ forloop.counter|add:house_members.start_index|add:"-1" }}</th>
                                 <th>
                                     <img src="{{ member.image_url }}"
@@ -29,9 +30,7 @@
                                          height=""
                                          width="150">
                                 </th>
-                                <td>
-                                    <a href="{% url "detail" member.pk %}">{{ member.name }}</a>
-                                </td>
+                                <td>{{ member.name }}</td>
                                 <td>{{ member.state }}</td>
                                 <td>{{ member.party }}</td>
                             </tr>
