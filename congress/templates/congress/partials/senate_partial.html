@@ -21,7 +21,8 @@
                             </tr>
                         {% endif %}
                         {% for member in senate_members %}
-                            <tr class="hover text-xl">
+                            <tr class="hover text-xl"
+                                onclick="window.location.href='{% url "detail" member.pk %}'">
                                 <th>{{ forloop.counter|add:senate_members.start_index|add:"-1" }}</th>
                                 <th>
                                     <img src={{ member.image_url }} alt="" height="" width="150">
@@ -60,7 +61,7 @@
                     </div>
                     {% if senate_members.has_next %}
                         <a href="?congress={{ congress_id }}&page={{ senate_members.paginator.num_pages }}"
-                        class="btn flex justify-center items-center">
+                           class="btn flex justify-center items-center">
                             <button>Last</button>
                         </a>
                     {% endif %}

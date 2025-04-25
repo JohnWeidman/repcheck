@@ -1,5 +1,6 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+from django.utils import timezone
 
 class Congress(models.Model):
     id = models.AutoField(primary_key=True)
@@ -41,6 +42,11 @@ class Membership(models.Model):
     end_year = models.IntegerField(null=True, blank=True)
     # New field to track leadership roles?
 
+
+    def is_current(self):
+        year = timezone.now().year
+        return self.end_year is None or self.end_year >= year
+    
     class Meta:
         unique_together = (
             "member",

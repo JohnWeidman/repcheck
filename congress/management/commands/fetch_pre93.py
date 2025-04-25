@@ -15,6 +15,7 @@ class Command(BaseCommand):
         try:
             with open(main_path, "r") as f:
                 legislators = yaml.safe_load(f)
+                print("loaded file successfully")
         except yaml.YAMLError as e:
             print("Error loading YAML:", e)
         except FileNotFoundError:
@@ -23,9 +24,11 @@ class Command(BaseCommand):
         except Exception as e:
             print(f"An error occurred: {e}")
             return
+        count=0
         for legislator in legislators:
             # Extract bioguide_id from legislator data
             bioguide_id = legislator.get("id", {}).get("bioguide", "")
+            count+=1
 
             # Check if member already exists
             if not Member.objects.filter(bioguide_id=bioguide_id).exists():
@@ -34,8 +37,17 @@ class Command(BaseCommand):
 
                 name = ", ".join([last_name, first_name])
                 # Create new member
-                Member.objects.create(
-                    name=name,
-                    bioguide_id=bioguide_id,
-                    state=legislator.get("terms", [{}])[-1].get("state", ""),
-                )
+                try:
+
+                    Member.objects.create(
+                        name=name,
+                        bioguide_id=bioguide_id,
+                        state=legislator.get("terms", [{}])[-1].get("state", ""),
+                    )
+                    print(f"Created member: {name} with ID: {bioguide_id}")
+                except Exception as e:
+                    print(f"Error creating member {name}: {e}")
+            else:   
+                print(f"Member with bioguide ID {bioguide_id} already exists.")
+                continue
+        print(f"Total members created: {count}")

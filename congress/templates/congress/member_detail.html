@@ -8,62 +8,76 @@
                  height=""
                  width="200"
                  class="rounded-xl mr-8 self-start">
-            <div class="flex flex-col justify-center">
-                {% comment %} Put if is current member check here {% endcomment %}
-                <h3 class="text-2xl font-bold">Contact Information:</h3>
-                <ul>
-                    <li>
-                        Phone: <a href="tel:{{ member_details.phone_number }}">{{ member_details.phone_number }}</a>
-                    </li>
-                    {% if member_details.website_url %}
-                        <li>
-                            <a href="{{ member_details.website_url }}"
-                               target="_blank"
-                               class="underline">{{ member.last_name }}'s website</a>
-                        </li>
-                    {% endif %}
-                    {% if member_details.open_secrets_url %}
-                        <li>
-                            <a href="{{ member_details.open_secrets_url }}"
-                               target="_blank"
-                               class="underline">Open Secrets</a>
-                        </li>
-                    {% endif %}
-                </ul>
-                {% if member_details.facebook_url or member_details.instagram_url or member_details.twitter_url or member_details.youtube_url %}
-                    <h3 class="text-2xl font-bold mt-4">Social Media:</h3>
-                    <ul>
-                        {% if member_details.twitter_url %}
-                            <li>
-                                <a href="{{ member_details.twitter_url }}"
-                                   target="_blank"
-                                   class="underline">X</a>
-                            </li>
+            <div class="flex flex-col justify-center w-full">
+                {% if current %}
+                    <div class="flex flex-col md:flex-row justify-between gap-8">
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold mb-2">Contact Information:</h3>
+                            <ul>
+                                <li>
+                                    Phone: <a href="tel:{{ member_details.phone_number }}">{{ member_details.phone_number }}</a>
+                                </li>
+                                {% if member_details.website_url %}
+                                    <li>
+                                        <a href="{{ member_details.website_url }}"
+                                           target="_blank"
+                                           class="underline">{{ member.last_name }}'s website</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        {% if member_details.facebook_url or member_details.instagram_url or member_details.twitter_url or member_details.youtube_url %}
+                            <div class="flex-1">
+                                <h3 class="text-2xl font-bold mb-2">Social Media:</h3>
+                                <ul>
+                                    {% if member_details.twitter_url %}
+                                        <li>
+                                            <a href="{{ member_details.twitter_url }}"
+                                               target="_blank"
+                                               class="underline">X</a>
+                                        </li>
+                                    {% endif %}
+                                    {% if member_details.facebook_url %}
+                                        <li>
+                                            <a href="{{ member_details.facebook_url }}"
+                                               target="_blank"
+                                               class="underline">Facebook</a>
+                                        </li>
+                                    {% endif %}
+                                    {% if member_details.instagram_url %}
+                                        <li>
+                                            <a href="{{ member_details.instagram_url }}"
+                                               target="_blank"
+                                               class="underline">Instagram</a>
+                                        </li>
+                                    {% endif %}
+                                    {% if member_details.youtube_url %}
+                                        <li>
+                                            <a href="{{ member_details.youtube_url }}"
+                                               target="_blank"
+                                               class="underline">YouTube</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
                         {% endif %}
-                        {% if member_details.facebook_url %}
-                            <li>
-                                <a href="{{ member_details.facebook_url }}"
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold mb-2">About:</h3>
+                            <p>
+                                <a href="{{ member_details.wikipedia_url }}"
                                    target="_blank"
-                                   class="underline">Facebook</a>
-                            </li>
-                        {% endif %}
-                        {% if member_details.instagram_url %}
-                            <li>
-                                <a href="{{ member_details.instagram_url }}"
-                                   target="_blank"
-                                   class="underline">Instagram</a>
-                            </li>
-                        {% endif %}
-                        {% if member_details.youtube_url %}
-                            <li>
-                                <a href="{{ member_details.youtube_url }}"
-                                   target="_blank"
-                                   class="underline">YouTube</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                    {% endif %}
-                    <div>{{ member_details.wikipedia }}</div>
+                                   class="underline">Wikipedia</a>
+                            </p>
+                            {% if member_details.open_secrets_url %}
+                                <p>
+                                    <a href="{{ member_details.open_secrets_url }}"
+                                       target="_blank"
+                                       class="underline">Open Secrets</a>
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
