@@ -43,9 +43,9 @@ class Membership(models.Model):
     # New field to track leadership roles?
 
 
+    
     def is_current(self):
-        year = timezone.now().year
-        return self.end_year is None or self.end_year >= year
+        return self.congress.congress_number in [119]
     
     class Meta:
         unique_together = (

@@ -21,16 +21,20 @@
                             </tr>
                         {% endif %}
                         {% for member in house_members %}
-                            <tr class="hover text-xl"
-                                onclick="window.location.href='{% url "detail" member.pk %}'">
+                            <tr class="hover text-xl">
                                 <th>{{ forloop.counter|add:house_members.start_index|add:"-1" }}</th>
                                 <th>
-                                    <img src="{{ member.image_url }}"
-                                         alt="Image of Congress Person"
-                                         height=""
-                                         width="150">
+                                    <a href="{% url "detail" member.pk %}">
+                                        <img src="{{ member.image_url }}"
+                                             alt="Image of Congress Person"
+                                             height=""
+                                             width="150"
+                                             class="rounded-xl mr-8 self-start cursor-pointer">
+                                    </a>
                                 </th>
-                                <td>{{ member.name }}</td>
+                                <td>
+                                    <a href="{% url "detail" member.pk %}" class="cursor-pointer">{{ member.name }}</a>
+                                </td>
                                 <td>{{ member.state }}</td>
                                 <td>{{ member.party }}</td>
                             </tr>
