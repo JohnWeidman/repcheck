@@ -2,11 +2,11 @@
 {% block content %}
     <div class="flex flex-col items-center h-screen">
         <div class="flex badge-secondary m-10 rounded-xl p-8 drop-shadow-xl shadow-black">
-            <div class="hero">
+            <div class="hero h-full">
                 <div class="hero-content flex-col lg:flex-row w-full">
                     <img src="{{ member.image_url }}"
                          height=""
-                         width="350"
+                         width="250"
                          alt="{{ member.first_name }} {{ member.last_name }}"
                          class="max-w-sm rounded-lg shadow-2xl" />
                     <div>
@@ -29,9 +29,9 @@
                         </p>
                         <button class="btn btn-primary" onclick="my_modal_4.showModal()">Contact & Links</button>
                         <dialog id="my_modal_4" class="modal">
-                            <div class="modal-box w-1/2 max-w-5xl bg-slate-100">
-                                {% if current %}
-                                    <div class="flex flex-col justify-between items-start gap-8 p-4 mt-10">
+                            <div class="modal-box w-3/4 max-w-4xl bg-zinc-100">
+                                <div class="flex flex-col gap-8 p-4 mt-10">
+                                    {% if current %}
                                         <div class="flex-1">
                                             <h3 class="text-3xl font-bold mb-2">Contact Information:</h3>
                                             <ul>
@@ -97,17 +97,16 @@
                                                    class="underline">Open Secrets</a>
                                             </p>
                                         {% endif %}
-                                        <div class="modal-action">
-                                            <form method="dialog">
-                                                <button class="btn">Close</button>
-                                            </form>
-                                        </div>
                                     </div>
-                                </dialog>
+                                    <div class="modal-action w-full flex justify-end">
+                                        <form method="dialog">
+                                            <button class="btn">Close</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </dialog>
                     </div>
-                    <div class="flex flex-col justify-center w-3/4 my-auto mt-10 p-4"></div>
                 </div>
             </div>
         </div>
