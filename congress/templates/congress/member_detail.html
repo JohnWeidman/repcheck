@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+    {% load congress_extras %}
     <div class="flex flex-col items-center h-screen">
         <div class="flex badge-secondary m-10 rounded-xl p-8 drop-shadow-xl shadow-black">
             <div class="hero h-full">
@@ -14,11 +15,15 @@
                         <p class="py-6">
                             {{ member.full_name }}
                             {% if current %}
-                                is
+                                is currently
                             {% else %}
-                                was
+                                was most recently
                             {% endif %}
-                            a {{ memberships.party }} member of the {{ memberships.chamber }} from {{ member.state }}, and
+                            a {{ memberships.party }} member of the {{ memberships.chamber }} from
+                            {% if memberships.district and memberships.chamber == "House of Representatives" %}
+                                the {{ memberships.district|ordinal }} district of
+                            {% endif %}
+                            {{ member.state }}, and
                             {% if current %}has{% endif %}
                             served from {{ memberships.first_year }} to
                             {% if memberships.last_year == None %}

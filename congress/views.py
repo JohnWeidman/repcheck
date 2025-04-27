@@ -100,6 +100,7 @@ def details(request, pk):
     memberships.last_year = memberships.first().end_year if memberships else None
     memberships.chamber = memberships.first().chamber if memberships else None
     memberships.party = memberships.first().party if memberships else None
+    memberships.district = memberships.last().district if memberships else None
     # should probably just load this in the model
     member.last_name = member.name.split(",")[0]
     member.first_name = (

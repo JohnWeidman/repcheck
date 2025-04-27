@@ -14,6 +14,8 @@ help:
 	@echo "  make shell             - Open Django shell"
 	@echo "  make db_shell		- Open Postgres shell"
 	@echo "  make createsuperuser   - Create Django superuser"
+	@echo "  make build             - Build docker containers"
+	@echo "  make help              - Show this help message"
 	@echo ""
 
 build:

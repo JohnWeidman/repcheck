@@ -135,7 +135,7 @@ def save_memberships(member, member_data):
         start_year = term.get("startYear")
         end_year = term.get("endYear", None)
         state_code = term.get("stateCode", "")
-        district = term.get("district", None) if chamber == "House" else None
+        district = term.get("district", None) if chamber == "House of Representatives" else None
 
         # Ensure Congress exists
         congress, _ = Congress.objects.get_or_create(congress_number=congress_number)
