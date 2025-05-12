@@ -34,18 +34,20 @@ def house_not_home(request):
     else:
         house_members = Member.objects.none()
 
-    paginator = Paginator(house_members, 10)
+    p = Paginator(house_members, 10)
     try:
-        members_page = paginator.page(page)
+        members_page = p.page(page)
     except PageNotAnInteger:
-        members_page = paginator.page(1)
+        members_page = p.page(1)
     except EmptyPage:
-        members_page = paginator.page(paginator.num_pages)
-
+        members_page = p.page(p.num_pages)
+    current_page_number = members_page.number
+    page_range = p.get_elided_page_range(current_page_number, on_each_side=2, on_ends=0)
     context = {
         "congress_number": congress.congress_number if congress else "Unknown",
         "house_members": members_page,
         "congress_id": congress_id,
+        "page_range": page_range,
     }
 
     if request.headers.get("HX-Request"):
@@ -80,10 +82,13 @@ def i_am_the_senate(request):
         members_page = p.page(1)
     except EmptyPage:
         members_page = p.page(p.num_pages)
+    current_page_number = members_page.number
+    page_range = p.get_elided_page_range(current_page_number, on_each_side=2, on_ends=0)
 
     context = {
         "congress_number": congress.congress_number if congress else "Unknown",
         "senate_members": members_page,
+        "page_range": page_range,
         "congress_id": congress_id,
     }
     if request.headers.get("HX-Request"):
@@ -96,12 +101,15 @@ def details(request, pk):
     member_details = get_object_or_404(MemberDetails, member=member)
     memberships = Membership.objects.filter(member=member).order_by("-start_year")
     current = any(m.is_current() for m in memberships)
+
+    # Refactor this to be included in the Membership model
     memberships.first_year = memberships.last().start_year if memberships else None
     memberships.last_year = memberships.first().end_year if memberships else None
     memberships.chamber = memberships.first().chamber if memberships else None
     memberships.party = memberships.first().party if memberships else None
     memberships.district = memberships.last().district if memberships else None
-    # should probably just load this in the model
+
+    # Refactor this to be included in the Member model
     member.last_name = member.name.split(",")[0]
     member.first_name = (
         member.name.split(",")[1] if len(member.name.split(",")) > 1 else ""

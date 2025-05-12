@@ -1,13 +1,14 @@
 {% block content %}
     {% load congress_extras %}
     <div class="flex flex-col items-center">
-        <div class="text-3xl mt-6 font-bold md:text-5xl">Senate Members of the {{ congress_number|ordinal }} Congress</div>
-        <div class="badge-secondary m-10 rounded-xl p-8 drop-shadow-xl shadow-black w-3/4">
+        <div class="text-3xl m-10 font-bold md:text-5xl text-center">
+            Senate Members of the {{ congress_number|ordinal }} Congress
+        </div>
+        <div class="badge-secondary md:m-10 rounded-xl p-8 drop-shadow-xl shadow-black md:w-3/4 w-screen">
             <div class="overflow-x-auto">
                 <table class="table">
                     <thead>
                         <tr class="text-xl">
-                            <th></th>
                             <th>Image</th>
                             <th>Name</th>
                             <th>State</th>
@@ -22,14 +23,15 @@
                         {% endif %}
                         {% for member in senate_members %}
                             <tr class="hover text-xl">
-                                <th>{{ forloop.counter|add:senate_members.start_index|add:"-1" }}</th>
                                 <th>
-                                    <a href="{% url "detail" member.pk %}">
-                                        <img src="{{ member.image_url }}"
-                                             alt="Image of Congress Person"
-                                             height=""
-                                             width="150"
-                                             class="rounded-xl cursor-pointer">
+                                    <a href="{% url "detail" member.pk %}" class="w-full">
+                                        <div class="flex items-center justify-center">
+                                            <img src="{{ member.image_url }}"
+                                                 alt="{{ member.name }}"
+                                                 height=""
+                                                 width="md:150"
+                                                 class="rounded-xl cursor-pointer object-cover">
+                                        </div>
                                     </a>
                                 </th>
                                 <td>
@@ -41,7 +43,8 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                <div class="pagination flex justify-center items-center mt-4">
+            </div>
+                <div class="pagination flex flex-col md:flex-row justify-center items-center mt-4">
                     {% if senate_members.has_previous %}
                         <a href="?congress={{ congress_id }}&page=1"
                            class="btn flex justify-center items-center">
@@ -54,9 +57,18 @@
                                 <button class="join-item btn">«</button>
                             </a>
                         {% endif %}
-                        <button class="join-item btn disabled">
-                            <span class="current">Page {{ senate_members.number }} of {{ senate_members.paginator.num_pages }}</span>
-                        </button>
+                        <div class="join flex items-center">
+                            {% for i in page_range %}
+                                {% if i == '…' %}
+                                <a href="?congress={{ congress_id }}&page={{ i }}"></a>
+                                    <button class="join-item btn">…</button>
+                                {% else %}
+                                    <a href="?congress={{ congress_id }}&page={{ i }}">
+                                        <button class="join-item btn">{{ i }}</button>
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                         {% if senate_members.has_next %}
                             <a hx-push-url="true"
                                href="?congress={{ congress_id }}&page={{ senate_members.next_page_number }}"
@@ -73,7 +85,6 @@
                         </a>
                     {% endif %}
                 </div>
-            </div>
         </div>
     </div>
 {% endblock content %}
