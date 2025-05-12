@@ -8,8 +8,8 @@
             <div class="overflow-x-auto">
                 <table class="table">
                     <thead>
-                        <tr class="text-xl">
-                            <th>Image</th>
+                        <tr class="text-xl text-black">
+                            <th></th>
                             <th>Name</th>
                             <th>State</th>
                             <th>Party</th>
@@ -22,20 +22,20 @@
                             </tr>
                         {% endif %}
                         {% for member in senate_members %}
-                            <tr class="hover text-xl">
-                                <th>
-                                    <a href="{% url "detail" member.pk %}" class="w-full">
-                                        <div class="flex items-center justify-center">
+                            <tr class="hover text-2xl">
+                                <td class="flex items-center justify-center">
+                                    <a href="{% url "detail" member.pk %}" class="cursor-pointer">
+                                        
                                             <img src="{{ member.image_url }}"
                                                  alt="{{ member.name }}"
                                                  height=""
                                                  width="md:150"
                                                  class="rounded-xl cursor-pointer object-cover">
-                                        </div>
+                                       
                                     </a>
-                                </th>
+                                </td>
                                 <td>
-                                    <a href="{% url "detail" member.pk %}" class="cursor-pointer">{{ member.name }}</a>
+                                    <a href="{% url "detail" member.pk %}" class="cursor-pointer w-full">{{ member.name }}</a>
                                 </td>
                                 <td>{{ member.state }}</td>
                                 <td>{{ member.party }}</td>

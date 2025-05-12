@@ -9,12 +9,12 @@
                          width=""
                          height=""
                          class="w-48 md:w-64 lg:w-80 max-w-full rounded-lg shadow-2xl"
-                         alt="{{ member.first_name }} {{ member.last_name }}" />
+                         alt="{{ member.full_name }}" />
                     <div class="flex flex-col items-center md:items-start">
                         <div class="flex md:flex-row flex-col items-center md:items-start gap-5">
-                            <h1 class="md:text-5xl text-2xl font-bold">{{ member.first_name }} {{ member.last_name }}</h1>
-                            <div class="badge rounded-full w-12 h-12 text-slate-100 {% if memberships.party == 'Democratic' %}badge-primary{% elif memberships.party == 'Republican' %}badge-accent{% else %}badge-neutral{% endif %}">
-                                {{ memberships.party|slice:":1" }}
+                            <h1 class="md:text-5xl text-2xl font-bold">{{ member.full_name }}</h1>
+                            <div class="badge rounded-full w-12 h-12 text-slate-100 {% if most_recent_membership.party == 'Democratic' %}badge-primary{% elif most_recent_membership.party == 'Republican' %}badge-accent{% else %}badge-neutral{% endif %}">
+                                {{ most_recent_membership.party|slice:":1" }}
                             </div>
                         </div>
                         <p class="py-6 md:w-3/4">
@@ -24,17 +24,17 @@
                             {% else %}
                                 was most recently
                             {% endif %}
-                            a {{ memberships.party }} member of the {{ memberships.chamber }} from
-                            {% if memberships.district and memberships.chamber == "House of Representatives" %}
-                                the {{ memberships.district|ordinal }} district of
+                            a {{ most_recent_membership.party }} member of the {{ most_recent_membership.chamber }} from
+                            {% if most_recent_membership.district and most_recent_membership.chamber == "House of Representatives" %}
+                                the {{ most_recent_membership.district|ordinal }} district of
                             {% endif %}
                             {{ member.state }}, and
                             {% if current %}has{% endif %}
                             served from {{ memberships.first_year }} to
-                            {% if memberships.last_year == None %}
+                            {% if most_recent_membership.last_year == None %}
                                 present.
                             {% else %}
-                                {{ memberships.last_year }}.
+                                {{ most_recent_membership.last_year }}.
                             {% endif %}
                         </p>
                         <button class="btn btn-primary" onclick="my_modal_4.showModal()">Contact & Links</button>
@@ -110,7 +110,7 @@
                                     </div>
                                     <div class="modal-action w-full flex justify-end">
                                         <form method="dialog">
-                                            <button class="btn">Close</button>
+                                            <button class="btn btn-accent text-zinc-100">Close</button>
                                         </form>
                                     </div>
                                 </div>

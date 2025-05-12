@@ -1,15 +1,15 @@
 {% block content %}
     {% load congress_extras %}
     <div class="flex flex-col items-center">
-        <div class="text-3xl mt-10 font-bold md:text-5xl text-center">
+        <div class="text-3xl m-10 font-bold md:text-5xl text-center">
             House Members of the {{ congress_number|ordinal }} Congress
         </div>
-        <div class="badge-secondary md:m-10 rounded-xl md:p-8 p-2 drop-shadow-xl shadow-black md:w-3/4 w-screen ">
+        <div class="badge-secondary md:m-10 rounded-xl p-8 drop-shadow-xl shadow-black md:w-2/3 w-screen">
             <div class="overflow-x-auto">
                 <table class="table">
                     <thead>
-                        <tr class="text-xl">
-                            <th>Image</th>
+                        <tr class="text-xl text-black">
+                            <th></th>
                             <th>Name</th>
                             <th>State</th>
                             <th>Party</th>
@@ -22,18 +22,20 @@
                             </tr>
                         {% endif %}
                         {% for member in house_members %}
-                            <tr class="hover text-xl">
-                                <th>
-                                    <a href="{% url "detail" member.pk %}">
-                                        <img src="{{ member.image_url }}"
-                                             alt="{{ member.first_name }} {{ member.last_name }}"
-                                             height=""
-                                             width="150"
-                                             class="rounded-xl mr-8 self-start cursor-pointer">
+                            <tr class="hover text-2xl">
+                                <td class="flex items-center justify-center">
+                                    <a href="{% url "detail" member.pk %}" class="cursor-pointer">
+                                        
+                                            <img src="{{ member.image_url }}"
+                                                 alt="{{ member.name }}"
+                                                 height=""
+                                                 width="md:150"
+                                                 class="rounded-xl cursor-pointer object-cover">
+                                       
                                     </a>
-                                </th>
+                                </td>
                                 <td>
-                                    <a href="{% url "detail" member.pk %}" class="cursor-pointer">{{ member.name }}</a>
+                                    <a href="{% url "detail" member.pk %}" class="cursor-pointer w-full">{{ member.name }}</a>
                                 </td>
                                 <td>{{ member.state }}</td>
                                 <td>{{ member.party }}</td>
@@ -42,47 +44,47 @@
                     </tbody>
                 </table>
             </div>
-            <div class="pagination flex md:flex-row flex-col justify-center items-center mt-4">
-                {% if house_members.has_previous %}
-                    <a href="?congress={{ congress_id }}&page=1"
-                       class="btn flex justify-center items-center">
-                        <button>First</button>
-                    </a>
-                {% endif %}
-                <div class="join m-2">
+                <div class="pagination flex flex-col md:flex-row justify-center items-center mt-4">
                     {% if house_members.has_previous %}
-                        <a href="?congress={{ congress_id }}&page={{ house_members.previous_page_number }}">
-                            <button class="join-item btn">«</button>
+                        <a href="?congress={{ congress_id }}&page=1"
+                           class="btn flex justify-center items-center">
+                            <button>First</button>
                         </a>
                     {% endif %}
-                    <div class="join flex items-center">
-                        {% for i in page_range %}
-                            {% if i == '…' %}
+                    <div class="join m-2">
+                        {% if house_members.has_previous %}
+                            <a href="?congress={{ congress_id }}&page={{ house_members.previous_page_number }}">
+                                <button class="join-item btn">«</button>
+                            </a>
+                        {% endif %}
+                        <div class="join flex items-center">
+                            {% for i in page_range %}
+                                {% if i == '…' %}
                                 <a href="?congress={{ congress_id }}&page={{ i }}"></a>
-                                <button class="join-item btn">…</button>
-                            {% else %}
-                                <a href="?congress={{ congress_id }}&page={{ i }}">
-                                    <button class="join-item btn">{{ i }}</button>
-                                </a>
-                            {% endif %}
-                        {% endfor %}
+                                    <button class="join-item btn">…</button>
+                                {% else %}
+                                    <a href="?congress={{ congress_id }}&page={{ i }}">
+                                        <button class="join-item btn">{{ i }}</button>
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% if house_members.has_next %}
+                            <a hx-push-url="true"
+                               href="?congress={{ congress_id }}&page={{ house_members.next_page_number }}"
+                               hx-target="#members-table"
+                               hx-swap="outerHTML">
+                                <button class="join-item btn">»</button>
+                            </a>
+                        {% endif %}
                     </div>
                     {% if house_members.has_next %}
-                        <a hx-push-url="true"
-                           href="?congress={{ congress_id }}&page={{ house_members.next_page_number }}"
-                           hx-target="#members-table"
-                           hx-swap="outerHTML">
-                            <button class="join-item btn">»</button>
+                        <a href="?congress={{ congress_id }}&page={{ house_members.paginator.num_pages }}"
+                           class="btn flex justify-center items-center">
+                            <button>Last</button>
                         </a>
                     {% endif %}
                 </div>
-                {% if house_members.has_next %}
-                    <a href="?congress={{ congress_id }}&page={{ house_members.paginator.num_pages }}"
-                       class="btn flex justify-center items-center">
-                        <button>Last</button>
-                    </a>
-                {% endif %}
-            </div>
         </div>
     </div>
 {% endblock content %}

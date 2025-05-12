@@ -41,8 +41,10 @@ def house_not_home(request):
         members_page = p.page(1)
     except EmptyPage:
         members_page = p.page(p.num_pages)
+
     current_page_number = members_page.number
     page_range = p.get_elided_page_range(current_page_number, on_each_side=2, on_ends=0)
+
     context = {
         "congress_number": congress.congress_number if congress else "Unknown",
         "house_members": members_page,
@@ -102,60 +104,15 @@ def details(request, pk):
     memberships = Membership.objects.filter(member=member).order_by("-start_year")
     current = any(m.is_current() for m in memberships)
 
-    # Refactor this to be included in the Membership model
+    most_recent_membership = memberships.first() if memberships else None
     memberships.first_year = memberships.last().start_year if memberships else None
-    memberships.last_year = memberships.first().end_year if memberships else None
-    memberships.chamber = memberships.first().chamber if memberships else None
-    memberships.party = memberships.first().party if memberships else None
-    memberships.district = memberships.last().district if memberships else None
-
-    # Refactor this to be included in the Member model
-    member.last_name = member.name.split(",")[0]
-    member.first_name = (
-        member.name.split(",")[1] if len(member.name.split(",")) > 1 else ""
-    )
-    member.full_name = member.first_name + " " + member.last_name
-
-    processed_wiki = (
-        member_details.wikipedia.replace(" ", "_") if member_details.wikipedia else None
-    )
-
-    member_details.twitter_url = (
-        f"https://twitter.com/{member_details.twitter_handle}"
-        if member_details.twitter_handle
-        else None
-    )
-    member_details.facebook_url = (
-        f"https://www.facebook.com/{member_details.facebook_handle}"
-        if member_details.facebook_handle
-        else None
-    )
-    member_details.instagram_url = (
-        f"https://www.instagram.com/{member_details.instagram_handle}"
-        if member_details.instagram_handle
-        else None
-    )
-    member_details.youtube_url = (
-        f"https://www.youtube.com/{member_details.youtube_id}"
-        if member_details.youtube_id
-        else None
-    )
-    member_details.open_secrets_url = (
-        f"https://www.opensecrets.org/members-of-congress/summary?cid={member_details.open_secrets_id}"
-        if member_details.open_secrets_id
-        else None
-    )
-    member_details.wikipedia_url = (
-        f"https://en.wikipedia.org/wiki/{processed_wiki}"
-        if member_details.wikipedia
-        else None
-    )
 
     context = {
         "member_details": member_details,
         "member": member,
         "current": current,
         "memberships": memberships,
+        "most_recent_membership": most_recent_membership,
     }
 
     return render(request, "congress/member_detail.html", context)
