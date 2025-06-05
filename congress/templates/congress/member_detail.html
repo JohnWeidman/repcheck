@@ -17,144 +17,147 @@
                                 {{ most_recent_membership.party|slice:":1" }}
                             </div>
                         </div>
-                        <p class="py-6 md:w-3/4">
-                            {{ member.full_name }}
-                            {% if current %}
-                                is currently
-                            {% else %}
-                                was most recently
-                            {% endif %}
-                            a {{ most_recent_membership.party }} member of the {{ most_recent_membership.chamber }} from
-                            {% if most_recent_membership.district and most_recent_membership.chamber == "House of Representatives" %}
-                                the {{ most_recent_membership.district|ordinal }} district of
-                            {% endif %}
-                            {{ member.state }}, and
-                            {% if current %}has{% endif %}
-                            served from {{ memberships.first_year }} to 
-                            {% if most_recent_membership.last_year == None %}
-                                present.
-                            {% else %}
-                                {{ most_recent_membership.last_year }}.
-                            {% endif %}
-                        </p>
-                        <button class="btn btn-primary" onclick="my_modal_4.showModal()">Contact & Links</button>
-                        <dialog id="my_modal_4" class="modal">
-                            <div class="modal-box md:w-3/4 w-11/12 max-w-4xl bg-zinc-100">
-                                <div class="flex flex-col gap-8 p-4 mt-10">
-                                    {% if current %}
-                                        <div class="flex-1">
-                                            <h3 class="text-3xl font-bold mb-2">Contact Information:</h3>
-                                            <ul>
+                    <p class="py-6 md:w-3/4">
+                        {{ member.full_name }}
+                        {% if current %}
+                            is currently
+                        {% else %}
+                            was most recently
+                        {% endif %}
+                        a {{ most_recent_membership.party }} member of the {{ most_recent_membership.chamber }} from
+                        {% if most_recent_membership.district and most_recent_membership.chamber == "House of Representatives" %}
+                            the {{ most_recent_membership.district|ordinal }} district of
+                        {% endif %}
+                        {{ member.state }}, and
+                        {% if current %}has{% endif %}
+                        served from {{ memberships.first_year }} to
+                        {% if most_recent_membership.end_year == None %}
+                            present.
+                        {% else %}
+                            {{ most_recent_membership.end_year }}.
+                        {% endif %}
+                    </p>
+                    <button class="btn btn-primary" onclick="my_modal_4.showModal()">Contact & Links</button>
+                    <dialog id="my_modal_4" class="modal">
+                        <div class="modal-box md:w-3/4 w-11/12 max-w-4xl bg-zinc-100">
+                            <div class="flex flex-col gap-8 p-4 mt-10">
+                                {% if current %}
+                                    <div class="flex-1">
+                                        <h3 class="text-3xl font-bold mb-2">Contact Information:</h3>
+                                        <ul>
+                                            <li>
+                                                Phone: <a href="tel:{{ member_details.phone_number }}">{{ member_details.phone_number }}</a>
+                                            </li>
+                                            {% if member_details.website_url %}
                                                 <li>
-                                                    Phone: <a href="tel:{{ member_details.phone_number }}">{{ member_details.phone_number }}</a>
+                                                    <a href="{{ member_details.website_url }}"
+                                                       target="_blank"
+                                                       class="underline">{{ member.full_name }}'s website</a>
                                                 </li>
-                                                {% if member_details.website_url %}
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                    {% if member_details.facebook_url or member_details.instagram_url or member_details.twitter_url or member_details.youtube_url %}
+                                        <div class="flex-1">
+                                            <h3 class="text-3xl font-bold mb-2">Social Media:</h3>
+                                            <ul>
+                                                {% if member_details.twitter_url %}
                                                     <li>
-                                                        <a href="{{ member_details.website_url }}"
+                                                        <a href="{{ member_details.twitter_url }}"
                                                            target="_blank"
-                                                           class="underline">{{ member.last_name }}'s website</a>
+                                                           class="underline">X</a>
+                                                    </li>
+                                                {% endif %}
+                                                {% if member_details.facebook_url %}
+                                                    <li>
+                                                        <a href="{{ member_details.facebook_url }}"
+                                                           target="_blank"
+                                                           class="underline">Facebook</a>
+                                                    </li>
+                                                {% endif %}
+                                                {% if member_details.instagram_url %}
+                                                    <li>
+                                                        <a href="{{ member_details.instagram_url }}"
+                                                           target="_blank"
+                                                           class="underline">Instagram</a>
+                                                    </li>
+                                                {% endif %}
+                                                {% if member_details.youtube_url %}
+                                                    <li>
+                                                        <a href="{{ member_details.youtube_url }}"
+                                                           target="_blank"
+                                                           class="underline">YouTube</a>
                                                     </li>
                                                 {% endif %}
                                             </ul>
                                         </div>
-                                        {% if member_details.facebook_url or member_details.instagram_url or member_details.twitter_url or member_details.youtube_url %}
-                                            <div class="flex-1">
-                                                <h3 class="text-3xl font-bold mb-2">Social Media:</h3>
-                                                <ul>
-                                                    {% if member_details.twitter_url %}
-                                                        <li>
-                                                            <a href="{{ member_details.twitter_url }}"
-                                                               target="_blank"
-                                                               class="underline">X</a>
-                                                        </li>
-                                                    {% endif %}
-                                                    {% if member_details.facebook_url %}
-                                                        <li>
-                                                            <a href="{{ member_details.facebook_url }}"
-                                                               target="_blank"
-                                                               class="underline">Facebook</a>
-                                                        </li>
-                                                    {% endif %}
-                                                    {% if member_details.instagram_url %}
-                                                        <li>
-                                                            <a href="{{ member_details.instagram_url }}"
-                                                               target="_blank"
-                                                               class="underline">Instagram</a>
-                                                        </li>
-                                                    {% endif %}
-                                                    {% if member_details.youtube_url %}
-                                                        <li>
-                                                            <a href="{{ member_details.youtube_url }}"
-                                                               target="_blank"
-                                                               class="underline">YouTube</a>
-                                                        </li>
-                                                    {% endif %}
-                                                </ul>
-                                            </div>
-                                        {% endif %}
                                     {% endif %}
-                                    <div class="flex-1">
-                                        <h3 class="text-3xl font-bold mt-4">About:</h3>
+                                {% endif %}
+                                <div class="flex-1">
+                                    <h3 class="text-3xl font-bold mt-4">About:</h3>
+                                    <p>
+                                        <a href="{{ member_details.wikipedia_url }}"
+                                           target="_blank"
+                                           class="underline">Wikipedia</a>
+                                    </p>
+                                    <p>
+                                        <a href="https://bioguide.congress.gov/search/bio/{{ member.bioguide_id }}"
+                                           target="_blank"
+                                           class="underline">
+                                            Bioguide
+                                        </a>
+                                    </p>
+                                    {% if member_details.open_secrets_url %}
                                         <p>
-                                            <a href="{{ member_details.wikipedia_url }}"
+                                            <a href="{{ member_details.open_secrets_url }}"
                                                target="_blank"
-                                               class="underline">Wikipedia</a>
+                                               class="underline">Open Secrets</a>
                                         </p>
-                                        {% if member_details.open_secrets_url %}
-                                            <p>
-                                                <a href="{{ member_details.open_secrets_url }}"
-                                                   target="_blank"
-                                                   class="underline">Open Secrets</a>
-                                            </p>
-                                        {% endif %}
-                                    </div>
-                                    <div class="modal-action w-full flex justify-end">
-                                        <form method="dialog">
-                                            <button class="btn btn-accent text-zinc-100">Close</button>
-                                        </form>
-                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="modal-action w-full flex justify-end">
+                                    <form method="dialog">
+                                        <button class="btn btn-accent text-zinc-100">Close</button>
+                                    </form>
                                 </div>
                             </div>
-                        </dialog>
-                    </div>
+                        </div>
+                    </dialog>
                 </div>
             </div>
-            <div class="md:w-full ">
-                <div tabindex="0"
-                     class="collapse collapse-arrow bg-zinc-100 md:w-full drop-shadow-lg shadow-black rounded-lg">
-                    <div class="w-screen md:w-full collapse-title text-3xl font-bold flex justify-center items-center">Terms</div>
-                    <div class="collapse-content text-sm overflow-x-scroll">
-                        <table class="table md:w-full overflow-x-scroll w-screen">
-                            <thead class="text-black text-lg">
-                                <tr>
-                                    <th></th>
-                                    <th>Congress</th>
-                                    <th>Chamber</th>
-                                    <th>Leadership Roles</th>
-                                    <th>
-                                        Sponsored
-                                        <br>
-                                        Legislation
-                                        <br>
-                                        Count
-                                    </th>
+        </div>
+        <div class="md:w-full ">
+            <div tabindex="0"
+                 class="collapse collapse-arrow bg-zinc-100 md:w-full drop-shadow-lg shadow-black rounded-lg">
+                <div class="w-screen md:w-full collapse-title text-3xl font-bold flex justify-center items-center">Terms</div>
+                <div class="collapse-content text-sm overflow-x-scroll">
+                    <table class="table md:w-full overflow-x-scroll w-screen">
+                        <thead class="text-black text-lg">
+                            <tr>
+                                <th></th>
+                                <th>Congress</th>
+                                <th>Chamber</th>
+                                <th>Leadership Role</th>
+                                <th>Sponsored Legislation Count</th>
+                                <th>Cosponsored Legislation Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for membership in memberships %}
+                                <tr class="hover text-lg">
+                                    <td></td>
+                                    <td>{{ membership.congress.congress_number }}</td>
+                                    <td>{{ membership.chamber }}</td>
+                                    <td>{{ membership.leadership_role }}</td>
+                                    <td>{{ membership.sponsored_legislation_count }}</td>
+                                    <td>{{ membership.cosponsored_legislation_count }}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {% for membership in memberships %}
-                                    <tr class="hover text-lg">
-                                        <td></td>
-                                        <td>{{ membership.congress.congress_number }}</td>
-                                        <td>{{ membership.chamber }}</td>
-                                        <td>Leadership</td>
-                                        <td>###</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock content %}

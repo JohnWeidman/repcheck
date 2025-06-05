@@ -9,7 +9,7 @@ class Command(BaseCommand):
     help = "Fetches historical legislators data from YAML file."
 
     def handle(self, *args, **kwargs):
-        main_path = "data/congress-legislators/legislators-current.yaml"
+        main_path = "data/congress-legislators/legislators-historical.yaml"
         full_path = os.path.abspath(main_path)
         print(f"Looking for YAML at: {full_path}")
 

@@ -1,6 +1,5 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
-from django.utils import timezone
 
 
 class Congress(models.Model):
@@ -25,6 +24,7 @@ class Member(models.Model):
     image_url = models.URLField(max_length=500, null=True, blank=True)
     image_attribution = models.TextField(null=True, blank=True)
     last_updated = models.DateTimeField(auto_now=True)
+    fully_processed = models.BooleanField(default=False)
 
     def full_name(self):
         first = self.name.split(",")[1 if len(self.name.split(",")) > 1 else ""]
@@ -39,17 +39,17 @@ class Membership(models.Model):
     id = models.AutoField(primary_key=True)
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
     congress = models.ForeignKey(Congress, on_delete=models.CASCADE)
-    chamber = models.CharField(
-        max_length=25
-    )
+    chamber = models.CharField(max_length=25)
     party = models.CharField(max_length=50)
     district = models.IntegerField(null=True, blank=True)
     start_year = models.IntegerField()
     end_year = models.IntegerField(null=True, blank=True)
-    # New field to track leadership roles?
-    
+    sponsored_legislation_count = models.IntegerField(default=0)
+    cosponsored_legislation_count = models.IntegerField(default=0)
+    leadership_role = models.CharField(max_length=50, null=True, blank=True)
+
     def is_current(self):
-        return self.congress.congress_number in [119] # TODO: Update with actual logic
+        return self.congress.congress_number in [119]  # TODO: Update with actual logic
 
     class Meta:
         unique_together = (
