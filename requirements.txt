@@ -9,3 +9,5 @@ pip-tools==7.4.1
 pipdeptree==2.25.0
 psycopg2-binary==2.9.10
 python-dotenv==1.0.1
+phonenumbers==8.13.31
+django-phonenumber-field==6.0.0

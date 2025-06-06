@@ -16,7 +16,7 @@
     <body class="flex flex-col bg-fixed bg-cover bg-center"
           style="background-image: url('{% static 'theme/images/backgroundrepcheck.webp' %}')">
         <div class="bg-base-100 bg-opacity-80 flex-grow flex flex-col">
-            <div class="navbar bg-secondary drop-shadow-xl shadow-black">
+            <div class="navbar bg-secondary drop-shadow-xl shadow-black z-40">
                 <div class="navbar-start">
                     <div class="dropdown">
                         <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
@@ -29,7 +29,7 @@
                             </svg>
                         </div>
                         <ul tabindex="0"
-                            class="menu menu-sm dropdown-content bg-info rounded-box z-[1] mt-3 w-32 p-2 shadow text-white">
+                            class="menu menu-sm dropdown-content bg-info rounded-box mt-3 w-32 p-2 shadow text-white z-50">
                             <li>
                                 <a href="{% url 'home' %}">Home</a>
                             </li>
@@ -76,7 +76,7 @@
                     </button>
                 </div>
             </div>
-            <div id="content" class="bg-zinc-100 flex-grow m-36 rounded-xl">
+            <div id="content" class="bg-zinc-200 flex-grow lg:my-32 md:my-5">
                 {% block content %}
                     {% comment %} Page content goes here {% endcomment %}
                 {% endblock content %}
