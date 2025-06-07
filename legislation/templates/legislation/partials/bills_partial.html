@@ -2,6 +2,11 @@
     <div class="flex flex-col items-center justify-center h-screen">
         <div class="badge-secondary rounded-xl p-8 drop-shadow-xl shadow-black">
             <div class="font-bold text-xl">This is where content about bills will live!</div>
+            <ul>
+                {% for bill in bills %}
+                    <li>{{ bill.title }}</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 {% endblock content %}
