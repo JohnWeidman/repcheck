@@ -9,16 +9,14 @@
         <meta name="description"
               content="A website to help citizens engage with, track, and understand what actually happens in Congress">
         <meta name="keywords"
-              content="politics, congress, citizens, laws, bills, taxes, infrastructure, stocks, FTC, SEC, ">
+              content="politics, congress, citizens, laws, bills, taxes, infrastructure, stocks, FTC, SEC">
         <script src="https://unpkg.com/htmx.org@1.7.0"></script>
         {% tailwind_css %}
     </head>
-    <body style="background-image: url('{% static 'theme/images/backgroundrepcheck.webp' %}');
-                 background-size: cover;
-                 background-position: center;
-                 background-repeat: no-repeat">
-        <div class="bg-base-100 bg-opacity-80">
-            <div class="navbar bg-secondary drop-shadow-xl shadow-black">
+    <body class="flex flex-col bg-fixed bg-cover bg-center"
+          style="background-image: url('{% static 'theme/images/backgroundrepcheck.webp' %}')">
+        <div class="bg-base-100 bg-opacity-80 flex-grow flex flex-col">
+            <div class="navbar bg-secondary drop-shadow-xl shadow-black z-40">
                 <div class="navbar-start">
                     <div class="dropdown">
                         <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
@@ -31,7 +29,7 @@
                             </svg>
                         </div>
                         <ul tabindex="0"
-                            class="menu menu-sm dropdown-content bg-info rounded-box z-[1] mt-3 w-32 p-2 shadow text-white">
+                            class="menu menu-sm dropdown-content bg-info rounded-box mt-3 w-32 p-2 shadow text-white z-50">
                             <li>
                                 <a href="{% url 'home' %}">Home</a>
                             </li>
@@ -78,19 +76,21 @@
                     </button>
                 </div>
             </div>
-            <section id="content" class="bg-zinc-100 mt-72">
+            <div id="content" class="bg-zinc-200 flex-grow lg:my-32 md:my-5">
                 {% block content %}
                     {% comment %} Page content goes here {% endcomment %}
                 {% endblock content %}
-            </section>
+            </div>
         </div>
-
+        <footer class="footer footer-center mt-auto bg-base-300 text-base-content p-4">
+            <aside>
+                <p class="font-semibold">Copyright © 2025 - All right reserved by RepCheck</p>
+                <p class="font-semibold">
+                    Backgound image generously provided by Goldstreet Photography | <a target="_blank"
+    rel="noopener noreferrer"
+    href="https://www.etsy.com/shop/goldstreet?">Etsy Shop</a>
+                </p>
+            </aside>
+        </footer>
     </body>
-    <footer class="footer footer-center bg-base-300 text-base-content p-4">
-        <aside>
-          <p class="font-semibold">Copyright © 2025 - All right reserved by RepCheck</p>
-          <p class="font-semibold">Backgound image generously provided by Goldstreet Photography | <a target="_blank" rel="noopener noreferrer" href="https://www.etsy.com/shop/goldstreet?">Etsy Shop</a></p>
-          
-        </aside>
-      </footer>
 </html>

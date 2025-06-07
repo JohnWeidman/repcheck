@@ -1,5 +1,7 @@
 venv
 .env
+.env.prod
+
 # Ignore Python cache files  
 __pycache__/  
 *.py[cod]  
