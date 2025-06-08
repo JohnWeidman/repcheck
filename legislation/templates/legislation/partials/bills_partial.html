@@ -1,10 +1,28 @@
 {% block content %}
-    <div class="flex flex-col items-center justify-center h-screen">
-        <div class="badge-secondary rounded-xl p-8 drop-shadow-xl shadow-black">
-            <div class="font-bold text-xl">This is where content about bills will live!</div>
+    <div class="flex flex-col items-center justify-center">
+        <div class="badge-secondary md:m-10 rounded-xl p-8 drop-shadow-xl shadow-black md:w-2/3 w-screen">
+            <div class="font-bold text-2xl text-center">This is where content about bills will live!</div>
             <ul>
                 {% for bill in bills %}
-                    <li>{{ bill.title }}</li>
+                    <a href="{% url 'bill_detail' bill.congress bill.type bill.number %}"
+                       class="hover:underline">
+                        <li>
+                            {{ bill.title }}
+                            <br>
+                            <span class="text-sm text-gray-500">Bill Number: {{ bill.number }}</span>
+                            <br>
+                            <span class="text-sm text-gray-500">Type: {{ bill.type }}</span>
+                            <br>
+                            <span class="text-sm text-gray-500">Origin Chamber: {{ bill.originChamber }}</span>
+                            <br>
+                            <span class="text-sm text-gray-500">Congress: {{ bill.congress }}</span>
+                            <br>
+                            <span class="text-sm text-gray-500">Latest Action Date: {{ bill.latestAction.actionDate }}</span>
+                            <br>
+                            <span class="text-sm text-gray-500">Latest Action Text: {{ bill.latestAction.text|safe }}</span>
+                        </li>
+                    </a>
+                    <br>
                 {% endfor %}
             </ul>
         </div>

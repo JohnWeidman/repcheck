@@ -1,7 +1,13 @@
 {% block content %}
     <div class="flex flex-col items-center justify-center h-screen">
-        <div class="badge-secondary rounded-xl p-8 drop-shadow-xl shadow-black">
-            <div class="font-bold text-xl">This is where content about laws will live.</div>
+        <div class="badge-secondary md:m-10 rounded-xl p-8 drop-shadow-xl shadow-black md:w-2/3 w-screen">
+            <div class="font-bold text-xl">This is where content about laws will live!</div>
+            <ul>
+                {% for law in laws %}
+                    <li>{{ law.title }}</li>
+                    <br>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 {% endblock content %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="flex flex-col items-center justify-center">
+        <div class="badge-secondary md:m-10 rounded-xl p-8 drop-shadow-xl shadow-black md:w-2/3 w-screen">
+            <div class="font-bold text-xl">Bill Details</div>
+            <ul>
+                <li><strong>Title:</strong> {{ bill.title }}</li>
+                <li><strong>Bill Number:</strong> {{ bill.number }}</li>
+                <li><strong>Type:</strong> {{ bill.type }}</li>
+                <li><strong>Origin Chamber:</strong> {{ bill.originChamber }}</li>
+                <li><strong>Congress:</strong> {{ bill.congress }}</li>
+                <li><strong>Latest Action Date:</strong> {{ bill.latestAction.actionDate }}</li>
+                <li><strong>Latest Action Text:</strong> {{ bill.latestAction.text|safe }}</li>
+                <li><a href="{{ bill.url }}" class="hover:underline">View Bill on Congress.gov</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock content %}
