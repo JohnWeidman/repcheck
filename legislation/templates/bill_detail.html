@@ -11,7 +11,7 @@
                 <li><strong>Congress:</strong> {{ bill.congress }}</li>
                 <li><strong>Latest Action Date:</strong> {{ bill.latestAction.actionDate }}</li>
                 <li><strong>Latest Action Text:</strong> {{ bill.latestAction.text|safe }}</li>
-                <li><a href="{{ bill.url }}" class="hover:underline">View Bill on Congress.gov</a></li>
+                <li class="font-extrabold text-center underline"><a target="_blank" href="{{ pdf_url }}">View the full text here</a></li>
             </ul>
         </div>
     </div>

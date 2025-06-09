@@ -63,13 +63,33 @@ def laws(request):
 
 
 def bill_detail(request, bill_id, bill_type, congress):
-    url = f"{BASE_URL}bill/{congress}/{bill_type}/{bill_id}?api_key={API_KEY}"
+    url = f"{BASE_URL}bill/{congress}/{bill_type}/{bill_id}query=?api_key={API_KEY}"
     response = requests.get(url)
     if response.status_code == 200:
+        # Get bill metadata
         data = response.json()
         bill = data.get("bill")
+        # Get bill text
+        text_response = requests.get(f"{BASE_URL}bill/{congress}/{bill_type.lower()}/{bill_id}/text?api_key={API_KEY}")
+        
+        text_data = text_response.json()
+        text_versions = text_data.get("textVersions", [])
+        # Extract the first available PDF URL
+        pdf_url = None
+        for version in text_versions:
+            for fmt in version.get("formats", []):
+                if fmt.get("type") == "PDF":
+                    pdf_url = fmt.get("url")
+                    break
+            if pdf_url:
+                break
         context = {
             "bill": bill,
+            "pdf_url": pdf_url,
+            "text_response": text_response,
+            "text_data": text_data,
+            "text_versions": text_versions,
+            
         }
     else:
         context = {
