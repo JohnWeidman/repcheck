@@ -63,7 +63,7 @@ def laws(request):
 
 
 def bill_detail(request, bill_id, bill_type, congress):
-    url = f"{BASE_URL}bill/{congress}/{bill_type}/{bill_id}query=?api_key={API_KEY}"
+    url = f"{BASE_URL}bill/{congress}/{bill_type}/{bill_id}?api_key={API_KEY}"
     response = requests.get(url)
     if response.status_code == 200:
         # Get bill metadata
@@ -96,7 +96,7 @@ def bill_detail(request, bill_id, bill_type, congress):
             "error": "Bill not found or API error.",
         }
 
-    return render(request, "bill_detail.html", context)
+    return render(request, "legislation/bill_detail.html", context)
 
 
 def law_detail(request, law_id):
