@@ -19,7 +19,7 @@ help:
 	@echo ""
 
 build:
-	docker compose up --build
+	docker compose up --build --no-cache
 
 up:
 	docker compose up
