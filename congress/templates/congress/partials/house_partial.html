@@ -4,17 +4,9 @@
         <div class="text-3xl m-10 font-bold md:text-5xl text-center">
             House Members of the {{ congress_number|ordinal }} Congress
         </div>
-        <div class="badge-secondary md:m-10 rounded-xl p-8 drop-shadow-xl shadow-black md:w-2/3 w-screen">
-            <div class="overflow-x-auto">
+        <div class="badge-secondary rounded-md md:p-2 p-6 drop-shadow-xl shadow-black md:w-2/3 w-screen">
+            <div class="md:overflow-x-auto">
                 <table class="table">
-                    <thead>
-                        <tr class="text-xl text-black">
-                            <th></th>
-                            <th>Name</th>
-                            <th>State</th>
-                            <th>Party</th>
-                        </tr>
-                    </thead>
                     <tbody id="members-table" hx-target="#members-table" hx-swap="outerHTML">
                         {% if house_members|length == 0 %}
                             <tr>
@@ -30,7 +22,7 @@
                                                  alt="{{ member.name }}"
                                                  height=""
                                                  width="md:150"
-                                                 class="rounded-xl cursor-pointer object-cover">
+                                                 class="rounded-md cursor-pointer object-cover">
                                        
                                     </a>
                                 </td>
@@ -38,7 +30,7 @@
                                     <a href="{% url "detail" member.pk %}" class="cursor-pointer w-full">{{ member.name }}</a>
                                 </td>
                                 <td>{{ member.state }}</td>
-                                <td>{{ member.party }}</td>
+                                <td>{{ member.party|slice:":1" }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
