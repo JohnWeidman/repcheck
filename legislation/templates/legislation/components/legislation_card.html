@@ -1,0 +1,27 @@
+<div class="card bg-zinc-200 border-secondary border-4 w-1/3 h-80 shadow-xl mb-4 hover:shadow-2xl transition-shadow duration-300">
+    <div class="card-body">
+        <h2 class="card-title text-xl">{{ bill.title|truncatechars:150 }}</h2>
+        <div class="flex flex-wrap gap-2 mb-3">
+            {% if bill.latestAction %}<div class="badge badge-secondary">{{ bill.latestAction.actionDate }}</div>{% endif %}
+            <div class="badge badge-primary">{{ bill.type }} {{ bill.number }}</div>
+            <div class="badge badge-outline">Congress {{ bill.congress }}</div>
+            {% if bill.policyArea %}<div class="badge badge-accent">{{ bill.policyArea.name }}</div>{% endif %}
+        </div>
+        {% if bill.summary %}<p class="text-sm opacity-75">{{ bill.summary.text|truncatechars:150 }}</p>{% endif %}
+        <div class="card-actions justify-between items-center mt-4">
+            <div class="text-sm">
+                {% if bill.sponsors %}
+                    <span class="font-semibold">Sponsor:</span>
+                    {{ bill.sponsors.0.firstName }} {{ bill.sponsors.0.lastName }}
+                    {% if bill.sponsors.0.state %}({{ bill.sponsors.0.state }}){% endif %}
+                {% endif %}
+            </div>
+            <div class="flex gap-2 items-end justify-end">
+                    <a href=""
+                       target="_blank"
+                       class="btn btn-sm btn-outline">Read Full Text</a>
+                <button class="btn btn-sm btn-primary ">Details</button>
+            </div>
+        </div>
+    </div>
+</div>
