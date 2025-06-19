@@ -21,10 +21,8 @@ class LegislationView(View):
     def get(self, request):
         congress_id = request.GET.get("congress")
         
-        # Build API URL
         url = f"{BASE_URL}/{self.endpoint_type}/{congress_id}?api_key={API_KEY}&limit=12"
         
-        # Make API request
         response = requests.get(url)
         if response.status_code == 200:
             # For laws endpoint, API still returns "bills" key
