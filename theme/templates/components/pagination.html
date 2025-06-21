@@ -1,0 +1,35 @@
+<div class="pagination flex flex-col md:flex-row justify-center items-center mt-4">
+    {% if page_obj.has_previous %}
+        <a href="?{{ base_query_params }}&page=1" class="btn flex justify-center items-center">
+            <button>First</button>
+        </a>
+    {% endif %}
+    <div class="join m-2">
+        {% if page_obj.has_previous %}
+            <a href="?{{ base_query_params }}&page={{ page_obj.previous_page_number }}">
+                <button class="join-item btn">«</button>
+            </a>
+        {% endif %}
+        <div class="join flex items-center">
+            {% for i in page_range %}
+                {% if i == '…' %}
+                    <button class="join-item btn">…</button>
+                {% else %}
+                    <a href="?{{ base_query_params }}&page={{ i }}">
+                        <button class="join-item btn {% if i == page_obj.number %}btn-active{% endif %}">{{ i }}</button>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% if page_obj.has_next %}
+            <a href="?{{ base_query_params }}&page={{ page_obj.next_page_number }}">
+                <button class="join-item btn">»</button>
+            </a>
+        {% endif %}
+    </div>
+    {% if page_obj.has_next %}
+        <a href="?{{ base_query_params }}&page={{ page_obj.num_pages }}" class="btn flex justify-center items-center">
+            <button>Last</button>
+        </a>
+    {% endif %}
+</div>
