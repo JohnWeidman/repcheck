@@ -22,7 +22,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx:/etc/nginx/conf.d
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf  # Mount complete config file
       - static_volume:/app/staticfiles
       - media_volume:/app/media
     depends_on:
