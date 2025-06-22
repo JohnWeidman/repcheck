@@ -11,6 +11,8 @@ load_dotenv()
 API_KEY = os.getenv("CONGRESS_API_KEY")
 BASE_URL = "https://api.congress.gov/v3"
 
+CONGRESS_REAL_COUNTS = {}
+
 class SimplePagination:
     def __init__(self, current_page, total_pages, total_count):
         self.number = current_page
@@ -31,7 +33,7 @@ class SimplePagination:
 
 class LegislationView(View):
     """Generic view for legislation (bills or laws)"""
-    endpoint_type = None # Override in subclasses
+    endpoint_type = None
     template_name = None
     partial_template_name = None
     context_key = None
@@ -40,14 +42,16 @@ class LegislationView(View):
         congress_id = request.GET.get("congress")
         page = request.GET.get("page", 1)
         
-        # Convert page to offset for the API
         try:
             page = int(page)
         except (ValueError, TypeError):
             page = 1
             
-        limit = 12  # Items per page
+        limit = 12  # Number of items per page
         offset = (page - 1) * limit
+        
+        # Cache key for this congress and endpoint
+        cache_key = f"{congress_id}_{self.endpoint_type}"
         
         url = f"{BASE_URL}/{self.endpoint_type}/{congress_id}?api_key={API_KEY}&limit={limit}&offset={offset}"
         response = requests.get(url)
@@ -60,8 +64,32 @@ class LegislationView(View):
             
             # Get pagination info from API response
             pagination = response_data.get("pagination", {})
-            total_count = pagination.get("count", 0)
-            total_pages = math.ceil(total_count / limit) if total_count > 0 else 1
+            api_total_count = pagination.get("count", 0)
+            
+            # Check if we already know the real count for this congress
+            if cache_key in CONGRESS_REAL_COUNTS:
+                # Use cached real count
+                real_total_count = CONGRESS_REAL_COUNTS[cache_key]
+                total_pages = math.ceil(real_total_count / limit) if real_total_count > 0 else 1
+                total_count = real_total_count
+            else:
+                # Use API count initially
+                total_count = api_total_count
+                total_pages = math.ceil(total_count / limit) if total_count > 0 else 1
+                
+                # If we hit an empty page, we've found the real end of data
+                if len(data) == 0 and page > 1:
+                    # Calculate the real total count
+                    # The real count is somewhere between (page-2)*limit and (page-1)*limit
+                    # We need to estimate more precisely, but for now use the conservative estimate
+                    real_total_count = (page - 1) * limit
+                    
+                    # Cache this discovery
+                    CONGRESS_REAL_COUNTS[cache_key] = real_total_count
+                    
+                    # Update our calculations
+                    total_count = real_total_count
+                    total_pages = page - 1
             
             page_obj = SimplePagination(page, total_pages, total_count)
             
