@@ -33,11 +33,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the project into the container
 COPY . /app/
 
-# Run collectstatic (for production setup)
-RUN python manage.py collectstatic --noinput
-
 # Run Tailwind Build
-RUN python manage.py tailwind build
+RUN python3 manage.py tailwind build
+
+# Run collectstatic (for production setup)
+RUN python3 manage.py collectstatic --noinput
+
 
 # Expose the port the app will run on
 EXPOSE 8000
