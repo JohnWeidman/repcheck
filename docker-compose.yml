@@ -7,13 +7,27 @@ services:
       dockerfile: Dockerfile.prod
     container_name: repcheck_web
     volumes:
-      - .:/app
-    ports:
-      - "8000:8000"
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    expose:
+      - 8000
     depends_on:
       - db
     env_file:
       - .env
+
+  nginx:
+    image: nginx:alpine
+    container_name: repcheck_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    depends_on:
+      - web
+
   db:
     image: postgres:13
     container_name: repcheck_db
@@ -30,4 +44,6 @@ services:
 
 volumes:
   postgres_data:
-      driver: local
+    driver: local
+  static_volume:
+  media_volume:
