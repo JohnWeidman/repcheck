@@ -25,6 +25,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the project into the container
 COPY . /app/
 
+# Install Node.js dependencies for django-tailwind theme
+RUN python manage.py tailwind install
+
 # Build Tailwind CSS using django-tailwind
 RUN python3 manage.py tailwind build
 
