@@ -4104,6 +4104,10 @@ details.collapse summary::-webkit-details-marker {
   justify-content: space-between;
 }
 
+.justify-around {
+  justify-content: space-around;
+}
+
 .justify-items-center {
   justify-items: center;
 }
@@ -4625,6 +4629,10 @@ details.collapse summary::-webkit-details-marker {
 @media (min-width: 1024px) {
   .lg\:w-80 {
     width: 20rem;
+  }
+
+  .lg\:w-96 {
+    width: 24rem;
   }
 }
 
