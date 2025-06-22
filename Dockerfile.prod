@@ -24,10 +24,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app/
 
 # After copying files but before collectstatic
-RUN python manage.py tailwind build
+RUN python3 manage.py tailwind build
 
 # Then collect static files
-RUN python manage.py collectstatic --noinput
+RUN python3 manage.py collectstatic --noinput
 
 # Create a non-root user
 RUN useradd --create-home --shell /bin/bash app && chown -R app:app /app
