@@ -41,6 +41,7 @@ if not DEBUG:
     
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",") # Get from .env, split into a list
 
+
 CONGRESS_API_KEY=os.getenv("CONGRESS_API_KEY")
 # Application definition
 

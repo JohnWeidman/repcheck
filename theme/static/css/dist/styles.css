@@ -2202,6 +2202,7 @@ input.tab:checked + .tab-content,
   color: var(--fallback-a,oklch(var(--a)/var(--tw-text-opacity)));
 }
 
+
 .badge-outline.badge-info {
   --tw-text-opacity: 1;
   color: var(--fallback-in,oklch(var(--in)/var(--tw-text-opacity)));
@@ -3951,6 +3952,7 @@ details.collapse summary::-webkit-details-marker {
   height: 1.25rem;
 }
 
+
 .h-80 {
   height: 20rem;
 }
@@ -3967,12 +3969,16 @@ details.collapse summary::-webkit-details-marker {
   height: 100vh;
 }
 
+
 .h-8 {
   height: 2rem;
 }
 
 .h-6 {
   height: 1.5rem;
+  
+.w-1\/2 {
+  width: 50%;
 }
 
 .w-11\/12 {
@@ -4007,6 +4013,7 @@ details.collapse summary::-webkit-details-marker {
   width: 100vw;
 }
 
+
 .w-8 {
   width: 2rem;
 }
@@ -4014,7 +4021,7 @@ details.collapse summary::-webkit-details-marker {
 .w-6 {
   width: 1.5rem;
 }
-
+  
 .max-w-4xl {
   max-width: 56rem;
 }
@@ -4030,6 +4037,7 @@ details.collapse summary::-webkit-details-marker {
 .max-w-md {
   max-width: 28rem;
 }
+
 
 .flex-1 {
   flex: 1 1 0%;
