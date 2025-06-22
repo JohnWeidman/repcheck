@@ -29,12 +29,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# In settings.py - Add validation and defaults
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
-if not SECRET_KEY:
-    raise ValueError("DJANGO_SECRET_KEY must be set")
-
-# Better debug handling
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 # Add security settings for production
