@@ -39,7 +39,7 @@ if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     
-ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1' ]
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
 CONGRESS_API_KEY=os.getenv("CONGRESS_API_KEY")
 # Application definition
