@@ -34,10 +34,6 @@ RUN python3 manage.py tailwind build
 # Collect static files (this happens AFTER Tailwind build)
 RUN python3 manage.py collectstatic --noinput
 
-# Create a non-root user
-RUN useradd --create-home --shell /bin/bash app && chown -R app:app /app
-USER app
-
 # Expose the port the app runs on
 EXPOSE 8000
 
