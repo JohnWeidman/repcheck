@@ -38,8 +38,9 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
+    
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",") # Get from .env, split into a list
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")  # Get from .env, split into a list
 
 CONGRESS_API_KEY=os.getenv("CONGRESS_API_KEY")
 # Application definition
@@ -151,7 +152,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_DIRS = [BASE_DIR / "theme/static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
