@@ -1,22 +1,30 @@
 # Use Python as the base image
 FROM python:3.10-slim
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-# Install system dependencies including Node.js
-RUN apt-get update && apt-get install -y \
-    gcc \
-    curl \
-    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs \
-    && rm -rf /var/lib/apt/lists/*
+# Set environment variables for Python
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy requirements first (for better Docker layer caching)
+# Install system dependencies (for building and compiling packages like psycopg2)
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends gcc libpq-dev \
+    && curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean
+
+# Install npm (already included in the Node.js setup)
+RUN apt-get install npm -y
+
+# Copy package.json and package-lock.json from theme/static_src to /app/
+COPY theme/static_src/package.json theme/static_src/package-lock.json /app/
+
+# Install npm dependencies
+RUN npm install 
+
+# Copy the requirements file into the container
 COPY requirements.txt /app/
 
 # Install Python dependencies
@@ -25,17 +33,16 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the project into the container
 COPY . /app/
 
-# Install Node.js dependencies for django-tailwind theme
-RUN python manage.py tailwind install
+# Run collectstatic (for production setup)
+RUN python manage.py collectstatic --noinput
 
-# Build Tailwind CSS using django-tailwind
-RUN python3 manage.py tailwind build
+# Run Tailwind Build
+RUN python manage.py tailwind build
 
-# Collect static files (this happens AFTER Tailwind build)
-RUN python3 manage.py collectstatic --noinput
-
-# Expose the port the app runs on
+# Expose the port the app will run on
 EXPOSE 8000
 
-# Command to run gunicorn server
-CMD ["gunicorn", "--workers=3", "--bind", "0.0.0.0:8000", "RepCheck.wsgi:application"]
+# Use environment variable to determine the run command (development or production)
+CMD exec gunicorn --workers=3 --bind 0.0.0.0:8000 RepCheck.wsgi:application
+
+# End of Dockerfile
