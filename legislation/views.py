@@ -1,10 +1,12 @@
 # legislation/views.py
 from django.shortcuts import render, get_object_or_404
 from django.views import View
+from django.http import HttpResponse
+from django.views.decorators.http import require_http_methods
 import requests
 import os
 from dotenv import load_dotenv
-from congress.models import Congress
+from congress.models import Congress, Member
 import math
 
 load_dotenv()
@@ -50,7 +52,6 @@ class LegislationView(View):
         limit = 12  # Number of items per page
         offset = (page - 1) * limit
         
-        # Cache key for this congress and endpoint
         cache_key = f"{congress_id}_{self.endpoint_type}"
         
         url = f"{BASE_URL}/{self.endpoint_type}/{congress_id}?api_key={API_KEY}&limit={limit}&offset={offset}"
@@ -58,42 +59,30 @@ class LegislationView(View):
         
         if response.status_code == 200:
             response_data = response.json()
-            # For laws endpoint, API still returns "bills" key
             api_key = "bills" if self.endpoint_type == "law" else self.context_key
             data = response_data.get(api_key, [])
             
-            # Get pagination info from API response
             pagination = response_data.get("pagination", {})
             api_total_count = pagination.get("count", 0)
             
-            # Check if we already know the real count for this congress
             if cache_key in CONGRESS_REAL_COUNTS:
-                # Use cached real count
                 real_total_count = CONGRESS_REAL_COUNTS[cache_key]
                 total_pages = math.ceil(real_total_count / limit) if real_total_count > 0 else 1
                 total_count = real_total_count
             else:
-                # Use API count initially
                 total_count = api_total_count
                 total_pages = math.ceil(total_count / limit) if total_count > 0 else 1
                 
-                # If we hit an empty page, we've found the real end of data
                 if len(data) == 0 and page > 1:
-                    # Calculate the real total count
-                    # The real count is somewhere between (page-2)*limit and (page-1)*limit
-                    # We need to estimate more precisely, but for now use the conservative estimate
                     real_total_count = (page - 1) * limit
                     
-                    # Cache this discovery
                     CONGRESS_REAL_COUNTS[cache_key] = real_total_count
                     
-                    # Update our calculations
                     total_count = real_total_count
                     total_pages = page - 1
             
             page_obj = SimplePagination(page, total_pages, total_count)
             
-            # Create page range for pagination component
             page_range = self.get_page_range(page, total_pages)
             
         else:
@@ -110,23 +99,20 @@ class LegislationView(View):
             "request": request,
         }
         
-        # Return partial template for HTMX requests, full template otherwise
         if request.headers.get("HX-Request"):
             return render(request, self.partial_template_name, context)
         return render(request, self.template_name, context)
     
     def get_page_range(self, current_page, total_pages, on_each_side=2):
         """Create a page range similar to Django's get_elided_page_range"""
-        if total_pages <= 7:  # Show all pages if 7 or fewer
+        if total_pages <= 7:
             return list(range(1, total_pages + 1))
         
-        # Show current page with context
         start = max(1, current_page - on_each_side)
         end = min(total_pages, current_page + on_each_side)
         
         page_range = list(range(start, end + 1))
         
-        # Add ellipsis and boundary pages if needed
         if start > 1:
             if start > 2:
                 page_range = [1, '…'] + page_range
@@ -160,6 +146,53 @@ def legislation_landing_page(request):
     }
     return render(request, "legislation/legislation.html", context)
 
-# Create view instances
+@require_http_methods(["GET"])
+def bill_details_htmx(request):
+    """HTMX endpoint to fetch and render detailed bill information"""
+    api_url = request.GET.get('url')
+    
+    if not api_url:
+        return HttpResponse('<div class="alert alert-error">URL parameter is required</div>')
+    
+    # Validate that it's a congress.gov API URL for security
+    if not api_url.startswith('https://api.congress.gov/'):
+        return HttpResponse('<div class="alert alert-error">Invalid API URL</div>')
+    
+    try:
+        # Add API key to the request
+        api_key = os.getenv("CONGRESS_API_KEY")
+        if api_key:
+            separator = '&' if '?' in api_url else '?'
+            api_url_with_key = f"{api_url}{separator}api_key={api_key}"
+        else:
+            api_url_with_key = api_url
+        
+        response = requests.get(api_url_with_key, timeout=10)
+        response.raise_for_status()
+        
+        bill_data = response.json().get('bill', {})
+        
+        if 'sponsors' in bill_data:
+            for sponsor in bill_data['sponsors']:
+                try:
+                    member = Member.objects.get(bioguide_id=sponsor['bioguideId'])
+                    sponsor['member_pk'] = member.pk
+                    sponsor['has_detail_page'] = True
+                except Member.DoesNotExist:
+                    sponsor['member_pk'] = None
+                    sponsor['has_detail_page'] = False
+        
+        # Render the template with the enhanced bill data
+        return render(request, 'legislation/partials/bill_details_modal.html', {
+            'bill': bill_data
+        })
+        
+    except requests.RequestException as e:
+        return HttpResponse(f'''
+            <div class="alert alert-error">
+                <span>Failed to fetch bill details: {str(e)}</span>
+            </div>
+        ''')
+
 im_just_a_bill = BillView.as_view()
 laws = LawView.as_view()

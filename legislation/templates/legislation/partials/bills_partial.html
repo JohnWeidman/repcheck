@@ -1,6 +1,6 @@
 {% block content %}
     {% load pagination_extras %}
-    <div class="flex flex-col items-center justify-center mx-auto p-4">
+    <div class="flex flex-col items-center justify-center mx-auto p-4 md:w-11/12">
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 md:gap-10 p-2 justify-items-center">
             {% for bill in bills %}
                 {% include "legislation/components/legislation_card.html" with legislation=bill %}
