@@ -32,10 +32,10 @@
                         <ul tabindex="0"
                             class="menu menu-sm dropdown-content bg-info rounded-box mt-3 w-32 p-2 shadow text-white z-50">
                             <li>
-                                <a href="{% url 'home' %}">Home</a>
+                                <a href="{% url 'landing_page' %}">Home</a>
                             </li>
                             <li>
-                                <a class="bg-accent">Profile</a>
+                                <a class="bg-accent" href="{% url 'home' %}">Profile</a>
                             </li>
                             <li>
                                 <a class="bg-secondary" href="{% url 'congress' %}">Congress</a>
@@ -73,7 +73,6 @@
                                      stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                                 </svg>
-                                {% comment %} <span class="badge badge-xs badge-primary indicator-item"></span> {% endcomment %}
                             </div>
                         </button>
                     </a>

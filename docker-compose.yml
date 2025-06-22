@@ -4,19 +4,16 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     container_name: repcheck_web
+    volumes:
+      - .:/app
     ports:
       - "8000:8000"
     depends_on:
       - db
     env_file:
       - .env
-    environment:
-      DJANGO_ENV: ${DJANGO_ENV}
-    command: ["gunicorn", "--workers=3", "--bind", "0.0.0.0:8000", "RepCheck.wsgi:application"]
-    volumes:
-      - static_volume:/app/staticfiles  
   db:
     image: postgres:13
     container_name: repcheck_db
@@ -31,19 +28,6 @@ services:
     env_file:
       - .env
 
-  nginx:
-    image: nginx:latest
-    container_name: repcheck_nginx
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - static_volume:/app/staticfiles
-    depends_on:
-      - web
-
 volumes:
   postgres_data:
-    driver: local
-  static_volume:
-    driver: local
+      driver: local

@@ -1,0 +1,58 @@
+<div class="card bg-zinc-200 border-base-200 border-2 rounded-lg h-80 shadow-xl mb-4 hover:shadow-2xl transition-shadow duration-300">
+    <div class="card-body flex flex-col justify-between">
+        <h2 class="card-title text-xl">{{ legislation.title|truncatechars:150 }}</h2>
+        <div class="flex flex-wrap gap-2 mb-3">
+            {% if legislation.latestAction %}
+                <div class="badge badge-secondary">{{ legislation.latestAction.actionDate }}</div>
+            {% endif %}
+            <div class="badge badge-primary">{{ legislation.type }} {{ legislation.number }}</div>
+            <div class="badge badge-outline">Congress {{ legislation.congress }}</div>
+            {% if legislation.policyArea %}<div class="badge badge-accent">{{ legislation.policyArea.name }}</div>{% endif %}
+        </div>
+        {% if legislation.summary %}
+            <p class="text-sm opacity-75">{{ legislation.summary.text|truncatechars:150 }}</p>
+        {% endif %}
+        <div class="flex-grow"></div>
+        <div class="card-actions justify-between items-center mt-4 relative">
+            <div class="text-sm">
+                {% if legislation.sponsors %}
+                    <span class="font-semibold">Sponsor:</span>
+                    {{ legislation.sponsors.0.firstName }} {{ legislation.sponsors.0.lastName }}
+                    {% if legislation.sponsors.0.state %}({{ legislation.sponsors.0.state }}){% endif %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="absolute bottom-4 right-4 flex gap-2">
+            <button class="btn btn-sm btn-primary"
+                    onclick="document.getElementById('{{ legislation.number }}_{{ legislation.originChamber }}_{{ legislation.type }}').showModal()"
+                    hx-get="{% url 'bill_details_htmx' %}?url={{ legislation.url|urlencode }}"
+                    hx-target="#bill-details-content-{{ legislation.number }}_{{ legislation.originChamber }}_{{ legislation.type }}"
+                    hx-trigger="click"
+                    hx-swap="innerHTML">
+                Details
+            </button>
+            
+            <!-- HTMX-powered Modal -->
+            <dialog id="{{ legislation.number }}_{{ legislation.originChamber }}_{{ legislation.type }}" class="modal">
+                <div class="modal-box md:w-3/4 w-11/12 max-w-4xl bg-zinc-100">
+                    <div class="flex flex-col gap-8 p-4 mt-10">
+                        <!-- Content Container - HTMX will manage loading states here -->
+                        <div id="bill-details-content-{{ legislation.number }}_{{ legislation.originChamber }}_{{ legislation.type }}">
+                            <!-- Initial state: Show loading immediately -->
+                            <div class="flex justify-center items-center py-8">
+                                <span class="loading loading-spinner loading-lg"></span>
+                                <span class="ml-2">Loading bill details...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-action w-full flex justify-end">
+                            <form method="dialog">
+                                <button class="btn btn-accent text-zinc-100">Close</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </dialog>
+        </div>
+    </div>
+</div>
