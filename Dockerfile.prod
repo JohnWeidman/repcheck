@@ -38,4 +38,4 @@ RUN python3 manage.py collectstatic --noinput
 EXPOSE 8000
 
 # Command to run gunicorn server
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "RepCheck.wsgi:application"]
+CMD ["gunicorn", "--workers=3", "--bind", "0.0.0.0:8000", "RepCheck.wsgi:application"]
