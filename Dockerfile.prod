@@ -2,48 +2,41 @@
 FROM python:3.10-slim
 
 # Set environment variables for Python
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Install system dependencies (for building and compiling packages like psycopg2)
+# Install system dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends gcc libpq-dev \
     && curl -sL https://deb.nodesource.com/setup_16.x | bash - \
     && apt-get install -y nodejs \
     && apt-get clean
 
-# Install npm (already included in the Node.js setup)
-RUN apt-get install npm -y
-
-# Copy package.json and package-lock.json from theme/static_src to /app/
-COPY theme/static_src/package.json theme/static_src/package-lock.json /app/
-
-# Install npm dependencies
-RUN npm install 
-
-# Copy the requirements file into the container
+# Copy Python requirements and install
 COPY requirements.txt /app/
-
-# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the project into the container
+# Copy the entire project first
 COPY . /app/
 
-# Run Tailwind Build
+# Now copy npm files and install (they're already copied above, but this ensures proper context)
+WORKDIR /app/theme/static_src
+RUN npm install
+
+# Go back to app directory
+WORKDIR /app
+
+# Run Tailwind Build (now it has access to all templates and config)
 RUN python3 manage.py tailwind build
 
-# Run collectstatic (for production setup)
+# Run collectstatic
 RUN python3 manage.py collectstatic --noinput
 
-
-# Expose the port the app will run on
+# Expose port
 EXPOSE 8000
 
-# Use environment variable to determine the run command (development or production)
+# Run command
 CMD exec gunicorn --workers=3 --bind 0.0.0.0:8000 RepCheck.wsgi:application
-
-# End of Dockerfile
