@@ -1,49 +1,17 @@
 {% block content %}
     {% load congress_extras %}
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center md:m-10">
         <div class="text-3xl m-10 font-bold md:text-5xl text-center">
-            Senate Members of the {{ congress_number|ordinal }} Congress
+            House Members of the {{ congress_number|ordinal }} Congress
         </div>
-        <div class="badge-secondary md:m-10 rounded-lg p-8 drop-shadow-xl shadow-black md:w-3/4 w-screen">
-            <div class="overflow-x-auto">
-                <table class="table">
-                    <thead>
-                        <tr class="text-xl text-black">
-                            <th></th>
-                            <th>Name</th>
-                            <th>State</th>
-                            <th>Party</th>
-                        </tr>
-                    </thead>
-                    <tbody id="members-table" hx-target="#members-table" hx-swap="outerHTML">
-                        {% if senate_members|length == 0 %}
-                            <tr>
-                                <td colspan="5" class="text-center">No members found.</td>
-                            </tr>
-                        {% endif %}
-                        {% for member in senate_members %}
-                            <tr class="hover text-2xl">
-                                <td class="flex items-center justify-center">
-                                    <a href="{% url "detail" member.pk %}" class="cursor-pointer">
-                                        
-                                            <img src="{{ member.image_url }}"
-                                                 alt="{{ member.name }}"
-                                                 height=""
-                                                 width="md:150"
-                                                 class="rounded-lg cursor-pointer object-cover">
-                                       
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="{% url "detail" member.pk %}" class="cursor-pointer w-full">{{ member.name }}</a>
-                                </td>
-                                <td>{{ member.state }}</td>
-                                <td>{{ member.party }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 md:gap-10 w-full justify-items-center card bg-zinc-200 m-10 rounded-md md:p-2 p-6 drop-shadow-xl shadow-black">
+            {% if senate_members|length == 0 %}
+                <div class="text-center text-lg font-semibold h-96">No members found for this Congress.</div>
+            {% endif %}
+            {% for member in senate_members %}
+                {% include "congress/components/member_card.html" %}
+            {% endfor %}
+        </div>
                 <div class="pagination flex flex-col md:flex-row justify-center items-center mt-4">
                     {% if senate_members.has_previous %}
                         <a href="?congress={{ congress_id }}&page=1"
@@ -86,5 +54,4 @@
                     {% endif %}
                 </div>
         </div>
-    </div>
 {% endblock content %}

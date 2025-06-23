@@ -17,6 +17,9 @@
         {% else %}
         <p class="text-lg">{{ member.state }}</p>
         {% endif %}
+        {% if member.leadership_role %}
+        <p>{{ member.leadership_role }}</p>
+        {% endif %}
         <div class="card-actions justify-end">
             <a href="{% url "detail" member.pk %}"><button class="btn {% if member.party == 'Democratic' %}btn-primary{% elif member.party == 'Republican' %}btn-accent{% else %}btn-neutral{% endif %}">Details</button></a>
         </div>
