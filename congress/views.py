@@ -27,14 +27,16 @@ def house_not_home(request):
                 membership__congress=congress_id, membership__chamber=chamber
             )
             .distinct()
-            .annotate(party=Subquery(membership_qs.values("party")[:1]))
+            .annotate(party=Subquery(membership_qs.values("party")[:1]), 
+                      district=Subquery(membership_qs.values("district")[:1]),
+                      leadership_role=Subquery(membership_qs.values("leadership_role")[:1]))
             .order_by("state", "name")
         )
 
     else:
         house_members = Member.objects.none()
 
-    p = Paginator(house_members, 10)
+    p = Paginator(house_members, 12)
     try:
         members_page = p.page(page)
     except PageNotAnInteger:
@@ -73,11 +75,13 @@ def i_am_the_senate(request):
                 membership__congress=congress_id, membership__chamber=chamber
             )
             .distinct()
-            .annotate(party=Subquery(membership_qs.values("party")[:1]))
+            .annotate(party=Subquery(membership_qs.values("party")[:1]), 
+                      district=Subquery(membership_qs.values("district")[:1]),
+                      leadership_role=Subquery(membership_qs.values("leadership_role")[:1]))
             .order_by("state", "name")
         )
 
-    p = Paginator(senate_members, 10)
+    p = Paginator(senate_members, 12)
     try:
         members_page = p.page(page)
     except PageNotAnInteger:
