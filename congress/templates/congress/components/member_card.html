@@ -1,0 +1,46 @@
+{% load congress_extras %}
+<div class="card lg:card-side bg-zinc-200 w-full shadow-xl border-2 border-base-200 m-4">
+    <figure>
+        <img src="{{ member.image_url }}"
+             alt="{{ member.full_name }}"
+             height=""
+             width=""
+             class="rounded-md m-2" />
+    </figure>
+    <div class="card-body">
+        <h2 class="card-title">{{ member.full_name }}</h2>
+        <div class="badge rounded-full text-slate-100 {% if member.party == 'Democratic' %}badge-primary{% elif member.party == 'Republican' %}badge-accent{% else %}badge-neutral{% endif %}">
+            {{ member.party }}
+        </div>
+        {% if member.district %}
+        <p class="text-lg">{{ member.state }}'s {{ member.district|ordinal }} district </p>
+        {% else %}
+        <p class="text-lg">{{ member.state }}</p>
+        {% endif %}
+        <div class="card-actions justify-end">
+            <a href="{% url "detail" member.pk %}"><button class="btn {% if member.party == 'Democratic' %}btn-primary{% elif member.party == 'Republican' %}btn-accent{% else %}btn-neutral{% endif %}">Details</button></a>
+        </div>
+    </div>
+</div>
+{% comment %} <!-- HTMX-powered Modal -->
+            <dialog id="{{ legislation.number }}_{{ legislation.originChamber }}_{{ legislation.type }}"
+                    class="modal">
+                <div class="modal-box md:w-3/4 w-11/12 max-w-4xl bg-zinc-100">
+                    <div class="flex flex-col gap-8 p-4 mt-10">
+                        <!-- Content Container - HTMX will manage loading states here -->
+                        <div id="bill-details-content-{{ legislation.number }}_{{ legislation.originChamber }}_{{ legislation.type }}">
+                            <!-- Initial state: Show loading immediately -->
+                            <div class="flex justify-center items-center py-8">
+                                <span class="loading loading-spinner loading-lg"></span>
+                                <span class="ml-2">Loading bill details...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-action w-full flex justify-end">
+                            <form method="dialog">
+                                <button class="btn btn-accent text-zinc-100">Close</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+</dialog> {% endcomment %}
