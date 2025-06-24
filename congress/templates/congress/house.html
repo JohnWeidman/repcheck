@@ -1,4 +1,43 @@
 {% extends "base.html" %}
 {% block content %}
-    {% include "congress/partials/house_partial.html" %}
+
+{% load congress_extras %}
+<div class="flex flex-col items-center md:m-10">
+    <div class="text-3xl m-10 font-bold md:text-5xl text-center">
+        House Members of the {{ congress_number|ordinal }} Congress
+    </div>
+    
+    <!-- Sorting UI - This stays on the page -->
+    <div class="mb-6 flex flex-wrap gap-2 justify-center">
+        <div class="form-control">
+            <label class="label">
+                <span class="label-text">Sort by:</span>
+            </label>
+            <select class="select select-bordered"
+                    hx-get="{% url 'house' %}"
+                    hx-target="#members-container"
+                    hx-vals='{"congress": "{{ congress_id }}"}'
+                    hx-trigger="change"
+                    name="sort">
+                <option value="state_name" {% if current_sort == "state_name" %}selected{% endif %}>
+                    State, then Name
+                </option>
+                <option value="name" {% if current_sort == "name" %}selected{% endif %}>
+                    Name (A-Z)
+                </option>
+                <option value="party" {% if current_sort == "party" %}selected{% endif %}>
+                    Party
+                </option>
+                <option value="district" {% if current_sort == "district" %}selected{% endif %}>
+                    District
+                </option>
+            </select>
+        </div>
+    </div>
+    
+    <!-- Container that gets replaced by HTMX -->
+    <div id="members-container">
+        {% include "congress/partials/house_partial.html" %}
+    </div>
+</div>
 {% endblock content %}
