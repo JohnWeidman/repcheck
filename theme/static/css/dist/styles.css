@@ -4439,6 +4439,40 @@ details.collapse summary::-webkit-details-marker {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+@media (min-width: 768px) {
+  .md\:card-side {
+    align-items: stretch;
+    flex-direction: row;
+  }
+
+  .md\:card-side :where(figure:first-child) {
+    overflow: hidden;
+    border-start-start-radius: inherit;
+    border-start-end-radius: unset;
+    border-end-start-radius: inherit;
+    border-end-end-radius: unset;
+  }
+
+  .md\:card-side :where(figure:last-child) {
+    overflow: hidden;
+    border-start-start-radius: unset;
+    border-start-end-radius: inherit;
+    border-end-start-radius: unset;
+    border-end-end-radius: inherit;
+  }
+
+  .md\:card-side figure > * {
+    max-width: unset;
+  }
+
+  :where(.md\:card-side figure > *) {
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover;
+  }
+}
+
 @media (min-width: 1024px) {
   .lg\:card-side {
     align-items: stretch;
