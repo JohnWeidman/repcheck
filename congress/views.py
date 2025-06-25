@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Congress, Member, Membership, MemberDetails
-from django.db.models import OuterRef, Subquery
+from django.db.models import OuterRef, Subquery, Prefetch
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -37,7 +37,16 @@ def house_not_home(request):
             Member.objects.filter(
                 membership__congress=congress_id, membership__chamber=chamber
             )
-            .distinct()
+            .select_related("memberdetails")
+            .prefetch_related(
+                Prefetch(
+                    "membership_set",
+                    queryset=Membership.objects.filter(
+                        congress=congress_id
+                    ).select_related("congress"),
+                    to_attr="congress_memberships",
+                )
+            )
             .annotate(
                 party=Subquery(membership_qs.values("party")[:1]),
                 district=Subquery(membership_qs.values("district")[:1]),
