@@ -1,8 +1,19 @@
 {% block content %}
     {% load congress_extras %}
+    {% load url_helpers %}
     <div class="flex flex-col items-center md:m-10">
         <div class="text-3xl m-10 font-bold md:text-5xl text-center">
-            House Members of the {{ congress_number|ordinal }} Congress
+            Senate Members of the {{ congress_number|ordinal }} Congress
+        </div>
+        <div class="mb-4">
+            <select class="select select-bordered"
+                    onchange="updateSort(this.value)"
+                    id="sort-select">
+                <option value="state_name"
+                        {% if current_sort == "state_name" %}selected{% endif %}>By State & Name</option>
+                <option value="name" {% if current_sort == "name" %}selected{% endif %}>By Name</option>
+                <option value="party" {% if current_sort == "party" %}selected{% endif %}>By Party</option>
+            </select>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 md:gap-10 w-full justify-items-center card bg-zinc-200 m-10 rounded-md md:p-2 p-6 drop-shadow-xl shadow-black">
             {% if senate_members|length == 0 %}
@@ -12,46 +23,50 @@
                 {% include "congress/components/member_card.html" %}
             {% endfor %}
         </div>
-                <div class="pagination flex flex-col md:flex-row justify-center items-center mt-4">
-                    {% if senate_members.has_previous %}
-                        <a href="?congress={{ congress_id }}&page=1"
-                           class="btn flex justify-center items-center">
-                            <button>First</button>
-                        </a>
-                    {% endif %}
-                    <div class="join m-2">
-                        {% if senate_members.has_previous %}
-                            <a href="?congress={{ congress_id }}&page={{ senate_members.previous_page_number }}">
-                                <button class="join-item btn">«</button>
+        <div class="pagination flex flex-col md:flex-row justify-center items-center m-4">
+            {% if senate_members.has_previous %}
+                <a href="{% url_with_params page=1 %}"
+                   class="btn flex justify-center items-center">
+                    <button>First</button>
+                </a>
+            {% endif %}
+            <div class="join m-2">
+                {% if senate_members.has_previous %}
+                    <a href="{% url_with_params page=senate_members.previous_page_number %}">
+                        <button class="join-item btn">«</button>
+                    </a>
+                {% endif %}
+                <div class="join flex items-center">
+                    {% for i in page_range %}
+                        {% if i == '…' %}
+                            <button class="join-item btn">…</button>
+                        {% else %}
+                            <a href="{% url_with_params page=i %}">
+                                <button class="join-item btn {% if i == senate_members.number %}btn-active{% endif %}">{{ i }}</button>
                             </a>
                         {% endif %}
-                        <div class="join flex items-center">
-                            {% for i in page_range %}
-                                {% if i == '…' %}
-                                <a href="?congress={{ congress_id }}&page={{ i }}"></a>
-                                    <button class="join-item btn">…</button>
-                                {% else %}
-                                    <a href="?congress={{ congress_id }}&page={{ i }}">
-                                        <button class="join-item btn">{{ i }}</button>
-                                    </a>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                        {% if senate_members.has_next %}
-                            <a hx-push-url="true"
-                               href="?congress={{ congress_id }}&page={{ senate_members.next_page_number }}"
-                               hx-target="#members-table"
-                               hx-swap="outerHTML">
-                                <button class="join-item btn">»</button>
-                            </a>
-                        {% endif %}
-                    </div>
-                    {% if senate_members.has_next %}
-                        <a href="?congress={{ congress_id }}&page={{ senate_members.paginator.num_pages }}"
-                           class="btn flex justify-center items-center">
-                            <button>Last</button>
-                        </a>
-                    {% endif %}
+                    {% endfor %}
                 </div>
+                {% if senate_members.has_next %}
+                    <a href="{% url_with_params page=senate_members.next_page_number %}">
+                        <button class="join-item btn">»</button>
+                    </a>
+                {% endif %}
+            </div>
+            {% if senate_members.has_next %}
+                <a href="{% url_with_params page=senate_members.paginator.num_pages %}"
+                   class="btn flex justify-center items-center">
+                    <button>Last</button>
+                </a>
+            {% endif %}
         </div>
+    </div>
+    <script>
+function updateSort(sortValue) {
+    const currentUrl = new URL(window.location);
+    currentUrl.searchParams.set('sort', sortValue);
+    currentUrl.searchParams.set('page', '1'); // Reset to first page when sorting
+    window.location.href = currentUrl.toString();
+}
+    </script>
 {% endblock content %}

@@ -10,6 +10,7 @@ def url_with_params(context, **kwargs):
     params = request.GET.copy()
     
     for key, value in kwargs.items():
-        params[key] = value
+        if value is not None:  # Don't include None values
+            params[key] = value
     
     return f"?{params.urlencode()}"
