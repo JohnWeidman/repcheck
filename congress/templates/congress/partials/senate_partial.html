@@ -5,14 +5,15 @@
         <div class="text-3xl m-10 font-bold md:text-5xl text-center">
             Senate Members of the {{ congress_number|ordinal }} Congress
         </div>
-        <div class="mb-4">
-            <select class="select select-bordered"
+        <div class="mb-4 flex items-center gap-2">
+            <label for="sort-select" class="text-lg font-semibold">Sort by:</label>
+            <select class="select bg-transparent border-base-200 border-2"
                     onchange="updateSort(this.value)"
                     id="sort-select">
                 <option value="state_name"
-                        {% if current_sort == "state_name" %}selected{% endif %}>By State & Name</option>
-                <option value="name" {% if current_sort == "name" %}selected{% endif %}>By Name</option>
-                <option value="party" {% if current_sort == "party" %}selected{% endif %}>By Party</option>
+                        {% if current_sort == "state_name" %}selected{% endif %}>State & Name</option>
+                <option value="name" {% if current_sort == "name" %}selected{% endif %}>Name</option>
+                <option value="party" {% if current_sort == "party" %}selected{% endif %}>Party</option>
             </select>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 md:gap-10 w-full justify-items-center card bg-zinc-200 m-10 rounded-md md:p-2 p-6 drop-shadow-xl shadow-black">

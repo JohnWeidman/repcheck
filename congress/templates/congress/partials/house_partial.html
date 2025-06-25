@@ -5,14 +5,15 @@
         <div class="text-3xl m-10 font-bold md:text-5xl text-center">
             House Members of the {{ congress_number|ordinal }} Congress
         </div>
-        <div class="mb-4">
-            <select class="select select-bordered"
+        <div class="mb-4 gap-2 flex items-center">
+            <label for="sort-select" class="text-lg font-semibold">Sort by:</label>
+            <select class="select bg-transparent border-base-200 border-2"
                     onchange="updateSort(this.value)"
                     id="sort-select">
                 <option value="state_name"
-                        {% if current_sort == "state_name" %}selected{% endif %}>By State & Name</option>
-                <option value="name" {% if current_sort == "name" %}selected{% endif %}>By Name</option>
-                <option value="party" {% if current_sort == "party" %}selected{% endif %}>By Party</option>
+                        {% if current_sort == "state_name" %}selected{% endif %}>State & Name</option>
+                <option value="name" {% if current_sort == "name" %}selected{% endif %}>Name</option>
+                <option value="party" {% if current_sort == "party" %}selected{% endif %}>Party</option>
                 <option value="state_district"
                         {% if current_sort == "state_district" %}selected{% endif %}>By State & District</option>
             </select>
