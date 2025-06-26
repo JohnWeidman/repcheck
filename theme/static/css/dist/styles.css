@@ -3517,38 +3517,6 @@ details.collapse summary::-webkit-details-marker {
   padding: 0px;
 }
 
-.card-side {
-  align-items: stretch;
-  flex-direction: row;
-}
-
-.card-side :where(figure:first-child) {
-  overflow: hidden;
-  border-start-start-radius: inherit;
-  border-start-end-radius: unset;
-  border-end-start-radius: inherit;
-  border-end-end-radius: unset;
-}
-
-.card-side :where(figure:last-child) {
-  overflow: hidden;
-  border-start-start-radius: unset;
-  border-start-end-radius: inherit;
-  border-end-start-radius: unset;
-  border-end-end-radius: inherit;
-}
-
-.card-side figure > * {
-  max-width: unset;
-}
-
-:where(.card-side figure > *) {
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-}
-
 .indicator :where(.indicator-item) {
   bottom: auto;
   inset-inline-end: 0px;
@@ -3940,10 +3908,6 @@ details.collapse summary::-webkit-details-marker {
   margin-top: auto;
 }
 
-.ml-4 {
-  margin-left: 1rem;
-}
-
 .block {
   display: block;
 }
@@ -4065,10 +4029,6 @@ details.collapse summary::-webkit-details-marker {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.cursor-pointer {
-  cursor: pointer;
-}
-
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
@@ -4145,10 +4105,6 @@ details.collapse summary::-webkit-details-marker {
   justify-self: center;
 }
 
-.overflow-x-auto {
-  overflow-x: auto;
-}
-
 .overflow-x-scroll {
   overflow-x: scroll;
 }
@@ -4175,10 +4131,6 @@ details.collapse summary::-webkit-details-marker {
 
 .rounded-md {
   border-radius: 0.375rem;
-}
-
-.rounded-2xl {
-  border-radius: 1rem;
 }
 
 .border {
@@ -4244,10 +4196,6 @@ details.collapse summary::-webkit-details-marker {
   background-color: rgb(228 228 231 / var(--tw-bg-opacity, 1));
 }
 
-.bg-transparent {
-  background-color: transparent;
-}
-
 .bg-opacity-80 {
   --tw-bg-opacity: 0.8;
 }
@@ -4262,11 +4210,6 @@ details.collapse summary::-webkit-details-marker {
 
 .bg-center {
   background-position: center;
-}
-
-.object-cover {
-  -o-object-fit: cover;
-     object-fit: cover;
 }
 
 .p-1 {
@@ -4505,74 +4448,6 @@ details.collapse summary::-webkit-details-marker {
   }
 }
 
-@media (min-width: 768px) {
-  .md\:card-side {
-    align-items: stretch;
-    flex-direction: row;
-  }
-
-  .md\:card-side :where(figure:first-child) {
-    overflow: hidden;
-    border-start-start-radius: inherit;
-    border-start-end-radius: unset;
-    border-end-start-radius: inherit;
-    border-end-end-radius: unset;
-  }
-
-  .md\:card-side :where(figure:last-child) {
-    overflow: hidden;
-    border-start-start-radius: unset;
-    border-start-end-radius: inherit;
-    border-end-start-radius: unset;
-    border-end-end-radius: inherit;
-  }
-
-  .md\:card-side figure > * {
-    max-width: unset;
-  }
-
-  :where(.md\:card-side figure > *) {
-    width: 100%;
-    height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover;
-  }
-}
-
-@media (min-width: 1024px) {
-  .lg\:card-side {
-    align-items: stretch;
-    flex-direction: row;
-  }
-
-  .lg\:card-side :where(figure:first-child) {
-    overflow: hidden;
-    border-start-start-radius: inherit;
-    border-start-end-radius: unset;
-    border-end-start-radius: inherit;
-    border-end-end-radius: unset;
-  }
-
-  .lg\:card-side :where(figure:last-child) {
-    overflow: hidden;
-    border-start-start-radius: unset;
-    border-start-end-radius: inherit;
-    border-end-start-radius: unset;
-    border-end-end-radius: inherit;
-  }
-
-  .lg\:card-side figure > * {
-    max-width: unset;
-  }
-
-  :where(.lg\:card-side figure > *) {
-    width: 100%;
-    height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover;
-  }
-}
-
 .hover\:shadow-2xl:hover {
   --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
@@ -4582,10 +4457,6 @@ details.collapse summary::-webkit-details-marker {
 @media (min-width: 640px) {
   .sm\:max-w-full {
     max-width: 100%;
-  }
-
-  .sm\:grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -4605,10 +4476,6 @@ details.collapse summary::-webkit-details-marker {
   .md\:my-5 {
     margin-top: 1.25rem;
     margin-bottom: 1.25rem;
-  }
-
-  .md\:flex {
-    display: flex;
   }
 
   .md\:h-72 {
@@ -4663,16 +4530,8 @@ details.collapse summary::-webkit-details-marker {
     gap: 2.5rem;
   }
 
-  .md\:overflow-x-auto {
-    overflow-x: auto;
-  }
-
   .md\:p-2 {
     padding: 0.5rem;
-  }
-
-  .md\:p-4 {
-    padding: 1rem;
   }
 
   .md\:text-4xl {
