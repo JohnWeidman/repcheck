@@ -6,6 +6,14 @@
             Senate Members of the {{ congress_number|ordinal }} Congress
         </div>
         <div class="mb-4 flex items-center gap-2">
+            <form onsubmit="performSearch(event)" class="flex gap-2">
+                <input type="text"
+                       placeholder="Search by name, state, or party"
+                       class="input input-bordered w-full max-w-xs bg-transparent border-base-200 border-2"
+                       id="search-input"
+                       value="{{ search_query|default:'' }}">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
             <label for="sort-select" class="text-lg font-semibold">Sort by:</label>
             <select class="select bg-zinc-200 border-base-200 border-2"
                     onchange="updateSort(this.value)"
@@ -67,6 +75,14 @@ function updateSort(sortValue) {
     const currentUrl = new URL(window.location);
     currentUrl.searchParams.set('sort', sortValue);
     currentUrl.searchParams.set('page', '1'); // Reset to first page when sorting
+    window.location.href = currentUrl.toString();
+}
+function performSearch(event) {
+    event.preventDefault(); // Prevent default form submission
+    const searchValue = document.getElementById('search-input').value;
+    const currentUrl = new URL(window.location);
+    currentUrl.searchParams.set('search', searchValue);
+    currentUrl.searchParams.set('page', '1');
     window.location.href = currentUrl.toString();
 }
     </script>

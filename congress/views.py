@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Congress, Member, Membership, MemberDetails
-from django.db.models import OuterRef, Subquery, Prefetch
+from django.db.models import OuterRef, Subquery, Prefetch, Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -15,8 +15,8 @@ def house_not_home(request):
     congress_id = request.GET.get("congress")
     page = request.GET.get("page")
     sort_by = request.GET.get("sort", "state_name")
+    search_query = request.GET.get("search", "").strip()
 
-    # Define sorting options
     sort_options = {
         "name": ["name"],
         "state_name": ["state", "name"],
@@ -28,6 +28,7 @@ def house_not_home(request):
     congress = get_object_or_404(Congress, id=congress_id) if congress_id else None
     chamber = "House of Representatives"
 
+
     if congress:
         membership_qs = Membership.objects.filter(
             congress=congress_id, chamber=chamber, member=OuterRef("pk")
@@ -35,15 +36,16 @@ def house_not_home(request):
 
         house_members = (
             Member.objects.filter(
-                membership__congress=congress_id, membership__chamber=chamber
+                membership__congress=congress_id,
+                membership__chamber=chamber,
             )
             .select_related("memberdetails")
             .prefetch_related(
                 Prefetch(
                     "membership_set",
-                    queryset=Membership.objects.filter(
-                        congress=congress_id
-                    ).select_related("congress"),
+                    queryset=Membership.objects.filter(congress=congress_id).select_related(
+                        "congress"
+                    ),
                     to_attr="congress_memberships",
                 )
             )
@@ -52,8 +54,17 @@ def house_not_home(request):
                 district=Subquery(membership_qs.values("district")[:1]),
                 leadership_role=Subquery(membership_qs.values("leadership_role")[:1]),
             )
-            .order_by(*order_by)
         )
+
+        if search_query:
+            house_members = house_members.filter(
+            Q(name__icontains=search_query) |
+            Q(state__icontains=search_query) |
+            Q(district__icontains=search_query) |
+            Q(party__icontains=search_query)
+    )
+
+        house_members = house_members.order_by(*order_by)
     else:
         house_members = Member.objects.none()
 
@@ -75,6 +86,7 @@ def house_not_home(request):
         "page_range": page_range,
         "current_sort": sort_by,
         "sort_options": sort_options.keys(),
+        "search_query": search_query,
     }
 
     if request.headers.get("HX-Request"):
@@ -86,6 +98,7 @@ def i_am_the_senate(request):
     congress_id = request.GET.get("congress")
     page = request.GET.get("page")
     sort_by = request.GET.get("sort", "state_name")
+    search_query = request.GET.get("search", "").strip()
 
     sort_options = {
         "name": ["name"],
@@ -104,16 +117,33 @@ def i_am_the_senate(request):
 
         senate_members = (
             Member.objects.filter(
-                membership__congress=congress_id, membership__chamber=chamber
+                membership__congress=congress_id,
+                membership__chamber=chamber,
             )
-            .distinct()
+            .select_related("memberdetails")
+            .prefetch_related(
+                Prefetch(
+                    "membership_set",
+                    queryset=Membership.objects.filter(congress=congress_id).select_related(
+                        "congress"
+                    ),
+                    to_attr="congress_memberships",
+                )
+            )
             .annotate(
                 party=Subquery(membership_qs.values("party")[:1]),
-                district=Subquery(membership_qs.values("district")[:1]),
                 leadership_role=Subquery(membership_qs.values("leadership_role")[:1]),
             )
-            .order_by(*order_by)
         )
+
+        if search_query:
+            senate_members = senate_members.filter(
+            Q(name__icontains=search_query) |
+            Q(state__icontains=search_query) |
+            Q(party__icontains=search_query)
+    )
+
+        senate_members = senate_members.order_by(*order_by)
 
     p = Paginator(senate_members, 12)
     try:
@@ -132,6 +162,7 @@ def i_am_the_senate(request):
         "congress_id": congress_id,
         "current_sort": sort_by,
         "sort_options": sort_options.keys(),
+        "search_query": search_query,
     }
     if request.headers.get("HX-Request"):
         return render(request, "congress/partials/senate_partial.html", context)
