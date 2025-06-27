@@ -5,10 +5,10 @@
         <div class="text-3xl m-10 font-bold md:text-5xl text-center">
             House Members of the {{ congress_number|ordinal }} Congress
         </div>
-        <div class="mb-4 gap-2 flex items-center">
-            <form onsubmit="performSearch(event)" class="flex gap-2">
+        <div class="mb-4 gap-2 flex md:flex-row flex-col items-center">
+            <form onsubmit="performSearch(event)" class="flex md:flex-row flex-col gap-2">
                 <input type="text"
-                       placeholder="Search by name, state, or district"
+                       placeholder="Search this Congress..."
                        class="input input-bordered w-full max-w-xs bg-transparent border-base-200 border-2"
                        id="search-input"
                        value="{{ search_query|default:'' }}">
