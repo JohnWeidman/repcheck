@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Congress, Member, Membership, MemberDetails
 from django.db.models import OuterRef, Subquery, Prefetch, Q
+from django.contrib.postgres.search import SearchVector, SearchQuery
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -57,12 +58,9 @@ def house_not_home(request):
         )
 
         if search_query:
-            house_members = house_members.filter(
-            Q(name__icontains=search_query) |
-            Q(state__icontains=search_query) |
-            Q(district__icontains=search_query) |
-            Q(party__icontains=search_query)
-    )
+                house_members = house_members.annotate(
+                    search=SearchVector("name", "state", "district", "party")
+                ).filter(search=SearchQuery(search_query, search_type='websearch'))
 
         house_members = house_members.order_by(*order_by)
     else:
@@ -137,11 +135,9 @@ def i_am_the_senate(request):
         )
 
         if search_query:
-            senate_members = senate_members.filter(
-            Q(name__icontains=search_query) |
-            Q(state__icontains=search_query) |
-            Q(party__icontains=search_query)
-    )
+            senate_members = senate_members.annotate(
+                    search=SearchVector("name", "state", "party")
+                ).filter(search=SearchQuery(search_query, search_type='websearch'))
 
         senate_members = senate_members.order_by(*order_by)
 
