@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from shutil import which
+import sentry_sdk
 import os
 from dotenv import load_dotenv
 
@@ -158,3 +159,19 @@ STATICFILES_DIRS = [BASE_DIR / "theme/static"]
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Sentry configuration for error tracking
+# Sentry configuration for error tracking (development proof of concept)
+SENTRY_DSN = os.getenv("SENTRY_DSN")
+
+if SENTRY_DSN:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+    
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=0.0,  # No performance tracking for dev
+        environment="development",
+        debug=False,  # Prevents verbose startup messages
+    )
