@@ -11,4 +11,4 @@ psycopg2-binary==2.9.10
 python-dotenv==1.0.1
 phonenumbers==8.13.31
 django-phonenumber-field==6.0.0
-sentry-sdk[django]==1.32.0
+sentry-sdk[django]>=1.32.0

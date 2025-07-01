@@ -9,6 +9,7 @@ load_dotenv()
 API_KEY = os.getenv("CONGRESS_API_KEY")
 BASE_URL = "https://api.congress.gov/v3"
 
+
 def home(request):
     url = f"{BASE_URL}/bill?api_key={API_KEY}&limit=12"
     response = requests.get(url)
@@ -16,7 +17,7 @@ def home(request):
         bills = response.json().get("bills", [])
     else:
         bills = []
-        
+
     context = {
         "bills": bills,
     }
