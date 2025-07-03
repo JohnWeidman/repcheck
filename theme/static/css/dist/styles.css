@@ -4422,8 +4422,6 @@ details.collapse summary::-webkit-details-marker {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-<<<<<<< master
-=======
 @media (min-width: 640px) {
   .sm\:card-side {
     align-items: stretch;
@@ -4458,7 +4456,6 @@ details.collapse summary::-webkit-details-marker {
   }
 }
 
->>>>>>> production
 @media (min-width: 1024px) {
   .lg\:card-side {
     align-items: stretch;
