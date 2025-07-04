@@ -1,49 +1,436 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="flex">
-        <div class="flex flex-col items-center justify-center p-4 font-[Forum] text-xl w-1/2 mx-auto">
-            <p class="text-xl text-center badge-ghost bg-zinc-200 rounded-lg p-4">
-                <span class="text-2xl"><strong>The unanimous Declaration of the thirteen united States of America,</strong></span>
-                <br>
-                <p class="m-4">
-                    When in the Course of human events, it becomes necessary for one people to dissolve the political bands which have connected them with another, and to assume among the powers of the earth, the separate and equal station to which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of mankind requires that they should declare the causes which impel them to the separation.
-                    <br>
-                </p>
-                <p class="m-4">
-                    We hold these truths to be self-evident, that all men are created equal, that they are endowed by their Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness.--That to secure these rights, Governments are instituted among Men, deriving their just powers from the consent of the governed, --That whenever any Form of Government becomes destructive of these ends, it is the Right of the People to alter or to abolish it, and to institute new Government, laying its foundation on such principles and organizing its powers in such form, as to them shall seem most likely to effect their Safety and Happiness. Prudence, indeed, will dictate that Governments long established should not be changed for light and transient causes; and accordingly all experience hath shewn, that mankind are more disposed to suffer, while evils are sufferable, than to right themselves by abolishing the forms to which they are accustomed. But when a long train of abuses and usurpations, pursuing invariably the same Object evinces a design to reduce them under absolute Despotism, it is their right, it is their duty, to throw off such Government, and to provide new Guards for their future security.--Such has been the patient sufferance of these Colonies; and such is now the necessity which constrains them to alter their former Systems of Government. The history of the present King of Great Britain is a history of repeated injuries and usurpations, all having in direct object the establishment of an absolute Tyranny over these States. To prove this, let Facts be submitted to a candid world.
-                    <br>
-                </p>
-                He has refused his Assent to Laws, the most wholesome and necessary for the public good.
+    <div class="max-w-4xl mx-auto p-8 font-serif text-gray-800 leading-relaxed text-xl">
+        <h1 class="text-3xl font-bold text-center mb-12">
+            The unanimous Declaration of the thirteen united States of America
+        </h1>
+        <p class="text-xl mb-8">
+            When in the Course of human events, it becomes necessary for one people to dissolve the political bands which have connected them with another, and to assume among the powers of the earth, the separate and equal station to which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of mankind requires that they should declare the causes which impel them to the separation.
+        </p>
+        <p class="text-xl mb-8">
+            We hold these truths to be self-evident, that all men are created equal, that they are endowed by their Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness.--That to secure these rights, Governments are instituted among Men, deriving their just powers from the consent of the governed, --That whenever any Form of Government becomes destructive of these ends, it is the Right of the People to alter or to abolish it, and to institute new Government, laying its foundation on such principles and organizing its powers in such form, as to them shall seem most likely to effect their Safety and Happiness. Prudence, indeed, will dictate that Governments long established should not be changed for light and transient causes; and accordingly all experience hath shewn, that mankind are more disposed to suffer, while evils are sufferable, than to right themselves by abolishing the forms to which they are accustomed. But when a long train of abuses and usurpations, pursuing invariably the same Object evinces a design to reduce them under absolute Despotism, it is their right, it is their duty, to throw off such Government, and to provide new Guards for their future security.--Such has been the patient sufferance of these Colonies; and such is now the necessity which constrains them to alter their former Systems of Government. The history of the present King of Great Britain is a history of repeated injuries and usurpations, all having in direct object the establishment of an absolute Tyranny over these States. To prove this, let Facts be submitted to a candid world.
+        </p>
+        <ul class="list-disc list-inside space-y-4 mb-8 ml-6">
+            <li>He has refused his Assent to Laws, the most wholesome and necessary for the public good.</li>
+            <li>
                 He has forbidden his Governors to pass Laws of immediate and pressing importance, unless suspended in their operation till his Assent should be obtained; and when so suspended, he has utterly neglected to attend to them.
+            </li>
+            <li>
                 He has refused to pass other Laws for the accommodation of large districts of people, unless those people would relinquish the right of Representation in the Legislature, a right inestimable to them and formidable to tyrants only.
+            </li>
+            <li>
                 He has called together legislative bodies at places unusual, uncomfortable, and distant from the depository of their public Records, for the sole purpose of fatiguing them into compliance with his measures.
+            </li>
+            <li>
                 He has dissolved Representative Houses repeatedly, for opposing with manly firmness his invasions on the rights of the people.
+            </li>
+            <li>
                 He has refused for a long time, after such dissolutions, to cause others to be elected; whereby the Legislative powers, incapable of Annihilation, have returned to the People at large for their exercise; the State remaining in the mean time exposed to all the dangers of invasion from without, and convulsions within.
+            </li>
+            <li>
                 He has endeavoured to prevent the population of these States; for that purpose obstructing the Laws for Naturalization of Foreigners; refusing to pass others to encourage their migrations hither, and raising the conditions of new Appropriations of Lands.
+            </li>
+            <li>
                 He has obstructed the Administration of Justice, by refusing his Assent to Laws for establishing Judiciary powers.
+            </li>
+            <li>
                 He has made Judges dependent on his Will alone, for the tenure of their offices, and the amount and payment of their salaries.
+            </li>
+            <li>
                 He has erected a multitude of New Offices, and sent hither swarms of Officers to harrass our people, and eat out their substance.
-                He has kept among us, in times of peace, Standing Armies without the Consent of our legislatures.
-                He has affected to render the Military independent of and superior to the Civil power.
-                He has combined with others to subject us to a jurisdiction foreign to our constitution, and unacknowledged by our laws; giving his Assent to their Acts of pretended Legislation:
-                For Quartering large bodies of armed troops among us:
-                For protecting them, by a mock Trial, from punishment for any Murders which they should commit on the Inhabitants of these States:
-                For cutting off our Trade with all parts of the world:
-                For imposing Taxes on us without our Consent:
-                For depriving us in many cases, of the benefits of Trial by Jury:
-                For transporting us beyond Seas to be tried for pretended offences:
-                For abolishing the free System of English Laws in a neighbouring Province, establishing therein an Arbitrary government, and enlarging its Boundaries so as to render it at once an example and fit instrument for introducing the same absolute rule into these Colonies:
-                For taking away our Charters, abolishing our most valuable Laws, and altering fundamentally the Forms of our Governments:
-                For suspending our own Legislatures, and declaring themselves invested with power to legislate for us in all cases whatsoever.
-                He has abdicated Government here, by declaring us out of his Protection and waging War against us.
-                He has plundered our seas, ravaged our Coasts, burnt our towns, and destroyed the lives of our people.
-                He is at this time transporting large Armies of foreign Mercenaries to compleat the works of death, desolation and tyranny, already begun with circumstances of Cruelty & perfidy scarcely paralleled in the most barbarous ages, and totally unworthy the Head of a civilized nation.
-                He has constrained our fellow Citizens taken Captive on the high Seas to bear Arms against their Country, to become the executioners of their friends and Brethren, or to fall themselves by their Hands.
-                He has excited domestic insurrections amongst us, and has endeavoured to bring on the inhabitants of our frontiers, the merciless Indian Savages, whose known rule of warfare, is an undistinguished destruction of all ages, sexes and conditions.
-                In every stage of these Oppressions We have Petitioned for Redress in the most humble terms: Our repeated Petitions have been answered only by repeated injury. A Prince, whose character is thus marked by every act which may define a Tyrant, is unfit to be the ruler of a free people.
-                Nor have We been wanting in attentions to our Brittish brethren. We have warned them from time to time of attempts by their legislature to extend an unwarrantable jurisdiction over us. We have reminded them of the circumstances of our emigration and settlement here. We have appealed to their native justice and magnanimity, and we have conjured them by the ties of our common kindred to disavow these usurpations, which, would inevitably interrupt our connections and correspondence. They too have been deaf to the voice of justice and of consanguinity. We must, therefore, acquiesce in the necessity, which denounces our Separation, and hold them, as we hold the rest of mankind, Enemies in War, in Peace Friends.
-                We, therefore, the Representatives of the united States of America, in General Congress, Assembled, appealing to the Supreme Judge of the world for the rectitude of our intentions, do, in the Name, and by Authority of the good People of these Colonies, solemnly publish and declare, That these United Colonies are, and of Right ought to be Free and Independent States; that they are Absolved from all Allegiance to the British Crown, and that all political connection between them and the State of Great Britain, is and ought to be totally dissolved; and that as Free and Independent States, they have full Power to levy War, conclude Peace, contract Alliances, establish Commerce, and to do all other Acts and Things which Independent States may of right do. And for the support of this Declaration, with a firm reliance on the protection of divine Providence, we mutually pledge to each other our Lives, our Fortunes and our sacred Honor.
-            </p>
+            </li>
+            <li>He has kept among us, in times of peace, Standing Armies without the Consent of our legislatures.</li>
+            <li>He has affected to render the Military independent of and superior to the Civil power.</li>
+        </ul>
+        <p class="mb-6">
+            He has combined with others to subject us to a jurisdiction foreign to our constitution, and unacknowledged by our laws; giving his Assent to their Acts of pretended Legislation:
+        </p>
+        <p class="mb-6">
+            For Quartering large bodies of armed troops among us: For protecting them, by a mock Trial, from punishment for any Murders which they should commit on the Inhabitants of these States: For cutting off our Trade with all parts of the world: For imposing Taxes on us without our Consent: For depriving us in many cases, of the benefits of Trial by Jury: For transporting us beyond Seas to be tried for pretended offences: For abolishing the free System of English Laws in a neighbouring Province, establishing therein an Arbitrary government, and enlarging its Boundaries so as to render it at once an example and fit instrument for introducing the same absolute rule into these Colonies: For taking away our Charters, abolishing our most valuable Laws, and altering fundamentally the Forms of our Governments: For suspending our own Legislatures, and declaring themselves invested with power to legislate for us in all cases whatsoever.
+        </p>
+        <p class="mb-6">
+            He has abdicated Government here, by declaring us out of his Protection and waging War against us. He has plundered our seas, ravaged our Coasts, burnt our towns, and destroyed the lives of our people. He is at this time transporting large Armies of foreign Mercenaries to compleat the works of death, desolation and tyranny, already begun with circumstances of Cruelty & perfidy scarcely paralleled in the most barbarous ages, and totally unworthy the Head of a civilized nation. He has constrained our fellow Citizens taken Captive on the high Seas to bear Arms against their Country, to become the executioners of their friends and Brethren, or to fall themselves by their Hands. He has excited domestic insurrections amongst us, and has endeavoured to bring on the inhabitants of our frontiers, the merciless Indian Savages, whose known rule of warfare, is an undistinguished destruction of all ages, sexes and conditions.
+        </p>
+        <p class="mb-6">
+            In every stage of these Oppressions We have Petitioned for Redress in the most humble terms: Our repeated Petitions have been answered only by repeated injury. A Prince, whose character is thus marked by every act which may define a Tyrant, is unfit to be the ruler of a free people.
+        </p>
+        <p class="mb-6">
+            Nor have We been wanting in attentions to our Brittish brethren. We have warned them from time to time of attempts by their legislature to extend an unwarrantable jurisdiction over us. We have reminded them of the circumstances of our emigration and settlement here. We have appealed to their native justice and magnanimity, and we have conjured them by the ties of our common kindred to disavow these usurpations, which, would inevitably interrupt our connections and correspondence. They too have been deaf to the voice of justice and of consanguinity. We must, therefore, acquiesce in the necessity, which denounces our Separation, and hold them, as we hold the rest of mankind, Enemies in War, in Peace Friends.
+        </p>
+        <p class="text-xl">
+            We, therefore, the Representatives of the united States of America, in General Congress, Assembled, appealing to the Supreme Judge of the world for the rectitude of our intentions, do, in the Name, and by Authority of the good People of these Colonies, solemnly publish and declare, That these United Colonies are, and of Right ought to be Free and Independent States; that they are Absolved from all Allegiance to the British Crown, and that all political connection between them and the State of Great Britain, is and ought to be totally dissolved; and that as Free and Independent States, they have full Power to levy War, conclude Peace, contract Alliances, establish Commerce, and to do all other Acts and Things which Independent States may of right do. And for the support of this Declaration, with a firm reliance on the protection of divine Providence, we mutually pledge to each other our Lives, our Fortunes and our sacred Honor.
+        </p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 p-6 font-serif md:w-1/2 mx-auto">
+        <!-- Georgia -->
+        <div>
+            <h3 class="font-bold text-xl mb-3">Georgia</h3>
+            <div class="space-y-1">
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Button_Gwinnett"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Button Gwinnett</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Lyman_Hall"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Lyman Hall</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/George_Walton"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">George Walton</a>
+                </div>
+            </div>
+        </div>
+        <!-- Maryland -->
+        <div>
+            <h3 class="font-bold text-xl mb-3">Maryland</h3>
+            <div class="space-y-1">
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Samuel_Chase"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Samuel Chase</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/William_Paca"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">William Paca</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Thomas_Stone"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Thomas Stone</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Charles_Carroll_of_Carrollton"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Charles Carroll of Carrollton</a>
+                </div>
+            </div>
+        </div>
+        <!-- Delaware -->
+        <div>
+            <h3 class="font-bold text-xl mb-3">Delaware</h3>
+            <div class="space-y-1">
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Caesar_Rodney"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Caesar Rodney</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/George_Read_(politician)"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">George Read</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Thomas_McKean"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Thomas McKean</a>
+                </div>
+            </div>
+        </div>
+        <!-- Massachusetts -->
+        <div>
+            <h3 class="font-bold text-xl mb-3">Massachusetts</h3>
+            <div class="space-y-1">
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Samuel_Adams"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Samuel Adams</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/John_Adams"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">John Adams</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Robert_Treat_Paine"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Robert Treat Paine</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Elbridge_Gerry"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Elbridge Gerry</a>
+                </div>
+            </div>
+        </div>
+        <!-- North Carolina -->
+        <div>
+            <h3 class="font-bold text-xl mb-3">North Carolina</h3>
+            <div class="space-y-1">
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/William_Hooper"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">William Hooper</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Joseph_Hewes"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Joseph Hewes</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/John_Penn_(Continental_Congress)"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">John Penn</a>
+                </div>
+            </div>
+        </div>
+        <!-- New York -->
+        <div>
+            <h3 class="font-bold text-xl mb-3">New York</h3>
+            <div class="space-y-1">
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/William_Floyd"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">William Floyd</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Philip_Livingston"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Philip Livingston</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Francis_Lewis"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Francis Lewis</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Lewis_Morris"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Lewis Morris</a>
+                </div>
+            </div>
+        </div>
+        <!-- Rhode Island -->
+        <div>
+            <h3 class="font-bold text-xl mb-3">Rhode Island</h3>
+            <div class="space-y-1">
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Stephen_Hopkins_(politician)"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Stephen Hopkins</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/William_Ellery"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">William Ellery</a>
+                </div>
+            </div>
+        </div>
+        <!-- Virginia -->
+        <div>
+            <h3 class="font-bold text-xl mb-3">Virginia</h3>
+            <div class="space-y-1">
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/George_Wythe"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">George Wythe</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Richard_Henry_Lee"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Richard Henry Lee</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Thomas_Jefferson"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Thomas Jefferson</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Benjamin_Harrison_V"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Benjamin Harrison</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Thomas_Nelson_Jr."
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Thomas Nelson, Jr.</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Francis_Lightfoot_Lee"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Francis Lightfoot Lee</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Carter_Braxton"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Carter Braxton</a>
+                </div>
+            </div>
+        </div>
+        <!-- Connecticut -->
+        <div>
+            <h3 class="font-bold text-xl mb-3">Connecticut</h3>
+            <div class="space-y-1">
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Roger_Sherman"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Roger Sherman</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Samuel_Huntington_(Connecticut_politician)"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Samuel Huntington</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/William_Williams_(Connecticut_politician)"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">William Williams</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Oliver_Wolcott"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Oliver Wolcott</a>
+                </div>
+            </div>
+        </div>
+        <!-- South Carolina -->
+        <div>
+            <h3 class="font-bold text-xl mb-3">South Carolina</h3>
+            <div class="space-y-1">
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Edward_Rutledge"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Edward Rutledge</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Thomas_Heyward_Jr."
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Thomas Heyward, Jr.</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Thomas_Lynch_Jr."
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Thomas Lynch, Jr.</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Arthur_Middleton"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Arthur Middleton</a>
+                </div>
+            </div>
+        </div>
+        <!-- New Jersey -->
+        <div>
+            <h3 class="font-bold text-xl mb-3">New Jersey</h3>
+            <div class="space-y-1">
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Richard_Stockton_(1730%E2%80%931781)"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Richard Stockton</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/John_Witherspoon"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">John Witherspoon</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Francis_Hopkinson"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Francis Hopkinson</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/John_Hart_(New_Jersey_politician)"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">John Hart</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Abraham_Clark"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Abraham Clark</a>
+                </div>
+            </div>
+        </div>
+        <!-- New Hampshire -->
+        <div>
+            <h3 class="font-bold text-xl mb-3">New Hampshire</h3>
+            <div class="space-y-1">
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Matthew_Thornton"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Matthew Thornton</a>
+                </div>
+            </div>
+        </div>
+        <!-- Massachusetts (second entry) -->
+        <div>
+            <h3 class="font-bold text-xl mb-3">Massachusetts</h3>
+            <div class="space-y-1">
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/John_Hancock"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">John Hancock</a>
+                </div>
+            </div>
+        </div>
+        <!-- Pennsylvania -->
+        <div>
+            <h3 class="font-bold text-xl mb-3">Pennsylvania</h3>
+            <div class="space-y-1">
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Robert_Morris_(financier)"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Robert Morris</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Benjamin_Rush"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Benjamin Rush</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Benjamin_Franklin"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Benjamin Franklin</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/John_Morton_(politician)"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">John Morton</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/George_Clymer"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">George Clymer</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/James_Smith_(Pennsylvania_politician)"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">James Smith</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/George_Taylor_(Pennsylvania_politician)"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">George Taylor</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/James_Wilson"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">James Wilson</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/George_Ross_(American_politician)"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">George Ross</a>
+                </div>
+            </div>
+        </div>
+        <!-- New Hampshire (second entry) -->
+        <div>
+            <h3 class="font-bold text-xl mb-3">New Hampshire</h3>
+            <div class="space-y-1">
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/Josiah_Bartlett"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">Josiah Bartlett</a>
+                </div>
+                <div>
+                    <a href="https://en.wikipedia.org/wiki/William_Whipple"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">William Whipple</a>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock content %}
