@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.core.cache',
+    'django.core.cache',
     'tailwind',
     'theme',
     'django_browser_reload',
@@ -67,8 +68,11 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
         'LOCATION': os.getenv("REDIS_URL", "redis://localhost:6379/0"),
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
         'KEY_PREFIX': 'repcheck',
-        'TIMEOUT': 60 * 60 * 12,
+        'TIMEOUT': 60 * 60 * 24,
     }
 }
 
