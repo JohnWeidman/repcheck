@@ -11,6 +11,8 @@ psycopg2-binary==2.9.10
 python-dotenv==1.0.1
 phonenumbers==8.13.31
 django-phonenumber-field==6.0.0
+google-genai==1.24.0
+sentry-sdk==2.32.0
 redis>=4.5.0
 django-redis>=5.2.0
 google-genai==1.24.0

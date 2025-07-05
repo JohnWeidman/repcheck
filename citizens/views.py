@@ -2,6 +2,9 @@ from django.shortcuts import render
 from google import genai
 import os 
 from dotenv import load_dotenv
+from google import genai
+import os 
+from dotenv import load_dotenv
 
 # Create your views here.
 load_dotenv()
