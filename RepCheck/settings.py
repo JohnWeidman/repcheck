@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.core.cache',
     'tailwind',
     'theme',
     'django_browser_reload',
@@ -61,6 +62,21 @@ INSTALLED_APPS = [
     'congress',
     'legislation',
 ]
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': os.getenv("REDIS_URL", "redis://localhost:6379/0"),
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        'KEY_PREFIX': 'repcheck',
+        'TIMEOUT': 60 * 60 * 24,
+    }
+}
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'
 
 TAILWIND_APP_NAME = 'theme'
 
