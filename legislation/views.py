@@ -7,6 +7,8 @@ import requests
 import os
 from dotenv import load_dotenv
 from congress.models import Congress, Member
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 import math
 
 load_dotenv()
@@ -132,7 +134,7 @@ class BillView(LegislationView):
     template_name = "legislation/bills.html"
     partial_template_name = "legislation/partials/bills_partial.html"
     context_key = "bills"
-
+    
 class LawView(LegislationView):
     endpoint_type = "law"
     template_name = "legislation/laws.html"
@@ -147,6 +149,7 @@ def legislation_landing_page(request):
     return render(request, "legislation/legislation.html", context)
 
 @require_http_methods(["GET"])
+@cache_page(60 * 15)  # Cache for 15 minutes
 def bill_details_htmx(request):
     """HTMX endpoint to fetch and render detailed bill information"""
     api_url = request.GET.get('url')
