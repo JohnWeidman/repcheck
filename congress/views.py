@@ -3,6 +3,7 @@ from .models import Congress, Member, Membership, MemberDetails
 from django.db.models import OuterRef, Subquery, Prefetch, Q
 from django.contrib.postgres.search import SearchVector, SearchQuery
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.cache import cache
 
 
 def congress(request):
@@ -29,8 +30,17 @@ def house_not_home(request):
     congress = get_object_or_404(Congress, id=congress_id) if congress_id else None
     chamber = "House of Representatives"
 
+    cache_key_parts = [f"congress_{congress_id}_house_members"]
+    if search_query:
+        cache_key_parts.append(f"search_{hash(search_query)}")
+    cache_key_parts.append(f"sort_{sort_by}")
+    congress_cache_key = "_".join(cache_key_parts)
 
-    if congress:
+    cached_data = cache.get(congress_cache_key)
+
+    if cached_data is not None:
+        house_members = cached_data["queryset"]
+    elif congress:
         membership_qs = Membership.objects.filter(
             congress=congress_id, chamber=chamber, member=OuterRef("pk")
         ).order_by("-start_year")
@@ -44,9 +54,9 @@ def house_not_home(request):
             .prefetch_related(
                 Prefetch(
                     "membership_set",
-                    queryset=Membership.objects.filter(congress=congress_id).select_related(
-                        "congress"
-                    ),
+                    queryset=Membership.objects.filter(
+                        congress=congress_id
+                    ).select_related("congress"),
                     to_attr="congress_memberships",
                 )
             )
@@ -58,11 +68,14 @@ def house_not_home(request):
         )
 
         if search_query:
-                house_members = house_members.annotate(
-                    search=SearchVector("name", "state", "district", "party")
-                ).filter(search=SearchQuery(search_query, search_type='websearch'))
+            house_members = house_members.annotate(
+                search=SearchVector("name", "state", "district", "party")
+            ).filter(search=SearchQuery(search_query, search_type="websearch"))
 
         house_members = house_members.order_by(*order_by)
+        cache_data = {"queryset": list(house_members)}
+        cache.set(congress_cache_key, cache_data, 60 * 60 * 6)
+        
     else:
         house_members = Member.objects.none()
 
@@ -85,6 +98,7 @@ def house_not_home(request):
         "current_sort": sort_by,
         "sort_options": sort_options.keys(),
         "search_query": search_query,
+        "cache_key": congress_cache_key,
     }
 
     if request.headers.get("HX-Request"):
@@ -108,7 +122,17 @@ def i_am_the_senate(request):
     congress = get_object_or_404(Congress, id=congress_id) if congress_id else None
     chamber = "Senate"
 
-    if congress:
+    cache_key_parts = [f"congress_{congress_id}_senate_members"]
+    if search_query:
+        cache_key_parts.append(f"search_{hash(search_query)}")
+    cache_key_parts.append(f"sort_{sort_by}")
+    congress_cache_key = "_".join(cache_key_parts)
+
+    cached_data = cache.get(congress_cache_key)
+
+    if cached_data is not None:
+        senate_members = cached_data["queryset"]
+    elif congress:
         membership_qs = Membership.objects.filter(
             congress=congress_id, chamber=chamber, member=OuterRef("pk")
         ).order_by("-start_year")
@@ -122,9 +146,9 @@ def i_am_the_senate(request):
             .prefetch_related(
                 Prefetch(
                     "membership_set",
-                    queryset=Membership.objects.filter(congress=congress_id).select_related(
-                        "congress"
-                    ),
+                    queryset=Membership.objects.filter(
+                        congress=congress_id
+                    ).select_related("congress"),
                     to_attr="congress_memberships",
                 )
             )
@@ -136,10 +160,14 @@ def i_am_the_senate(request):
 
         if search_query:
             senate_members = senate_members.annotate(
-                    search=SearchVector("name", "state", "party")
-                ).filter(search=SearchQuery(search_query, search_type='websearch'))
+                search=SearchVector("name", "state", "party")
+            ).filter(search=SearchQuery(search_query, search_type="websearch"))
 
         senate_members = senate_members.order_by(*order_by)
+        cache_data = {"queryset": list(senate_members)}
+        cache.set(congress_cache_key, cache_data, 60 * 60 * 6)
+    else:
+        senate_members = Member.objects.none()
 
     p = Paginator(senate_members, 12)
     try:

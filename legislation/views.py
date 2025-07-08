@@ -1,5 +1,5 @@
 # legislation/views.py
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
@@ -8,6 +8,8 @@ import os
 from dotenv import load_dotenv
 from congress.models import Congress, Member
 from django.views.decorators.cache import cache_page
+from django.core.cache import cache
+
 import math
 
 load_dotenv()
@@ -34,9 +36,6 @@ class SimplePagination:
 
     def next_page_number(self):
         return self.number + 1 if self.has_next() else None
-
-
-from django.core.cache import cache
 
 
 class LegislationView(View):
