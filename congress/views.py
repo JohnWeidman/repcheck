@@ -4,6 +4,7 @@ from django.db.models import OuterRef, Subquery, Prefetch, Q
 from django.contrib.postgres.search import SearchVector, SearchQuery
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.cache import cache
+from django.views.decorators.cache import cache_page
 
 
 def congress(request):
@@ -192,7 +193,7 @@ def i_am_the_senate(request):
         return render(request, "congress/partials/senate_partial.html", context)
     return render(request, "congress/senate.html", context)
 
-
+@cache_page(60 * 15) 
 def details(request, pk):
     member = get_object_or_404(Member, pk=pk)
     member_details = get_object_or_404(MemberDetails, member=member)
