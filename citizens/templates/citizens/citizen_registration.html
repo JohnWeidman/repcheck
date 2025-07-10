@@ -1,12 +1,54 @@
 {% extends "base.html" %}
 {% block content %}
-<div>{{ form }}</div>
-<div class="container">
-    <h2>Citizen Registration</h2>
-    <form method="post" action="{% url 'citizen_registration' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Register</button>
-    </form>
-</div>
+    <div class="flex items-center flex-wrap justify-center mx-auto p-4 mt-6 rounded-lg gap-8">
+        <div class="p-8 badge-ghost bg-zinc-200 rounded-lg drop-shadow-lg shadow-black">
+            <h1 class="text-4xl font-bold text-center">Citizen Registration</h1>
+            <form method="post"
+                  action="{% url 'citizen_registration' %}"
+                  class="input-group">
+                {% csrf_token %}
+                <div class="flex flex-col items-start mb-4">
+                    <label for="first_name" class="ml-4">First Name:</label>
+                    <input type="text"
+                           name="first_name"
+                           placeholder="First Name"
+                           class="input bg-zinc-200 input-bordered w-full max-w-xs mb-4"
+                           value="{{ form.first_name.value|default_if_none:'' }}">
+                    <label for="last_name" class="ml-4">Last Name</label>
+                    <input type="text"
+                           name="last_name"
+                           placeholder="Last Name"
+                           class="input bg-zinc-200 input-bordered w-full max-w-xs mb-4"
+                           value="{{ form.last_name.value|default_if_none:'' }}">
+                    <label for="email" class="ml-4">Email: *</label>
+                    <input type="email"
+                           name="email"
+                           placeholder="Email"
+                           class="input bg-zinc-200 input-bordered w-full max-w-xs mb-4"
+                           required
+                           value="{{ form.email.value|default_if_none:'' }}">
+                    <label for="username" class="ml-4">Username: *</label>
+                    <input type="text"
+                           name="username"
+                           placeholder="Create a Username"
+                           class="input bg-zinc-200 input-bordered w-full max-w-xs mb-4"
+                           required
+                           value="{{ form.username.value|default_if_none:'' }}">
+                    <label for="password1" class="ml-4">Password: *</label>
+                    <input type="password"
+                           name="password1"
+                           placeholder="Create a Password"
+                           class="input bg-zinc-200 input-bordered w-full max-w-xs mb-4"
+                           required>
+                    <label for="password2" class="ml-4">Re-Enter Password: *</label>
+                    <input type="password"
+                           name="password2"
+                           placeholder="Create a Password"
+                           class="input bg-zinc-200 input-bordered w-full max-w-xs mb-4"
+                           required>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
 {% endblock content %}
