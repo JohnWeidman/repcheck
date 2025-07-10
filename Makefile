@@ -48,3 +48,6 @@ db_shell:
 createsuperuser:
 	docker exec -it repcheck_web python3 manage.py createsuperuser
 
+tailwind:
+	docker exec -it repcheck_web python3 manage.py tailwind start
+
