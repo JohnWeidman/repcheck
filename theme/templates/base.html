@@ -28,99 +28,75 @@
               type="image/png"
               sizes="192x192"
               href="{% static 'theme/images/android-chrome-192x192.png' %}">
-        <script src="https://unpkg.com/htmx.org@1.7.0"></script>
+        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"
+                integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"
+                crossorigin="anonymous"></script>
         {% tailwind_css %}
         <style>@import url('https://fonts.googleapis.com/css2?family=Forum&display=swap');</style>
     </head>
-    <body class="flex flex-col bg-fixed bg-cover bg-center"
-          style="background-image: url('{% static 'theme/images/backgroundrepcheck.webp' %}')">
-        <div class="bg-base-100 bg-opacity-80 flex-grow flex flex-col">
-            <div class="navbar bg-secondary drop-shadow-xl shadow-black z-40">
-                <div class="navbar-start">
-                    <div class="dropdown">
-                        <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M4 6h16M4 12h16M4 18h7" />
-                            </svg>
-                        </div>
-                        <ul tabindex="0"
-                            class="menu menu-sm dropdown-content bg-info rounded-box mt-3 w-32 p-2 shadow text-white z-50">
+    <body style="background-image: url('{% static 'theme/images/backgroundrepcheck.webp' %}')">
+        <div class="drawer lg:drawer-open min-h-screen bg-base-100 bg-opacity-75">
+            <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+            <div class="drawer-content flex flex-col bg-zinc-200 bg-opacity-20">
+                <label for="my-drawer-2"
+                       class="bg-info w-full text-white font-bold drawer-button lg:hidden p-4">Menu</label>
+                <div id="content"
+                     class="bg-gradient-to-t from-zinc-200 md:from-70% from-90% flex-grow">
+                    {% block content %}
+                        {% comment %} Page content goes here {% endcomment %}
+                    {% endblock content %}
+                </div>
+                <footer class="footer footer-center mt-auto bg-info text-white p-4">
+                    <aside>
+                        <p class="font-semibold">Copyright © 2025 - All right reserved by RepCheck</p>
+                        <p class="font-semibold">
+                            Background image generously provided by Goldstreet Photography |
+                            <a target="_blank"
+                               rel="noopener noreferrer"
+                               href="https://www.etsy.com/shop/goldstreet?">Etsy Shop</a>
+                        </p>
+                    </aside>
+                </footer>
+            </div>
+            <div class="drawer-side">
+                <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
+                <div class="bg-info text-white font-bold text-xl min-h-full w-60 flex flex-col z-40">
+                    <nav class="flex-grow">
+                        <span class="text-7xl">Menu</span>
+                        <ul class="menu p-0">
                             <li>
-                                <a href="{% url 'landing_page' %}">Home</a>
+                                <a class="bg-green-600 rounded-none px-4 py-3"
+                                   href="{% url 'landing_page' %}">Home</a>
                             </li>
                             <li>
-                                <a class="bg-accent" href="{% url 'home' %}">Profile</a>
+                                <a class="bg-neutral rounded-none px-4 py-3"
+                                href="{% url 'citizen_resources' %}">Citizens</a>
                             </li>
                             <li>
-                                <a class="bg-neutral" href="{% url 'citizen_resources' %}">Citizens</a>
+                                <a class="bg-secondary rounded-none px-4 py-3"
+                                href="{% url 'congress' %}">Congress</a>
                             </li>
                             <li>
-                                <a class="bg-secondary" href="{% url 'congress' %}">Congress</a>
+                                <a class="bg-primary rounded-none px-4 py-3"
+                                href="{% url 'legislation_landing_page' %}">Legislation</a>
+                            </li>
+                            {% if logged_in %}
+                            <li>
+                                <a class="bg-accent rounded-none px-4 py-3" href="{% url 'home' %}">Profile</a>
                             </li>
                             <li>
-                                <a class="bg-primary" href="{% url 'legislation_landing_page' %}">Legislation</a>
+                                <a class="bg-base-100 rounded-none px-4 py-3">Logout</a>
                             </li>
-                            <li>
-                                <a class="bg-base-100">Logout</a>
-                            </li>
+                            {% endif %}
                         </ul>
-                    </div>
+                        <div class="flex items-end h-90 justify-start mt-8 p-20">
+                            <a href="{% url 'landing_page' %}">
+                                <div class="transform rotate-90 text-5xl font-bold tracking-wider">RepCheck</div>
+                            </a>
+                        </div>
+                    </nav>
                 </div>
-                <div class="navbar-center">
-                    <a class="btn btn-ghost text-2xl font-bold"
-                       href="{% url 'landing_page' %}">RepCheck</a>
-                </div>
-                <div class="navbar-end">
-                    <button class="btn btn-ghost btn-circle">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="h-5 w-5"
-                             fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                    </button>
-                    <a href="{% url 'home' %}">
-                        <button class="btn btn-ghost btn-circle">
-                            <div class="indicator">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-5 w-5"
-                                     fill="none"
-                                     viewBox="0 0 24 24"
-                                     stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                                </svg>
-                            </div>
-                        </button>
-                    </a>
-                </div>
-            </div>
-            <div class="flex items-center justify-center p-4 md:h-72 ">
-                <p class="text-3xl text-center badge-ghost bg-zinc-200 md:w-1/2 rounded-lg p-4 font-[Forum]">
-                    "What country can preserve it's liberties if their rulers are not warned from time to time that their people preserve the spirit of resistance?"
-                    <br>
-                    <span class="text-3xl">-Thomas Jefferson</span>
-                </p>
-            </div>
-            <div id="content" class="bg-zinc-200 flex-grow md:my-5">
-                {% block content %}
-                    {% comment %} Page content goes here {% endcomment %}
-                {% endblock content %}
             </div>
         </div>
-        <footer class="footer footer-center mt-auto bg-base-300 text-base-content p-4">
-            <aside>
-                <p class="font-semibold">Copyright © 2025 - All right reserved by RepCheck</p>
-                <p class="font-semibold">
-                    Backgound image generously provided by Goldstreet Photography | <a target="_blank"
-    rel="noopener noreferrer"
-    href="https://www.etsy.com/shop/goldstreet?">Etsy Shop</a>
-                </p>
-            </aside>
-        </footer>
     </body>
 </html>
