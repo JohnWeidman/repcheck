@@ -12,4 +12,4 @@ class Bills(models.Model):
     tags= ArrayField( models.CharField(max_length=15, blank=True), size=5)
 
     def __str__(self):
-        return self.title
+        return "Bills"
