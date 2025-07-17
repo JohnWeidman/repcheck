@@ -62,6 +62,13 @@ CACHES = {
         'LOCATION': os.getenv("REDIS_URL", "redis://localhost:6379/0"),
         'KEY_PREFIX': 'repcheck',
         'TIMEOUT': 60 * 60 * 12,
+        'OPTIONS': {
+            'CONNECTION_POOL_KWARGS': {
+                'ssl_cert_reqs': None,
+                'ssl_check_hostname': False,
+                'ssl': True,
+            },
+        },
     }
 }
 
