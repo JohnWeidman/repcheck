@@ -12,4 +12,5 @@ python-dotenv==1.0.1
 phonenumbers==8.13.31
 django-phonenumber-field==6.0.0
 redis>=4.5.0
-django-redis>=5.2.0dj-database-url
+django-redis>=5.2.0
+dj-database-url
