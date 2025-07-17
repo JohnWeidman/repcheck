@@ -10,7 +10,7 @@ load_dotenv()
 
 API_KEY = os.getenv("CONGRESS_API_KEY")
 BASE_URL = "https://api.congress.gov/v3"
-CACHE_TIMEOUT = 60 * 10  # 15 minutes
+CACHE_TIMEOUT = 60 * 10  # 10 minutes
 
 
 @cache_page(CACHE_TIMEOUT)

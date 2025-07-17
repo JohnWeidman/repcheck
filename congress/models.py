@@ -1,5 +1,6 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+from datetime import datetime
 
 
 class Congress(models.Model):
@@ -9,9 +10,17 @@ class Congress(models.Model):
     end_date = models.DateField()
 
     class Meta:
-        ordering = ["-congress_number"]
+        ordering = ["congress_number"]
         verbose_name_plural = "Congresses"
-
+        
+    @classmethod
+    def get_current_congress(cls):
+        current_date = datetime.now().date()
+        return cls.objects.filter(
+            start_date__lte=current_date,
+            end_date__gte=current_date
+        ).first()
+    
     def __str__(self):
         return f"Congress {self.congress_number} ({self.start_date} - {self.end_date})"
 
@@ -49,7 +58,7 @@ class Membership(models.Model):
     leadership_role = models.CharField(max_length=50, null=True, blank=True)
 
     def is_current(self):
-        return self.congress.congress_number in [119]  # TODO: Update with actual logic
+        return self.congress.congress_number in [119]  # TODO: Update with actual logic. Getting members that have died as current members
 
     class Meta:
         unique_together = (
