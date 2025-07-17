@@ -58,17 +58,16 @@ INSTALLED_APPS = [
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': os.getenv("REDIS_URL", "redis://localhost:6379/0"),
-        'KEY_PREFIX': 'repcheck',
-        'TIMEOUT': 60 * 60 * 12,
         'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'CONNECTION_POOL_KWARGS': {
                 'ssl_cert_reqs': None,
-                'ssl_check_hostname': False,
-                'ssl': True,
             },
         },
+        'KEY_PREFIX': 'repcheck',
+        'TIMEOUT': 60 * 60 * 12,
     }
 }
 
