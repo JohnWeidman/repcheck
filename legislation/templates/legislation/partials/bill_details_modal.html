@@ -4,6 +4,7 @@
     <div class="badge badge-outline">Congress {{ bill.congress }}</div>
     <div class="badge badge-secondary">{{ bill.originChamber }}</div>
     {% if bill.policyArea %}<div class="badge badge-accent">{{ bill.policyArea.name }}</div>{% endif %}
+    {% if db_bill.tags %}<div>{{ db_bill.tags }}</div>{% endif %}
     {% if bill.laws %}
         {% for law in bill.laws %}<div class="badge badge-success">{{ law.type }} {{ law.number }}</div>{% endfor %}
     {% endif %}
@@ -32,11 +33,11 @@
                 <strong>Sponsor(s):</strong>
                 {% if bill.sponsors %}
                     {% for sponsor in bill.sponsors %}
-                    <a href="{% url 'detail' pk=sponsor.member_pk %}" class="link">
-                        {{ sponsor.firstName }} {{ sponsor.lastName }}
-                        ({{ sponsor.party }}-{{ sponsor.state }}
-                        {% if sponsor.district %}-{{ sponsor.district }}{% endif %}
-                        )
+                        <a href="{% url 'detail' pk=sponsor.member_pk %}" class="link">
+                            {{ sponsor.firstName }} {{ sponsor.lastName }}
+                            ({{ sponsor.party }}-{{ sponsor.state }}
+                            {% if sponsor.district %}-{{ sponsor.district }}{% endif %}
+                            )
                         </a>
                         {% if not forloop.last %},{% endif %}
                     {% endfor %}
@@ -61,9 +62,7 @@
                 <strong>Latest Action:</strong>
             </p>
             {% if bill.latestAction %}
-                <p class="text-md p-2 rounded">
-                    {{ bill.latestAction.actionDate|date:"M d, Y" }} - {{ bill.latestAction.text }}
-                </p>
+                <p class="text-md p-2 rounded">{{ bill.latestAction.actionDate|date:"M d, Y" }} - {{ bill.latestAction.text }}</p>
             {% else %}
                 <p class="text-md bg-base-200 p-2 rounded">No recent actions</p>
             {% endif %}
@@ -86,6 +85,10 @@
         </div>
     </div>
 </div>
+<div class="mt-4">
+        <h3 class="text-xl font-bold mb-2">Summary</h3>
+        <p class="p-3 text-md">{{ db_bill.gemini_summary|striptags|safe }}</p>
+    </div>
 {% if bill.constitutionalAuthorityStatementText %}
     <div class="mt-4">
         <h3 class="text-xl font-bold mb-2">Constitutional Authority</h3>
@@ -123,28 +126,9 @@
             {% else %}
                 <p class="text-md">No CBO cost estimates available</p>
             {% endif %}
+            {% if db_bill.full_text_url %}
+            <a href="{{ db_bill.full_text_url }}" class="underline" target="_blank">Full Text</a>
+            {% endif %}
         </div>
     </div>
 </div>
-{% comment %} <div class="flex gap-2 mt-4 flex-wrap">
-    {% if bill.summaries %}
-        <a href="{{ bill.summaries.url }}"
-           target="_blank"
-           class="btn btn-sm btn-outline">View Summaries ({{ bill.summaries.count }})</a>
-    {% endif %}
-    {% if bill.textVersions %}
-        <a href="{{ bill.textVersions.url }}"
-           target="_blank"
-           class="btn btn-sm btn-outline">Read Full Text ({{ bill.textVersions.count }} versions)</a>
-    {% endif %}
-    {% if bill.subjects %}
-        <a href="{{ bill.subjects.url }}"
-           target="_blank"
-           class="btn btn-sm btn-outline">View Subjects ({{ bill.subjects.count }})</a>
-    {% endif %}
-    {% if bill.relatedBills %}
-        <a href="{{ bill.relatedBills.url }}"
-           target="_blank"
-           class="btn btn-sm btn-outline">Related Bills ({{ bill.relatedBills.count }})</a>
-    {% endif %}
-</div> {% endcomment %}

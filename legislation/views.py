@@ -7,6 +7,7 @@ import requests
 import os
 from dotenv import load_dotenv
 from congress.models import Congress, Member
+from legislation.models import Bills
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 
@@ -193,6 +194,10 @@ def bill_details_htmx(request):
         response.raise_for_status()
 
         bill_data = response.json().get("bill", {})
+        db_bill = Bills.objects.get(
+            bill_number=bill_data.get("number"),
+            congress__congress_number=bill_data.get("congress"),
+        )
 
         if "sponsors" in bill_data:
             for sponsor in bill_data["sponsors"]:
@@ -205,7 +210,7 @@ def bill_details_htmx(request):
                     sponsor["has_detail_page"] = False
 
         return render(
-            request, "legislation/partials/bill_details_modal.html", {"bill": bill_data}
+            request, "legislation/partials/bill_details_modal.html", {"bill": bill_data, "db_bill": db_bill}
         )
 
     except requests.RequestException as e:

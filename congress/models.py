@@ -14,13 +14,20 @@ class Congress(models.Model):
         verbose_name_plural = "Congresses"
         
     @classmethod
-    def get_current_congress(cls):
+    def get_current_congress_number(cls):
+        current_date = datetime.now().date()
+        congress_obj = cls.objects.filter(
+            start_date__lte=current_date,
+            end_date__gte=current_date
+        ).first()
+        return congress_obj.congress_number if congress_obj else None
+    @classmethod
+    def get_current_congress_object(cls):
         current_date = datetime.now().date()
         return cls.objects.filter(
             start_date__lte=current_date,
             end_date__gte=current_date
         ).first()
-    
     def __str__(self):
         return f"Congress {self.congress_number} ({self.start_date} - {self.end_date})"
 
