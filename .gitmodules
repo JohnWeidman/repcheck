@@ -1,3 +1,3 @@
-[submodule "data/congress-legislators"]
-	path = data/congress-legislators
+[submodule "data/congress-submodule"]
+	path = data/congress-submodule
 	url = https://github.com/unitedstates/congress-legislators.git
