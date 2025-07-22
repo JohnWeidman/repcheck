@@ -10,7 +10,7 @@ class Congress(models.Model):
     end_date = models.DateField()
 
     class Meta:
-        ordering = ["congress_number"]
+        ordering = ["-congress_number"]
         verbose_name_plural = "Congresses"
         
     @classmethod
