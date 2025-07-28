@@ -8,7 +8,6 @@
             <div class="md:m-8 p-4 rounded-lg  bg-zinc-200 border-2 border-base-200 shadow-xl hover:shadow-2xl transition-shadow duration-300 sm:max-w-full text-center justify-self-center items-center mx-auto">
                 <div class="drop-shadow-xl shadow-black">
                     <h2 class="text-4xl font-bold p-4">Current Congress</h2>
-                    <p>{{ current_congress }}</p>
                     <h2 class="text-2xl font-bold p-4">Select a Chamber</h2>
                     {% comment %}
                     Make it so that the buttons are the color that corresponds
@@ -18,14 +17,14 @@
                         <button hx-get="{% url 'house' %}"
                                 hx-target="#content"
                                 hx-push-url="true"
-                                hx-vals='js:{"congress": 119}'
+                                hx-vals='js:{"congress": {{ current_congress.id }} }'
                                 class="btn btn-accent btn-lg">
                             <span class="text-2xl text-black">House</span>
                         </button>
                         <button hx-get="{% url 'senate' %}"
                                 hx-target="#content"
                                 hx-push-url="true"
-                                hx-vals='js:{"congress": 119}'
+                                hx-vals='js:{"congress": {{ current_congress.id }} }'
                                 class="btn btn-accent btn-lg">
                             <span class="text-2xl text-black">Senate</span>
                         </button>

@@ -4,7 +4,7 @@
     <div class="badge badge-outline">Congress {{ bill.congress }}</div>
     <div class="badge badge-secondary">{{ bill.originChamber }}</div>
     {% if bill.policyArea %}<div class="badge badge-accent">{{ bill.policyArea.name }}</div>{% endif %}
-    {% if db_bill.tags %}<div>{{ db_bill.tags }}</div>{% endif %}
+    {% comment %} {% if db_bill.tags %}<div>{{ db_bill.tags }}</div>{% endif %} {% endcomment %}
     {% if bill.laws %}
         {% for law in bill.laws %}<div class="badge badge-success">{{ law.type }} {{ law.number }}</div>{% endfor %}
     {% endif %}
@@ -85,10 +85,17 @@
         </div>
     </div>
 </div>
-<div class="mt-4">
+{% if db_bill.gemini_summary %}
+    <div class="mt-4">
         <h3 class="text-xl font-bold mb-2">Summary</h3>
-        <p class="p-3 text-md">{{ db_bill.gemini_summary|striptags|safe }}</p>
+        <p class="p-3 text-md">{{ db_bill.gemini_summary }}</p>
     </div>
+{% else %}
+    <div class="mt-4">
+        <h3 class="text-xl font-bold mb-2">Summary</h3>
+        <p class="p-3 text-md">No summary available</p>
+    </div>
+{% endif %}
 {% if bill.constitutionalAuthorityStatementText %}
     <div class="mt-4">
         <h3 class="text-xl font-bold mb-2">Constitutional Authority</h3>
@@ -119,7 +126,6 @@
                     {% for estimate in bill.cboCostEstimates %}
                         <li>
                             <a href="{{ estimate.url }}" target="_blank" class="link">{{ estimate.title }}</a>
-                            ({{ estimate.pubDate|date:"M d, Y" }})
                         </li>
                     {% endfor %}
                 </ul>
@@ -127,7 +133,7 @@
                 <p class="text-md">No CBO cost estimates available</p>
             {% endif %}
             {% if db_bill.full_text_url %}
-            <a href="{{ db_bill.full_text_url }}" class="underline" target="_blank">Full Text</a>
+                <a href="{{ db_bill.full_text_url }}" class="link" target="_blank">Full Text</a>
             {% endif %}
         </div>
     </div>

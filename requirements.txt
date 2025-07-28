@@ -1,6 +1,7 @@
-celery==5.4.0
+celery[redis]==5.4.0
 cookiecutter==2.6.0
 django-browser-reload==1.17.0
+django-celery-beat
 django-tailwind==3.8.0
 Django==5.1.6
 djlint==1.36.4

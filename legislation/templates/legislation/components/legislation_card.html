@@ -9,10 +9,6 @@
             <div class="badge badge-outline">Congress {{ legislation.congress }}</div>
             {% if legislation.policyArea %}<div class="badge badge-accent">{{ legislation.policyArea.name }}</div>{% endif %}
         </div>
-        {% if legislation.summary %}
-            <p class="text-sm opacity-75">{{ legislation.summary.text|truncatechars:150 }}</p>
-        {% endif %}
-        <div class="flex-grow"></div>
         <div class="card-actions justify-between items-center mt-4 relative">
             <div class="text-sm">
                 {% if legislation.sponsors %}

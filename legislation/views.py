@@ -169,7 +169,7 @@ def legislation_landing_page(request):
 
 
 @require_http_methods(["GET"])
-@cache_page(CACHE_TIMEOUT)
+# @cache_page(CACHE_TIMEOUT)
 def bill_details_htmx(request):
     """HTMX endpoint to fetch and render detailed bill information"""
     api_url = request.GET.get("url")
@@ -194,10 +194,13 @@ def bill_details_htmx(request):
         response.raise_for_status()
 
         bill_data = response.json().get("bill", {})
-        db_bill = Bills.objects.get(
-            bill_number=bill_data.get("number"),
-            congress__congress_number=bill_data.get("congress"),
-        )
+        try:
+            db_bill = Bills.objects.get(
+                bill_number=bill_data.get("number"),
+                congress__congress_number=bill_data.get("congress"),
+            )
+        except Bills.DoesNotExist:
+            db_bill = None
 
         if "sponsors" in bill_data:
             for sponsor in bill_data["sponsors"]:

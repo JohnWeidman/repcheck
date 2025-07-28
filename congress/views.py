@@ -8,7 +8,7 @@ from django.views.decorators.cache import cache_page
 
 
 def congress(request):
-    current_congress = Congress.get_current_congress()
+    current_congress = Congress.get_current_congress_object()
     context = {
         "congresses": Congress.objects.all(),
         "current_congress" : current_congress

@@ -14,6 +14,7 @@ from pathlib import Path
 from shutil import which
 import os
 from dotenv import load_dotenv
+from celery.schedules import crontab
 
 load_dotenv()
 
@@ -61,6 +62,7 @@ INSTALLED_APPS = [
     'citizens',
     'congress',
     'legislation',
+    'django_celery_beat',
 ]
 
 CACHES = {
@@ -68,7 +70,7 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
         'LOCATION': os.getenv("REDIS_URL", "redis://localhost:6379/0"),
         'KEY_PREFIX': 'repcheck',
-        'TIMEOUT': 60 * 60 * 12,
+        'TIMEOUT': 60 * 60 * 24,  # 24 hours
     }
 }
 
@@ -154,7 +156,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'US/Eastern'
 
 USE_I18N = True
 
@@ -171,3 +173,33 @@ STATICFILES_DIRS = [BASE_DIR / "theme/static"]
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Celery Configuration
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://redis:6379/0')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+
+# Add to your existing Celery configuration
+CELERY_BEAT_SCHEDULE = {
+    'fetch-and-process-bills': {
+        'task': 'legislation.tasks.fetch_and_process_bills_task',
+        'schedule': crontab(minute="00,15,30,45"),  # Every 15 minutes
+        # Alternative schedules:
+        # 'schedule': crontab(minute=0, hour='*/6'),  # Every 6 hours
+        # 'schedule': crontab(day_of_week=1, hour=7, minute=30),  # Every Monday at 7:30 AM
+    },
+    'update-bills-cache': {
+        'task': 'core.views.update_bills_cache',
+        'schedule': crontab(minute="10,25,40,55"),  
+    },
+}
+CELERY_IMPORTS = ('legislation.tasks', 'core.views')
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+CELERY_TIMEZONE = TIME_ZONE  

@@ -62,94 +62,101 @@ def Process_with_Gemini(bills):
         print("No bills to process.")
         return
     for bill in bills:
-        congress_instance = Congress.get_current_congress_object()
-        title = bill.get("title")
-        origin_chamber = bill.get("originChamber")
-        bill_number = bill.get("number")
-        bill_type = bill.get("type").lower()
-        congress = bill.get("congress")
-        latest_action_date = bill.get("latestAction").get("actionDate") if bill.get("latestAction") else None
-        
-        text_versions_url = f"{BASE_URL}/bill/{congress}/{bill_type}/{bill_number}/text?api_key={API_KEY}&format=json"
-        print(text_versions_url)
-        text_versions_response = requests.get(text_versions_url)
-        print(text_versions_response)
-    
-        if text_versions_response.status_code != 200:
-            print(f"Error fetching text versions: {text_versions_response.status_code}")
-            continue
-      
-        text_versions_data = text_versions_response.json().get("textVersions", [])
-        print(text_versions_data)
-        if not text_versions_data:
-            print(f"No text versions found for bill {bill_number}.")
-            continue
-        
-        most_recent_version = text_versions_data[0] 
-        print(f"Most recent version for bill {bill_number}: {most_recent_version}")
-        pdf_version = next((f for f in most_recent_version.get("formats", []) if f.get("type") == "PDF"), None)
-        
-        if not pdf_version:
-            print(f"No PDF version found for bill {bill_number}.")
-            continue
-        
-        full_text_url = pdf_version.get("url")
-        
-        
-            
-        if not (bill_number and bill_type and congress):
-            print("Skipping bill due to missing information.")
-            continue
-        
-        print(f"Processing Bill: {bill_number} of Congress {congress}")
-        
-        doc_data = httpx.get(full_text_url).content
+        try:
+            congress_instance = Congress.get_current_congress_object()
+            title = bill.get("title")
+            origin_chamber = bill.get("originChamber")
+            bill_number = bill.get("number")
+            bill_type = bill.get("type").lower()
+            congress = bill.get("congress")
+            latest_action_date = (
+                bill.get("latestAction").get("actionDate")
+                if bill.get("latestAction")
+                else None
+            )
 
-        prompt = "Summarize this bill in high school level language, provide key changes and provisions. Also provide 3 tags under 25 characters each"
-        response = client.models.generate_content(
-            model="gemini-2.0-flash-lite",
-            contents=[
-                types.Part.from_bytes(data=doc_data, mime_type="application/pdf"),
-                prompt,
-            ],
-            config={
-                "response_mime_type": "application/json",
-                "response_schema": {
-                    "type": "object",
-                    "properties": {
-                        "summary": {
-                            "type": "string",
-                            "description": "A short summary of the legislation.",
-                        },
-                        "tags": {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "description": "A tag related to the legislation.",
-                            },
-                        },
-                    },
-                },
-            },
-        )
-
-        data = json.loads(response.text)
-        summary = data.get("summary")
-        tags = data.get("tags", [])
-
-        bill_obj, created = Bills.objects.update_or_create(
-            bill_number=bill_number,
-            type=bill_type,
-            defaults={
-                "gemini_summary": summary,
-                "tags": tags,
+            # Prepare default fields
+            defaults = {
                 "bill_number": bill_number,
                 "type": bill_type,
                 "congress": congress_instance,
                 "latest_action_date": latest_action_date,
                 "title": title,
                 "origin_chamber": origin_chamber,
-                "full_text_url": full_text_url,
             }
-        )
 
+            # Try to get Gemini data
+            text_versions_url = f"{BASE_URL}/bill/{congress}/{bill_type}/{bill_number}/text?api_key={API_KEY}&format=json"
+            text_versions_response = requests.get(text_versions_url)
+
+            if text_versions_response.status_code == 200:
+                text_versions_data = text_versions_response.json().get(
+                    "textVersions", []
+                )
+
+                if text_versions_data:
+                    most_recent_version = text_versions_data[0]
+                    pdf_version = next(
+                        (
+                            f
+                            for f in most_recent_version.get("formats", [])
+                            if f.get("type") == "PDF"
+                        ),
+                        None,
+                    )
+
+                    if pdf_version:
+                        full_text_url = pdf_version.get("url")
+                        defaults["full_text_url"] = full_text_url
+
+                        try:
+                            print(f"Processing Bill: {bill_number} of Congress {congress}")
+                            
+                            doc_data = httpx.get(full_text_url).content
+                            prompt = "Summarize this bill in high school level language, provide key changes and provisions. Also provide 3 tags under 25 characters each"
+                            response = client.models.generate_content(
+                                model="gemini-2.0-flash-lite",
+                                contents=[
+                                    types.Part.from_bytes(data=doc_data, mime_type="application/pdf"),
+                                    prompt,
+                                ],
+                                config={
+                                    "response_mime_type": "application/json",
+                                    "response_schema": {
+                                        "type": "object",
+                                        "properties": {
+                                            "summary": {
+                                                "type": "string",
+                                                "description": "A short summary of the legislation.",
+                                            },
+                                            "tags": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string",
+                                                    "description": "A tag related to the legislation.",
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            )
+                            # Gemini processing
+                            data = json.loads(response.text)
+
+                            defaults["gemini_summary"] = data.get("summary")
+                            defaults["tags"] = data.get("tags", [])
+
+                        except Exception as e:
+                            print(
+                                f"Error with Gemini processing for bill {bill_number}: {e}"
+                            )
+
+            # Save the bill with whatever data we have
+            bill_obj, created = Bills.objects.update_or_create(
+                bill_number=bill_number, type=bill_type, defaults=defaults
+            )
+            print(f"Successfully saved bill {bill_number} (created: {created})")
+
+        except Exception as e:
+            print(f"Unexpected error processing bill {bill_number}: {e}")
+            continue
