@@ -47,14 +47,15 @@ CONGRESS_API_KEY=os.getenv("CONGRESS_API_KEY")
 # Application definition
 
 INSTALLED_APPS = [
-    'phonenumber_field',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
     'django.core.cache',
+    'phonenumber_field',
     'tailwind',
     'theme',
     'django_browser_reload',

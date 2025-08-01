@@ -10,7 +10,6 @@ import logging
 import time
 import urllib.parse
 from datetime import datetime, timedelta
-from django.conf import settings
 from .models import Bills
 from congress.models import Congress
 
