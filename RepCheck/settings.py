@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.postgres',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
     'django.core.cache',
     'tailwind',
     'theme',
