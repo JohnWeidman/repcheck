@@ -69,8 +69,8 @@ def house_not_home(request):
         )
 
         if search_query:
-            vector = SearchVector("name", "state", "party", "district", config="english")
-            query = SearchQuery(search_query, config="english")
+            vector = SearchVector("name", "state", "party", "district")
+            query = SearchQuery(search_query)
             house_members = house_members.annotate(search=vector).filter(search=query)
 
         house_members = house_members.order_by(*order_by)
@@ -161,8 +161,8 @@ def i_am_the_senate(request):
 
         if search_query:
             senate_members = senate_members.annotate(
-                search=SearchVector("name", "state", "party", config="english")
-            ).filter(search=SearchQuery(search_query, config="english"))
+                search=SearchVector("name", "state", "party")
+            ).filter(search=SearchQuery(search_query))
 
         senate_members = senate_members.order_by(*order_by)
         cache_data = {"queryset": list(senate_members)}
