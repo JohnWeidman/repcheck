@@ -3810,6 +3810,10 @@ html:has(.drawer-toggle:checked) {
   width: 12rem;
 }
 
+.w-52 {
+  width: 13rem;
+}
+
 .w-60 {
   width: 15rem;
 }
@@ -3820,6 +3824,10 @@ html:has(.drawer-toggle:checked) {
 
 .w-screen {
   width: 100vw;
+}
+
+.min-w-96 {
+  min-width: 24rem;
 }
 
 .max-w-4xl {
@@ -4018,6 +4026,11 @@ html:has(.drawer-toggle:checked) {
   border-width: 2px;
 }
 
+.border-base-100 {
+  --tw-border-opacity: 1;
+  border-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-border-opacity, 1)));
+}
+
 .border-base-200 {
   --tw-border-opacity: 1;
   border-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity, 1)));
@@ -4144,6 +4157,10 @@ html:has(.drawer-toggle:checked) {
   padding: 2rem;
 }
 
+.p-10 {
+  padding: 2.5rem;
+}
+
 .px-12 {
   padding-left: 3rem;
   padding-right: 3rem;
@@ -4258,6 +4275,11 @@ html:has(.drawer-toggle:checked) {
 .text-black {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity, 1));
+}
+
+.text-blue-500 {
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity, 1));
 }
 
 .text-blue-600 {

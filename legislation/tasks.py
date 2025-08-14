@@ -61,7 +61,7 @@ def fetch_bills_from_api():
     to_datetime_encoded = urllib.parse.quote(to_datetime)
 
     while True:
-        url = f"{BASE_URL}/bill?format=json&fromDateTime={from_datetime_encoded}&toDateTime={to_datetime_encoded}&api_key={API_KEY}&offset={offset}&limit={limit}"
+        url = f"{BASE_URL}/bill/119?format=json&fromDateTime={from_datetime_encoded}&toDateTime={to_datetime_encoded}&api_key={API_KEY}&offset={offset}&limit={limit}"
 
         logger.info(f"Fetching bills from {from_datetime} to {to_datetime}")
         response = requests.get(url)
