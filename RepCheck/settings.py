@@ -157,7 +157,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'US/Eastern'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 
@@ -198,6 +198,10 @@ CELERY_BEAT_SCHEDULE = {
     'update-bills-cache': {
         'task': 'core.views.update_bills_cache',
         'schedule': crontab(minute="10,25,40,55"),  
+    },
+    'fetch-daily-congress-record': {
+        'task': 'core.tasks.fetch_daily_congress_record',
+        'schedule': crontab(hour="*/1"),  # Every hour
     },
 }
 CELERY_IMPORTS = ('legislation.tasks', 'core.views')

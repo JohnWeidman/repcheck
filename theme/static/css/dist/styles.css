@@ -4133,6 +4133,10 @@ html:has(.drawer-toggle:checked) {
   padding: 0px;
 }
 
+.p-10 {
+  padding: 2.5rem;
+}
+
 .p-2 {
   padding: 0.5rem;
 }
@@ -4155,10 +4159,6 @@ html:has(.drawer-toggle:checked) {
 
 .p-8 {
   padding: 2rem;
-}
-
-.p-10 {
-  padding: 2.5rem;
 }
 
 .px-12 {

@@ -16,29 +16,34 @@ API_KEY = os.getenv("CONGRESS_API_KEY")
 BASE_URL = "https://api.congress.gov/v3"
 
 
-
 @shared_task
 def fetch_daily_congress_record():
-        url = (f"{BASE_URL}/daily-congressional-record/?limit=1&api_key={API_KEY}&format=json")
-        response = requests.get(url)
-        if response.status_code == 200:
-            print("Successfully fetched most recent congressional record date")
-            data = response.json()
-            if data:
-                date = data["dailyCongressionalRecord"][0]["issueDate"]
-                print(f"Most recent congressional record date: {date}")
-                cleaned_date = date.split("T")[0]
-                year, month, day = cleaned_date.split("-")
-                print(f"Most recent congressional record date: {year}-{month}-{day}")
+    url = (
+        f"{BASE_URL}/daily-congressional-record/?limit=1&api_key={API_KEY}&format=json"
+    )
+    response = requests.get(url)
+    if response.status_code == 200:
+        print("Successfully fetched most recent congressional record date")
+        data = response.json()
+        if data:
+            date = data["dailyCongressionalRecord"][0]["issueDate"]
+            print(f"Most recent congressional record date: {date}")
+            
+            cleaned_date = date.split("T")[0]
+            year, month, day = cleaned_date.split("-")
+            print(f"Most recent congressional record date: {year}-{month}-{day}")
+            # Check if the record already exists
+            existing_record = DailyCongressRecord.objects.filter(issue_date=cleaned_date).first()
+            if existing_record:
+                print(f"Record for {cleaned_date} already exists in the database.")
+                return
+            elif not existing_record:
                 url = f"{BASE_URL}/congressional-record/?y={year}&m={month}&d={day}&api_key={API_KEY}&format=json"
                 second_response = requests.get(url)
                 if second_response.status_code == 200:
-                    print("testes")
                     data = second_response.json()
                     if data:
-                        record_url = data["Results"]["Issues"][0]["Links"]["Digest"]["PDF"][
-                            0
-                        ]["Url"]
+                        record_url = data["Results"]["Issues"][0]["Links"]["Digest"]["PDF"][0]["Url"]
                         try:
                             doc_data = httpx.get(record_url).content
                             prompt = "Summarize the daily congressional digest in plain (high school level) language. Do not use technical jargon. The summary should be concise and easy to understand."
@@ -74,15 +79,22 @@ def fetch_daily_congress_record():
                             summary = data.get("summary", "No summary available")
                             print(f"Summary: {summary}")
                             url = record_url
+                            # Save the record to the database
+                            DailyCongressRecord.objects.create(
+                                issue_date=cleaned_date,
+                                summary=summary,
+                                pdf_url=url
+                            )
                         except Exception as e:
                             print(f"Error generating summary: {e}")
                             url = "fubar"
-                    else:
-                        url = "fubar"
                 else:
-                    print("Failed to fetch congressional record details")
-        else:
-            print(
-                " Failed to fetch most recent congressional record date",
-                response.status_code,
-            )
+                    url = "fubar"
+            else:
+                print("No data found for the specified date.")
+                url = "fubar"
+    else:
+        print(
+            " Failed to fetch most recent congressional record date",
+            response.status_code,
+        )
