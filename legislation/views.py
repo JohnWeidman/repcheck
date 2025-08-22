@@ -196,6 +196,7 @@ def bill_details_htmx(request):
         bill_data = response.json().get("bill", {})
         try:
             db_bill = Bills.objects.get(
+                origin_chamber=bill_data.get("type").lower(),
                 bill_number=bill_data.get("number"),
                 congress__congress_number=bill_data.get("congress"),
             )

@@ -191,9 +191,6 @@ CELERY_BEAT_SCHEDULE = {
     'fetch-and-process-bills': {
         'task': 'legislation.tasks.fetch_and_process_bills_task',
         'schedule': crontab(minute="00,15,30,45"),  # Every 15 minutes
-        # Alternative schedules:
-        # 'schedule': crontab(minute=0, hour='*/6'),  # Every 6 hours
-        # 'schedule': crontab(day_of_week=1, hour=7, minute=30),  # Every Monday at 7:30 AM
     },
     'update-bills-cache': {
         'task': 'core.views.update_bills_cache',
@@ -201,7 +198,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     'fetch-daily-congress-record': {
         'task': 'core.tasks.fetch_daily_congress_record',
-        'schedule': crontab(hour="*/1"),  # Every hour
+        'schedule': crontab(hour="*/1", minute="31"),  # Every hour
     },
 }
 CELERY_IMPORTS = ('legislation.tasks', 'core.views')
