@@ -5,76 +5,55 @@
         <h1 class="text-3xl mt-24 font-bold md:text-5xl m-2 text-nowrap">Welcome to Congress</h1>
     </div>
     <div class="max-w-4xl mx-auto p-4 mt-10">
-        <h1 class="text-center text-3xl font-bold">The Bicameral Legislature System of the US Federal Government</h1>
-        <p class="text-xl mt-6 text-center">
+        <h1 class="text-center">The Bicameral Legislature System of the US Federal Government</h1>
+        <p>
             The United States federal government uses a <strong>bicameral legislature system</strong>, which means Congress is divided into two separate chambers: the <strong>House of Representatives</strong> and the <strong>Senate</strong>. This two-house structure was created by the Founding Fathers as a compromise between large and small states during the Constitutional Convention in 1787.
         </p>
-        <div class="collapse collapse-arrow border-base-300 bg-zinc-200 border  m-6 p-4 mx-auto rounded-lg"
-             tabindex="0">
-            <div class="collapse-title">
-                <h2 class="text-center text-2xl font-bold">The House of Representatives</h2>
-            </div>
-            <div class="collapse-content text-xl">
-                <p>
-                    The House of Representatives, often called "the House," has <strong>435 members</strong> who serve <strong>two-year terms</strong>. Representation is based on each state's population, so states with more people get more representatives. For example, California has 52 representatives while Wyoming has just one. House members must be at least <strong>25 years old</strong> and are considered closer to the people since they represent smaller districts and face elections more frequently.
-                </p>
-            </div>
+        <div class="collapse collapse-arrow border-base-300 bg-zinc-200 border m-4 mx-auto" tabindex="0">
+            <h2 class="collaps-title text-center">The House of Representatives</h2>
+            <p class="collapse-content ease-in-out duration-300">
+                The House of Representatives, often called "the House," has <strong>435 members</strong> who serve <strong>two-year terms</strong>. Representation is based on each state's population, so states with more people get more representatives. For example, California has 52 representatives while Wyoming has just one. House members must be at least <strong>25 years old</strong> and are considered closer to the people since they represent smaller districts and face elections more frequently.
+            </p>
         </div>
-        <div class="collapse collapse-arrow border-base-300 bg-zinc-200 border  m-6 p-4 mx-auto rounded-lg"
-             tabindex="0">
-            <div class="collapse-title">
-                <h2 class="text-center text-2xl font-bold">The Senate</h2>
-            </div>
-            <p class="collapse-content text-xl">
+        <div class="collapse collapse-arrow border-base-300 bg-zinc-200 border m-4 mx-auto" tabindex="0">
+            <h2 class="collaps-title text-center">The Senate</h2>
+            <p class="collapse-content">
                 The Senate has exactly <strong>100 members</strong>, with each state getting <strong>two senators</strong> regardless of population size. This means Wyoming has the same number of senators as California. Senators serve <strong>six-year terms</strong> and must be at least <strong>30 years old</strong>. The Senate was designed to give smaller states equal voice and to be a more deliberative, stable body.
             </p>
         </div>
-        <div class="collapse collapse-arrow border-base-300 bg-zinc-200 border  m-6 p-4 mx-auto rounded-lg"
-             tabindex="0">
-            <div class="collapse-title">
-                <h2 class="text-center text-2xl font-bold">How the System Works</h2>
-            </div>
-            <p class="collapse-content text-xl">
+        <div class="collapse collapse-arrow border-base-300 bg-zinc-200 border m-4 mx-auto" tabindex="0">
+            <h2 class="collaps-title text-center">How the System Works</h2>
+            <p class="collapse-content">
                 Both chambers must pass identical versions of a bill before it can become law. This system creates checks and balances within Congress itself. The House, being larger and more responsive to population changes, often reflects current public opinion more quickly. The Senate, with its equal representation and longer terms, provides stability and protects minority interests.
             </p>
         </div>
-        <div class="collapse collapse-arrow border-base-300 bg-zinc-200 border m-6 p-4 mx-auto rounded-lg"
-             tabindex="0">
-            <div class="collapse-title">
-                <h2 class="text-center text-2xl font-bold">Unique Powers</h2>
-            </div>
+        <div class="collapse collapse-arrow border-base-300 bg-zinc-200 border m-4 mx-auto" tabindex="0">
+            <h2 class="collaps-title text-center">Unique Powers</h2>
             <p class="collapse-content">
                 Each chamber also has unique powers. Only the House can introduce <em>spending bills</em>, while only the Senate confirms <em>presidential appointments</em> like Supreme Court justices and cabinet members. This bicameral system ensures that legislation must have broad support and prevents any single region or interest group from dominating the federal government.
             </p>
         </div>
     </div>
-    <div class="flex justify-center items-center mt-10">
-        <h1 class="text-3xl mx-auto ">Click below for more information about either chamber!</h1>
-    </div>
     <div class="flex flex-col md:flex-row justify-center items-center gap-10 mt-10 mb-10">
         <div class="relative text-center">
-            <a class="text-8xl  font-bold" href="https://en.wikipedia.org/wiki/United_States_House_of_Representatives" target="_blank">
-                <img src="{% static "/theme/images/house-of-reps.jpeg" %}"
-                     alt="Chamber of the House of Representatives"
-                     height=""
-                     width="500"
-                     class="rounded-lg">
-                <div class="absolute top-28 left-20 bg-info bg-opacity-85 text-white pt-4 px-6 rounded-lg flex items-center justify-center">
-                    House
-                </div>
-            </a>
+            <img src="{% static "/theme/images/house-of-reps.jpeg" %}"
+                 alt="Chamber of the House of Representatives"
+                 height=""
+                 width="500"
+                 class="rounded-lg">
+            <div class="absolute top-28 left-20 bg-black bg-opacity-60 text-white pt-4 px-6 rounded-md flex items-center justify-center">
+                <a class="text-8xl font-bold" href="">House</a>
+            </div>
         </div>
         <div class="relative text-center">
-            <a class="text-8xl  font-bold" href="https://en.wikipedia.org/wiki/United_States_Senate" target="_blank">
-                <img src="{% static "/theme/images/us-senate-chambers.jpg" %}"
-                     alt="Chamber of the Senate"
-                     height=""
-                     width="490"
-                     class="rounded-lg">
-                <div class="absolute top-28 left-20 bg-info bg-opacity-85 text-white pt-4 px-6 rounded-lg flex items-center justify-center">
-                    Senate
-                </div>
-            </a>
+            <img src="{% static "/theme/images/us-senate-chambers.jpg" %}"
+                 alt="Chamber of the Senate"
+                 height=""
+                 width="490"
+                 class="rounded-lg">
+            <div class="absolute top-28 left-20 bg-black bg-opacity-60 text-white pt-4 px-6 rounded-md flex items-center justify-center">
+                <a class="text-8xl font-bold" href="">Senate</a>
+            </div>
         </div>
     </div>
     <section class="flex flex-wrap items-center justify-center mx-auto p-4 gap-10 rounded-lg">
