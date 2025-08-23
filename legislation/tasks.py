@@ -38,7 +38,7 @@ def fetch_and_process_bills_task():
             return "No bills data retrieved"
 
     except Exception as e:
-        logger.error(f"Error in fetch_and_process_bills_task: {str(e)}")
+        logger.error(f"Error in fetch_and_process_bills_task: {e}")
         raise
 
 
