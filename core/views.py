@@ -3,7 +3,6 @@ from django.views.decorators.cache import cache_page
 import requests
 import os
 from dotenv import load_dotenv
-import time
 
 load_dotenv()
 # Create your views here.
