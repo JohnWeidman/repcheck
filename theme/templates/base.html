@@ -63,29 +63,29 @@
                 <div class="bg-info text-white font-bold text-xl min-h-full w-60 flex flex-col z-40">
                     <nav class="flex-grow">
                         <span class="text-7xl">Menu</span>
-                        <ul class="menu p-0">
+                        <ul class="menu p-0 text-black">
                             <li>
-                                <a class="bg-green-600 rounded-none px-4 py-3"
+                                <a class="bg-green-600 rounded-none px-4 py-3 hover:text-white"
                                    href="{% url 'landing_page' %}">Home</a>
                             </li>
                             <li>
-                                <a class="bg-neutral rounded-none px-4 py-3"
+                                <a class="bg-neutral rounded-none px-4 py-3 hover:text-white"
                                 href="{% url 'citizen_resources' %}">Citizens</a>
                             </li>
                             <li>
-                                <a class="bg-secondary rounded-none px-4 py-3"
+                                <a class="bg-secondary rounded-none px-4 py-3 hover:text-white"
                                 href="{% url 'congress' %}">Congress</a>
                             </li>
                             <li>
-                                <a class="bg-primary rounded-none px-4 py-3"
+                                <a class="bg-primary rounded-none px-4 py-3 hover:text-white"
                                 href="{% url 'legislation_landing_page' %}">Legislation</a>
                             </li>
                             {% if logged_in %}
                             <li>
-                                <a class="bg-accent rounded-none px-4 py-3" href="{% url 'home' %}">Profile</a>
+                                <a class="bg-accent rounded-none px-4 py-3 hover:text-white" href="{% url 'home' %}">Profile</a>
                             </li>
                             <li>
-                                <a class="bg-base-100 rounded-none px-4 py-3">Logout</a>
+                                <a class="bg-base-100 rounded-none px-4 py-3 hover:text-white">Logout</a>
                             </li>
                             {% endif %}
                         </ul>

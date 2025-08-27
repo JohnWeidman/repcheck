@@ -5,8 +5,8 @@
         <h1 class="text-3xl mt-24 font-bold md:text-5xl m-2 text-nowrap">Welcome to Congress</h1>
     </div>
     <div class="max-w-4xl mx-auto p-4 mt-10">
-        <h1 class="text-center">The Bicameral Legislature System of the US Federal Government</h1>
-        <p>
+        <h1 class="text-center text-3xl font-bold">The Bicameral Legislature System of the US Federal Government</h1>
+        <p class="text-xl mt-6 text-center">
             The United States federal government uses a <strong>bicameral legislature system</strong>, which means Congress is divided into two separate chambers: the <strong>House of Representatives</strong> and the <strong>Senate</strong>. This two-house structure was created by the Founding Fathers as a compromise between large and small states during the Constitutional Convention in 1787.
         </p>
         <div class="collapse collapse-arrow border-base-300 bg-zinc-200 border  m-6 p-4 mx-auto rounded-lg"
@@ -38,8 +38,11 @@
                 Both chambers must pass identical versions of a bill before it can become law. This system creates checks and balances within Congress itself. The House, being larger and more responsive to population changes, often reflects current public opinion more quickly. The Senate, with its equal representation and longer terms, provides stability and protects minority interests.
             </p>
         </div>
-        <div class="collapse collapse-arrow border-base-300 bg-zinc-200 border m-4 mx-auto" tabindex="0">
-            <h2 class="collaps-title text-center">Unique Powers</h2>
+        <div class="collapse collapse-arrow border-base-300 bg-zinc-200 border m-6 p-4 mx-auto rounded-lg"
+             tabindex="0">
+            <div class="collapse-title">
+                <h2 class="text-center text-2xl font-bold">Unique Powers</h2>
+            </div>
             <p class="collapse-content">
                 Each chamber also has unique powers. Only the House can introduce <em>spending bills</em>, while only the Senate confirms <em>presidential appointments</em> like Supreme Court justices and cabinet members. This bicameral system ensures that legislation must have broad support and prevents any single region or interest group from dominating the federal government.
             </p>
@@ -50,7 +53,7 @@
     </div>
     <div class="flex flex-col md:flex-row justify-center items-center gap-10 mt-10 mb-10">
         <div class="relative text-center">
-            <a class="text-8xl  font-bold" href="">
+            <a class="text-8xl  font-bold" href="https://en.wikipedia.org/wiki/United_States_House_of_Representatives" target="_blank">
                 <img src="{% static "/theme/images/house-of-reps.jpeg" %}"
                      alt="Chamber of the House of Representatives"
                      height=""
@@ -62,7 +65,7 @@
             </a>
         </div>
         <div class="relative text-center">
-            <a class="text-8xl  font-bold" href="">
+            <a class="text-8xl  font-bold" href="https://en.wikipedia.org/wiki/United_States_Senate" target="_blank">
                 <img src="{% static "/theme/images/us-senate-chambers.jpg" %}"
                      alt="Chamber of the Senate"
                      height=""
@@ -72,28 +75,6 @@
                     Senate
                 </div>
             </a>
-    <div class="flex flex-col md:flex-row justify-center items-center gap-10 mt-10 mb-10">
-        <div class="relative text-center">
-            <a class="text-8xl  font-bold" href="">
-                <img src="{% static "/theme/images/house-of-reps.jpeg" %}"
-                     alt="Chamber of the House of Representatives"
-                     height=""
-                     width="500"
-                     class="rounded-lg">
-                <div class="absolute top-28 left-20 bg-info bg-opacity-85 text-white pt-4 px-6 rounded-lg flex items-center justify-center">
-                    House
-                </div>
-            </a>
-        </div>
-        <div class="relative text-center">
-            <img src="{% static "/theme/images/us-senate-chambers.jpg" %}"
-                 alt="Chamber of the Senate"
-                 height=""
-                 width="490"
-                 class="rounded-lg">
-            <div class="absolute top-28 left-20 bg-black bg-opacity-60 text-white pt-4 px-6 rounded-md flex items-center justify-center">
-                <a class="text-8xl font-bold" href="">Senate</a>
-            </div>
         </div>
     </div>
     <section class="flex flex-wrap items-center justify-center mx-auto p-4 gap-10 rounded-lg">
