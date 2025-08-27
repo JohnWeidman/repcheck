@@ -4135,11 +4135,6 @@ html:has(.drawer-toggle:checked) {
   border-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity, 1)));
 }
 
-.border-base-300 {
-  --tw-border-opacity: 1;
-  border-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-border-opacity, 1)));
-}
-
 .bg-accent {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-a,oklch(var(--a)/var(--tw-bg-opacity, 1)));
@@ -4220,6 +4215,7 @@ html:has(.drawer-toggle:checked) {
   --tw-bg-opacity: 0.8;
 }
 
+<<<<<<< HEAD
 .bg-opacity-85 {
   --tw-bg-opacity: 0.85;
 }
@@ -4228,6 +4224,8 @@ html:has(.drawer-toggle:checked) {
   --tw-bg-opacity: 0.6;
 }
 
+=======
+>>>>>>> 20e4cda (Fixed logic of is_current in membership model)
 .bg-gradient-to-t {
   background-image: linear-gradient(to top, var(--tw-gradient-stops));
 }
@@ -4295,6 +4293,7 @@ html:has(.drawer-toggle:checked) {
   padding-bottom: 2rem;
 }
 
+<<<<<<< HEAD
 .px-6 {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
@@ -4304,6 +4303,8 @@ html:has(.drawer-toggle:checked) {
   padding-top: 1rem;
 }
 
+=======
+>>>>>>> 20e4cda (Fixed logic of is_current in membership model)
 .text-center {
   text-align: center;
 }
@@ -4467,6 +4468,7 @@ html:has(.drawer-toggle:checked) {
 
 .transition-shadow {
   transition-property: box-shadow;
+<<<<<<< HEAD
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -4475,6 +4477,8 @@ html:has(.drawer-toggle:checked) {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+=======
+>>>>>>> 20e4cda (Fixed logic of is_current in membership model)
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -4559,12 +4563,6 @@ html:has(.drawer-toggle:checked) {
     cursor: default;
     background-color: transparent;
   }
-}
-
-.hover\:scale-105:hover {
-  --tw-scale-x: 1.05;
-  --tw-scale-y: 1.05;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .hover\:bg-secondary:hover {
