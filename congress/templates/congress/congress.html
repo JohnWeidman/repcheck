@@ -1,10 +1,11 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
-    <div class="m-10 card bg-zinc-200 rounded-lg drop-shadow-xl shadow-black">
+    <div>
         <div class="flex justify-center items-center">
             <h1 class="text-3xl mt-24 font-bold md:text-5xl m-2 text-nowrap">Welcome to Congress</h1>
         </div>
-        <div class="flex justify-center items-center bg-zinc-200 p-6 rounded-lg border-2 border-base-200 shadow-xl md:w-1/2 w-11/12 mx-auto mt-10">
+        <div class="flex justify-center items-center bg-zinc-200 bg-opacity-90 p-6 rounded-lg border-2 border-base-200 shadow-xl md:w-1/2 w-11/12 mx-auto mt-10">
             <div class="max-w-4xl mx-auto p-6">
                 <h1 class="text-center text-3xl font-bold">The Bicameral Legislature System of the US Federal Government</h1>
                 <p class="text-xl mt-6 text-center">
@@ -90,36 +91,36 @@
         <section class="flex flex-wrap items-center justify-center mx-auto p-6 gap-10 rounded-lg">
             <div class="md:m-8 p-6 rounded-lg md:w-1/2 w-full h-72 bg-zinc-200 border-2 border-base-200 shadow-xl hover:shadow-2xl transition-shadow duration-300 text-center justify-self-center items-center mx-auto">
                 <div class="drop-shadow-xl shadow-black">
-                    <h2 class="text-4xl font-bold p-4">Current Congress</h2>
-                    <h2 class="text-2xl font-bold p-4">Select a Chamber</h2>
+                    <h2 class="text-4xl font-bold p-6">Current Congress</h2>
+                    <h2 class="text-2xl font-bold p-6">Select a Chamber</h2>
                     {% comment %}
                     Make it so that the buttons are the color that corresponds
                     to the party that has a majority in each branch
                     {% endcomment %}
-                    <div class="flex justify-center items-center gap-4">
+                    <div class="flex justify-center items-center gap-6">
                         <button hx-get="{% url 'house' %}"
                                 hx-target="#content"
                                 hx-push-url="true"
                                 hx-vals='js:{"congress": 119}'
-                                class="btn btn-accent btn-lg">
+                                class="btn btn-accent btn-lg transition ease-in-out duration-300 hover:scale-105">
                             <span class="text-2xl text-black">House</span>
                         </button>
                         <button hx-get="{% url 'senate' %}"
                                 hx-target="#content"
                                 hx-push-url="true"
                                 hx-vals='js:{"congress": 119}'
-                                class="btn btn-accent btn-lg">
+                                class="btn btn-accent btn-lg transition ease-in-out duration-300 hover:scale-105">
                             <span class="text-2xl text-black">Senate</span>
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="md:m-8 p-4 rounded-lg bg-zinc-200 border-2 border-base-200 shadow-xl hover:shadow-2xl transition-shadow duration-300 sm:max-w-full text-center justify-self-center items-center mx-auto">
+            <div class="md:m-8 p-6 rounded-lg md:w-1/2 w-full bg-zinc-200 border-2 border-base-200 shadow-xl hover:shadow-2xl transition-shadow duration-300 sm:max-w-full text-center justify-self-center items-center mx-auto">
                 <div class="drop-shadow-xl shadow-black">
-                    <h2 class="text-4xl font-bold p-4">Historical Congresses</h2>
-                    <div class="flex justify-center items-center p-4">
+                    <h2 class="text-4xl font-bold p-6">Historical Congresses</h2>
+                    <div class="flex justify-center items-center p-6">
                         <form id="congress_select">
-                            <select class="select select-bordered bg-secondary select-lg w-full max-w-xs"
+                            <select class="select select-bordered bg-zinc-200 select-lg w-full max-w-xs"
                                     name="congress"
                                     id="congress"
                                     required>
@@ -134,25 +135,27 @@
                             </select>
                         </form>
                     </div>
-                    <h2 class="text-2xl font-bold p-4">Select a Chamber</h2>
-                    <div class="flex justify-center items-center gap-4">
-                        <button onclick="validateAndNavigate('house')" class="btn btn-accent btn-lg">
-                            <span class="text-2xl text-black">House</span>
+                    <h2 class="text-2xl font-bold p-6">Select a Chamber</h2>
+                    <div class="flex justify-center items-center gap-6">
+                        <button onclick="validateAndNavigate('house')"
+                                class="btn btn-accent btn-lg transition ease-in-out duration-300 hover:scale-105">
+                            <span class="text-2xl text-black ">House</span>
                         </button>
-                        <button onclick="validateAndNavigate('senate')" class="btn btn-accent btn-lg">
+                        <button onclick="validateAndNavigate('senate')"
+                                class="btn btn-accent btn-lg transition ease-in-out duration-300 hover:scale-105">
                             <span class="text-2xl text-black">Senate</span>
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="md:m-8 p-4 rounded-lg  bg-zinc-200 border-2 border-base-200 shadow-xl hover:shadow-2xl transition-shadow duration-300 sm:max-w-full md:w-1/2 w-full text-center mx-auto">
-                <div class="flex flex-col justify-center items-center gap-10 p-4">
+            <div class="md:m-8 p-6 rounded-lg  bg-zinc-200 border-2 border-base-200 shadow-xl hover:shadow-2xl transition-shadow duration-300 sm:max-w-full md:w-1/2 w-full text-center mx-auto">
+                <div class="flex flex-col justify-center items-center gap-10 p-6">
                     <h2 class="text-4xl font-bold">Live Proceedings</h2>
-                    <div class="flex md:flex-row flex-col justify-center items-center h-full gap-10 p-4">
-                        <button class="btn btn-primary btn-lg">
+                    <div class="flex md:flex-row flex-col justify-center items-center h-full gap-10 p-6">
+                        <button class="btn btn-info btn-lg border-none text-white transition ease-in-out duration-300 hover:scale-105  hover:bg-secondary hover:bg-opacity-75">
                             <a href="https://live.house.gov/" target="_blank">Live House Proceedings</a>
                         </button>
-                        <button class="btn btn-primary btn-lg">
+                        <button class="btn btn-info btn-lg border-none text-white transition ease-in-out duration-300 hover:scale-105 hover:bg-secondary hover:bg-opacity-75">
                             <a href="https://www.senate.gov/legislative/floor_activity_pail.htm"
                                target="_blank">Live Senate Proceedings</a>
                         </button>
@@ -162,7 +165,7 @@
         </div>
     </section>
     <div id="alert-container"
-         class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50"></div>
+         class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50"></div>
     <script>
 function validateAndNavigate(filterType) {
     const congressSelect = document.getElementById('congress');

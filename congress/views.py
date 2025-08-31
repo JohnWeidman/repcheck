@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Congress, Member, Membership, MemberDetails
 from django.db.models import OuterRef, Subquery, Prefetch, Q
-from django.contrib.postgres.search import SearchVector, SearchQuery
+from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSimilarity
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.cache import cache
 from django.views.decorators.cache import cache_page
@@ -69,7 +69,7 @@ def house_not_home(request):
         )
 
         if search_query:
-            vector = SearchVector("name", "state", "party", "district", config="english")
+            vector = SearchVector("name", "state", "party", "district", "bioguide_id", config="english")
             query = SearchQuery(search_query, config="english")
             house_members = house_members.annotate(search=vector).filter(search=query)
 
