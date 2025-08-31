@@ -2269,6 +2269,10 @@ input.tab:checked + .tab-content,
   .btn-neutral {
     --btn-color: var(--fallback-n);
   }
+
+  .btn-info {
+    --btn-color: var(--fallback-in);
+  }
 }
 
 @supports (color: color-mix(in oklab, black, black)) {
@@ -2345,6 +2349,10 @@ input.tab:checked + .tab-content,
   .btn-neutral {
     --btn-color: var(--n);
   }
+
+  .btn-info {
+    --btn-color: var(--in);
+  }
 }
 
 .btn-accent {
@@ -2357,6 +2365,12 @@ input.tab:checked + .tab-content,
   --tw-text-opacity: 1;
   color: var(--fallback-nc,oklch(var(--nc)/var(--tw-text-opacity)));
   outline-color: var(--fallback-n,oklch(var(--n)/1));
+}
+
+.btn-info {
+  --tw-text-opacity: 1;
+  color: var(--fallback-inc,oklch(var(--inc)/var(--tw-text-opacity)));
+  outline-color: var(--fallback-in,oklch(var(--in)/1));
 }
 
 .btn.glass {
@@ -3745,6 +3759,10 @@ html:has(.drawer-toggle:checked) {
   top: 1rem;
 }
 
+.top-6 {
+  top: 1.5rem;
+}
+
 .z-40 {
   z-index: 40;
 }
@@ -3776,6 +3794,16 @@ html:has(.drawer-toggle:checked) {
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
+}
+
+.mx-1 {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.mx-10 {
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
 }
 
 .mb-1 {
@@ -3944,6 +3972,18 @@ html:has(.drawer-toggle:checked) {
 
 .w-1\/2 {
   width: 50%;
+}
+
+.w-3\/4 {
+  width: 75%;
+}
+
+.w-2\/3 {
+  width: 66.666667%;
+}
+
+.w-4\/5 {
+  width: 80%;
 }
 
 .max-w-4xl {
@@ -4142,6 +4182,10 @@ html:has(.drawer-toggle:checked) {
   border-width: 2px;
 }
 
+.border-none {
+  border-style: none;
+}
+
 .border-base-200 {
   --tw-border-opacity: 1;
   border-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity, 1)));
@@ -4211,6 +4255,11 @@ html:has(.drawer-toggle:checked) {
   background-color: rgb(228 228 231 / var(--tw-bg-opacity, 1));
 }
 
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+}
+
 .bg-opacity-20 {
   --tw-bg-opacity: 0.2;
 }
@@ -4231,6 +4280,14 @@ html:has(.drawer-toggle:checked) {
   --tw-bg-opacity: 0.85;
 }
 
+.bg-opacity-60 {
+  --tw-bg-opacity: 0.6;
+}
+
+.bg-opacity-90 {
+  --tw-bg-opacity: 0.9;
+}
+
 .bg-gradient-to-t {
   background-image: linear-gradient(to top, var(--tw-gradient-stops));
 }
@@ -4243,6 +4300,26 @@ html:has(.drawer-toggle:checked) {
 
 .from-90\% {
   --tw-gradient-from-position: 90%;
+}
+
+.from-10\% {
+  --tw-gradient-from-position: 10%;
+}
+
+.from-25\% {
+  --tw-gradient-from-position: 25%;
+}
+
+.bg-cover {
+  background-size: cover;
+}
+
+.bg-fixed {
+  background-attachment: fixed;
+}
+
+.bg-center {
+  background-position: center;
 }
 
 .p-0 {
@@ -4605,6 +4682,10 @@ html:has(.drawer-toggle:checked) {
 }
 
 @media (min-width: 768px) {
+  .md\:absolute {
+    position: absolute;
+  }
+
   .md\:top-3 {
     top: 0.75rem;
   }
@@ -4615,6 +4696,11 @@ html:has(.drawer-toggle:checked) {
 
   .md\:m-8 {
     margin: 2rem;
+  }
+
+  .md\:mx-auto {
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .md\:h-24 {
@@ -4663,6 +4749,18 @@ html:has(.drawer-toggle:checked) {
 
   .md\:from-70\% {
     --tw-gradient-from-position: 70%;
+  }
+
+  .md\:from-60\% {
+    --tw-gradient-from-position: 60%;
+  }
+
+  .md\:from-20\% {
+    --tw-gradient-from-position: 20%;
+  }
+
+  .md\:from-50\% {
+    --tw-gradient-from-position: 50%;
   }
 
   .md\:p-2 {
