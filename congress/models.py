@@ -49,8 +49,7 @@ class Membership(models.Model):
     leadership_role = models.CharField(max_length=50, null=True, blank=True)
 
     def is_current(self):
-        if self.end_year is None:
-            return True
+        return self.congress.congress_number in [119]  # TODO: Update with actual logic
 
     class Meta:
         unique_together = (

@@ -15,10 +15,7 @@ CACHE_TIMEOUT = 60 * 10  # 15 minutes
 @cache_page(CACHE_TIMEOUT)
 def home(request):
     url = f"{BASE_URL}/bill?api_key={API_KEY}&limit=12"
-<<<<<<< HEAD
     
-=======
->>>>>>> master
     try:
         response = requests.get(url)
         if response.status_code == 200:

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="flex flex-col items-center justify-center mx-auto p-4 gap-10 rounded-lg">
-    <div class="bg-zinc-200 border-base-200 border-2 rounded-lg md:w-1/2 px-12 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+  <div class="flex flex-wrap items-center justify-center mx-auto p-4 gap-10 rounded-lg">
+    <div class="bg-zinc-200 border-base-200 border-2 rounded-lg px-12 shadow-xl hover:shadow-2xl transition-shadow duration-300">
       <h1 class="text-3xl md:text-4xl mt-6 font-bold text-center">Current Congress</h1>
       <p class="text-center">
         Explore the bills and laws
@@ -13,24 +13,24 @@
                 hx-target="#content"
                 hx-push-url="true"
                 hx-vals='js:{"congress": 119}'
-                class="btn btn-info btn-lg border-none transition ease-in-out duration-300 hover:scale-105 hover:bg-secondary hover:bg-opacity-75">
-          <span class="text-2xl text-white">Bills</span>
+                class="btn btn-accent btn-lg">
+          <span class="text-2xl text-black">Bills</span>
         </button>
         <button hx-get="{% url 'laws' %}"
                 hx-target="#content"
                 hx-push-url="true"
                 hx-vals='js:{"congress": 119}'
-                class="btn btn-info btn-lg border-none transition ease-in-out duration-300 hover:scale-105 hover:bg-secondary hover:bg-opacity-75">
-          <span class="text-2xl text-white">Laws</span>
+                class="btn btn-accent btn-lg">
+          <span class="text-2xl text-black">Laws</span>
         </button>
       </div>
     </div>
-    <div class="bg-zinc-200 border-base-200 border-2 rounded-lg md:w-1/2 px-12 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+    <div class="bg-zinc-200 border-base-200 border-2 rounded-lg px-12 shadow-xl hover:shadow-2xl transition-shadow duration-300">
       <h1 class="text-3xl md:text-4xl mt-6 font-bold text-center">Historical Congresses</h1>
       <p class="text-center">Explore the bills and laws from previous Congresses</p>
       <div class="flex justify-center items-center gap-4 p-4">
         <form id="congress_select">
-          <select class="select select-bordered bg-zinc-200 select-lg w-full max-w-xs"
+          <select class="select select-bordered bg-secondary select-lg w-full max-w-xs"
                   name="congress"
                   id="congress">
             <option class="justify-center" value="">Select a Congress</option>
@@ -45,11 +45,11 @@
         </form>
       </div>
       <div class="flex justify-center items-center gap-4 p-4">
-        <button onclick="validateAndNavigate('bills')" class="btn btn-info btn-lg border-none transition ease-in-out duration-300 hover:scale-105 hover:bg-secondary hover:bg-opacity-75">
-          <span class="text-2xl text-white">Bills</span>
+        <button onclick="validateAndNavigate('bills')" class="btn btn-accent btn-lg">
+          <span class="text-2xl text-black">Bills</span>
         </button>
-        <button onclick="validateAndNavigate('laws')" class="btn btn-info btn-lg border-none transition ease-in-out duration-300 hover:scale-105 hover:bg-secondary hover:bg-opacity-75">
-          <span class="text-2xl text-white">Laws</span>
+        <button onclick="validateAndNavigate('laws')" class="btn btn-accent btn-lg">
+          <span class="text-2xl text-black">Laws</span>
         </button>
       </div>
     </div>

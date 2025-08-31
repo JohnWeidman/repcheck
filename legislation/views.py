@@ -67,18 +67,15 @@ class LegislationView(View):
             response_status = 200
         else:
             url = f"{BASE_URL}/{self.endpoint_type}/{congress_id}?api_key={API_KEY}&limit={limit}&offset={offset}"
-            try:
-                response = requests.get(url)
-                response_status = response.status_code
+            response = requests.get(url)
+            response_status = response.status_code
 
-                if response_status == 200:
-                    response_data = response.json()
-                    cache.set(api_cache_key, response_data, CACHE_TIMEOUT)
-                else:
-                    response_data = {}
-            except requests.RequestException:
-                response_status = 500
+            if response_status == 200:
+                response_data = response.json()
+                cache.set(api_cache_key, response_data, CACHE_TIMEOUT)
+            else:
                 response_data = {}
+
         if response_status == 200:
             api_key = "bills" if self.endpoint_type == "law" else self.context_key
             data = response_data.get(api_key, [])
