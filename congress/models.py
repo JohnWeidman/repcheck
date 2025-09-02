@@ -57,12 +57,14 @@ class Membership(models.Model):
     congress = models.ForeignKey(Congress, on_delete=models.CASCADE)
     chamber = models.CharField(max_length=25)
     party = models.CharField(max_length=50)
+    state= models.CharField(max_length=50, default="")
     district = models.IntegerField(null=True, blank=True)
     start_year = models.IntegerField()
     end_year = models.IntegerField(null=True, blank=True)
     sponsored_legislation_count = models.IntegerField(default=0)
     cosponsored_legislation_count = models.IntegerField(default=0)
     leadership_role = models.CharField(max_length=50, null=True, blank=True)
+    
 
     def is_current(self):
         return self.congress.congress_number in [119]  # TODO: Update with actual logic. Getting members that have died as current members

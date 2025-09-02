@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 md:gap-10 w-full justify-items-center m-4 p-4">
+        {% for result in results %}
+            {% if result.type == "member" %}
+                <div class="w-full">
+                    {% include "congress/components/member_card.html" with member=result.object %}
+                </div>
+            {% elif result.type == "bill" %}
+                <li>{% include "legislation/components/legislation_card.html" %}</li>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock content %}

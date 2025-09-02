@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.core.cache import cache
 from google import genai
 from google.genai import types
-import httpx
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from dotenv import load_dotenv
 from celery import shared_task
 import requests
@@ -10,6 +10,8 @@ import os
 import hashlib
 import json
 from .models import DailyCongressRecord
+from congress.models import Member, Congress, Membership
+from legislation.models import Bills
 
 load_dotenv()
 GEMINI_MODEL = "gemini-2.5-flash"
@@ -25,28 +27,116 @@ CACHE_TIMEOUT = 60 * 15  # 10 minutes
 def update_bills_cache(force_update=False):
     url = f"{BASE_URL}/bill?api_key={API_KEY}&limit=12"
     response = requests.get(url)
-    
+
     if response.status_code == 200:
         bills = response.json().get("bills", [])
         current_hash = hashlib.md5(
             json.dumps(bills, sort_keys=True).encode()
         ).hexdigest()
-        
+
         cached_hash = cache.get("bills_hash")
-        
+
         if force_update or current_hash != cached_hash:
             print("Cache updated with new bills data")
             cache.set("bills_data", bills, timeout=None)
             cache.set("bills_hash", current_hash, timeout=None)
             return "Cache updated"
         return "No changes"
-    
+
     return f"API Error: {response.status_code}"
 
 
 def home(request):
-    today = DailyCongressRecord.objects.order_by('-issue_date').first()
+    today = DailyCongressRecord.objects.order_by("-issue_date").first()
     summary = today.summary if today else "No summary available for today."
     url = today.pdf_url
     bills = cache.get("bills_data", [])
-    return render(request, "core/home.html", {"bills": bills, "summary": summary, "url": url})
+    return render(
+        request, "core/home.html", {"bills": bills, "summary": summary, "url": url}
+    )
+
+
+def search_page(request):
+    query = request.GET.get("q", "").strip()
+    results = []
+
+    if query:
+        search_query = SearchQuery(query)
+
+        # Search members directly
+        members = (
+            Member.objects.annotate(
+                search=SearchVector("name", "state"),
+                rank=SearchRank(SearchVector("name", "state"), search_query),
+            )
+            .filter(search=search_query)
+            .order_by("-rank")
+        )
+
+        # Add to results list with type info
+        for member in members:
+            results.append(
+                {
+                    "object": member,
+                    "type": "member",
+                    "title": member.full_name(),
+                    "pk": member.pk,
+                    "snippet": f"{member.full_name()} ({member.state})",
+                }
+            )
+
+        # Search congress sessions
+        congresses = (
+            Congress.objects.annotate(
+                search=SearchVector("congress_number"),
+                rank=SearchRank(SearchVector("congress_number"), search_query),
+            )
+            .filter(search=search_query)
+            .order_by("-rank")[:10]
+        )
+
+        for congress in congresses:
+            results.append(
+                {
+                    "object": congress,
+                    "type": "congress",
+                    "title": f"Congress {congress.congress_number}",
+                    "snippet": f"Congress {congress.congress_number} ({congress.start_date.year})",
+                }
+            )
+        # Search bills
+        bills = (
+            Bills.objects.annotate(
+                search=SearchVector("title", "gemini_summary", "type", "bill_number"),
+                rank=SearchRank(SearchVector("title", "gemini_summary", "type", "bill_number"), search_query),
+            )
+            .filter(search=search_query)
+            .order_by("-rank")[:20]
+        )
+        
+        for bill in bills:
+            results.append(
+                {
+                    "object": bill,
+                    "type": "bill",
+                    "title": bill.title,
+                    "snippet": f"{bill.bill_number}: {bill.gemini_summary}...",
+                }
+            )
+            
+        memberships = Membership.objects.annotate(
+            search=SearchVector("party", "district", "chamber", "state"),
+            rank=SearchRank(SearchVector( "party"), search_query),
+        ).filter(search=search_query).order_by("-rank")
+        
+        for membership in memberships:
+            results.append(
+                {
+                    "object": membership,
+                    "type": "membership",
+                    "title": f"{membership.member.full_name()}",
+                    "snippet": f"{membership.member.full_name()} ({membership.party})",
+                }
+            )
+
+    return render(request, "core/search.html", {"query": query, "results": results})

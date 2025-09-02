@@ -75,10 +75,11 @@
 function performSearch(event) {
     event.preventDefault(); // Prevent default form submission
     const searchValue = document.getElementById('search-input').value;
-    const currentUrl = new URL(window.location);
-    currentUrl.searchParams.set('search', searchValue);
-    currentUrl.searchParams.set('page', '1');
-    window.location.href = currentUrl.toString();
+    
+    if (searchValue.trim()) {
+        // Redirect to search page with query parameter
+        window.location.href = `/search/?q=${encodeURIComponent(searchValue)}`;
+    }
 }
-  </script>
+</script>
 {% endblock content %}
