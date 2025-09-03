@@ -82,6 +82,8 @@ def search_page(request):
                     "title": member.full_name(),
                     "pk": member.pk,
                     "snippet": f"{member.full_name()} ({member.state})",
+                    "state": member.state,
+                    
                 }
             )
 
@@ -107,11 +109,11 @@ def search_page(request):
         # Search bills
         bills = (
             Bills.objects.annotate(
-                search=SearchVector("title", "gemini_summary", "type", "bill_number"),
-                rank=SearchRank(SearchVector("title", "gemini_summary", "type", "bill_number"), search_query),
+                search=SearchVector("title", "gemini_summary", "type", "bill_number", "tags"),
+                rank=SearchRank(SearchVector("title", "gemini_summary", "type", "bill_number", "tags"), search_query),
             )
             .filter(search=search_query)
-            .order_by("-rank")[:20]
+            .order_by("-rank")
         )
         
         for bill in bills:
@@ -126,7 +128,7 @@ def search_page(request):
             
         memberships = Membership.objects.annotate(
             search=SearchVector("party", "district", "chamber", "state"),
-            rank=SearchRank(SearchVector( "party"), search_query),
+            rank=SearchRank(SearchVector( "party", "district", "chamber", "state"), search_query),
         ).filter(search=search_query).order_by("-rank")
         
         for membership in memberships:
@@ -136,6 +138,10 @@ def search_page(request):
                     "type": "membership",
                     "title": f"{membership.member.full_name()}",
                     "snippet": f"{membership.member.full_name()} ({membership.party})",
+                    "state": membership.state,
+                    "chamber": membership.chamber,
+                    "district": membership.district,
+                    "start_year": membership.start_year,
                 }
             )
 
