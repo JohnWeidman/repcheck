@@ -5,7 +5,7 @@
             {% if legislation.latestAction %}
                 <div class="badge badge-secondary">{{ legislation.latestAction.actionDate }}</div>
             {% endif %}
-            <div class="badge badge-primary">{{ legislation.type }} {{ legislation.number }}</div>
+            <div class="badge badge-primary">{{ legislation.type|upper }} {{ legislation.number }}</div>
             <div class="badge badge-outline">Congress {{ legislation.congress }}</div>
             {% if legislation.policyArea %}<div class="badge badge-accent">{{ legislation.policyArea.name }}</div>{% endif %}
         </div>

@@ -65,8 +65,8 @@ def Process_with_Gemini(bills):
         try:
             congress_instance = Congress.get_current_congress_object()
             title = bill.get("title")
-            origin_chamber = bill.get("originChamber")
-            bill_number = bill.get("number")
+            originChamber = bill.get("originChamber")
+            number = bill.get("number")
             bill_type = bill.get("type").lower()
             congress = bill.get("congress")
             latest_action_date = (
@@ -77,16 +77,16 @@ def Process_with_Gemini(bills):
 
             # Prepare default fields
             defaults = {
-                "bill_number": bill_number,
+                "number": number,
                 "type": bill_type,
                 "congress": congress_instance,
                 "latest_action_date": latest_action_date,
                 "title": title,
-                "origin_chamber": origin_chamber,
+                "originChamber": originChamber,
             }
 
             # Try to get Gemini data
-            text_versions_url = f"{BASE_URL}/bill/{congress}/{bill_type}/{bill_number}/text?api_key={API_KEY}&format=json"
+            text_versions_url = f"{BASE_URL}/bill/{congress}/{bill_type}/{number}/text?api_key={API_KEY}&format=json"
             text_versions_response = requests.get(text_versions_url)
 
             if text_versions_response.status_code == 200:
@@ -110,7 +110,7 @@ def Process_with_Gemini(bills):
                         defaults["full_text_url"] = full_text_url
 
                         try:
-                            print(f"Processing Bill: {bill_number} of Congress {congress}")
+                            print(f"Processing Bill: {number} of Congress {congress}")
                             
                             doc_data = httpx.get(full_text_url).content
                             prompt = "Summarize this bill in high school level language, provide key changes and provisions. Also provide 3 tags under 25 characters each"
@@ -148,15 +148,15 @@ def Process_with_Gemini(bills):
 
                         except Exception as e:
                             print(
-                                f"Error with Gemini processing for bill {bill_number}: {e}"
+                                f"Error with Gemini processing for bill {number}: {e}"
                             )
 
             # Save the bill with whatever data we have
             bill_obj, created = Bills.objects.update_or_create(
-                bill_number=bill_number, type=bill_type, defaults=defaults
+                number=number, type=bill_type, defaults=defaults
             )
-            print(f"Successfully saved bill {bill_number} (created: {created})")
+            print(f"Successfully saved bill {number} (created: {created})")
 
         except Exception as e:
-            print(f"Unexpected error processing bill {bill_number}: {e}")
+            print(f"Unexpected error processing bill {number}: {e}")
             continue

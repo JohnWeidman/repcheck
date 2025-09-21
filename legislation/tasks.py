@@ -140,7 +140,7 @@ def process_bills_with_gemini(self, bills):
 def process_single_bill_with_gemini(bill, client=None):
     """Process a single bill with Gemini"""
     # Initialize variables at the top to avoid reference errors
-    bill_number = "unknown"
+    number = "unknown"
     congress_number = "unknown"
 
     try:
@@ -154,14 +154,15 @@ def process_single_bill_with_gemini(bill, client=None):
         # Extract bill information
         congress_number = bill.get("congress")
         title = bill.get("title")
-        origin_chamber = bill.get("originChamber")
-        bill_number = bill.get("number")
+        originChamber = bill.get("originChamber")
+        number = bill.get("number")
         bill_type = bill.get("type").lower()
         latest_action_date = (
             bill.get("latestAction").get("actionDate")
             if bill.get("latestAction")
             else None
         )
+        url = f"api.congress.gov/v3/bill/{congress_number}/{bill_type}/{number}"
 
         # Get or create the Congress instance
         try:
@@ -169,30 +170,30 @@ def process_single_bill_with_gemini(bill, client=None):
         except Congress.DoesNotExist:
             congress_instance = Congress.objects.create(congress_number=congress_number)
             logger.info(f"Created new Congress instance for congress {congress_number}")
-
-        # Prepare default fields - USE CONGRESS ID, NOT THE INSTANCE
+            
         defaults = {
-            "bill_number": bill_number,
+            "number": number,
             "type": bill_type,
-            "congress_id": congress_instance.id,  # Use the ID, not the instance!
+            "congress_id": congress_instance.id,
             "latest_action_date": latest_action_date,
             "title": title,
-            "origin_chamber": origin_chamber,
+            "originChamber": originChamber,
+            "url": url,
         }
 
         # Check for existing bill
         existing_bill = None
         try:
             existing_bill = Bills.objects.get(
-                bill_number=bill_number,
+                number=number,
                 type=bill_type,
                 congress_id=congress_instance.id,  # Use the ID, not the instance!
             )
         except Bills.DoesNotExist:
-            logger.info(f"New bill {bill_number} - will process with Gemini")
+            logger.info(f"New bill {number} - will process with Gemini")
 
         # Use congress_number for API calls
-        text_versions_url = f"{BASE_URL}/bill/{congress_number}/{bill_type}/{bill_number}/text?api_key={API_KEY}&format=json"
+        text_versions_url = f"{BASE_URL}/bill/{congress_number}/{bill_type}/{number}/text?api_key={API_KEY}&format=json"
         text_versions_response = requests.get(text_versions_url)
 
         process_with_gemini = False
@@ -217,11 +218,11 @@ def process_single_bill_with_gemini(bill, client=None):
 
                     if existing_bill is None:
                         process_with_gemini = True
-                        logger.info(f"Processing new bill {bill_number} with Gemini")
+                        logger.info(f"Processing new bill {number} with Gemini")
                     elif existing_bill.full_text_url != current_text_url:
                         process_with_gemini = True
                         logger.info(
-                            f"Bill {bill_number} has new text version, reprocessing with Gemini"
+                            f"Bill {number} has new text version, reprocessing with Gemini"
                         )
                     else:
                         # Preserve existing Gemini data if no text changes
@@ -230,13 +231,13 @@ def process_single_bill_with_gemini(bill, client=None):
                         if existing_bill.tags:
                             defaults["tags"] = existing_bill.tags
                         logger.info(
-                            f"Bill {bill_number} already processed with same text version, skipping Gemini processing"
+                            f"Bill {number} already processed with same text version, skipping Gemini processing"
                         )
 
                     if process_with_gemini:
                         try:
                             logger.info(
-                                f"Processing Bill: {bill_number} of Congress {congress_number}"
+                                f"Processing Bill: {number} of Congress {congress_number}"
                             )
 
                             doc_data = httpx.get(current_text_url).content
@@ -278,24 +279,24 @@ def process_single_bill_with_gemini(bill, client=None):
 
                         except Exception as e:
                             logger.error(
-                                f"Error with Gemini processing for bill {bill_number}: {e}"
+                                f"Error with Gemini processing for bill {number}: {e}"
                             )
 
-        # Always save the bill to keep metadata updated
+
         bill_obj, created = Bills.objects.update_or_create(
-            bill_number=bill_number,
+            number=number,
             type=bill_type,
-            congress_id=congress_instance.id,  # Use the ID, not the instance!
+            congress_id=congress_instance.id,
             defaults=defaults,
         )
 
         action = "created" if created else "updated"
         gemini_status = "with Gemini" if process_with_gemini else "metadata only"
-        logger.info(f"Successfully {action} bill {bill_number} ({gemini_status})")
+        logger.info(f"Successfully {action} bill {number} ({gemini_status})")
         return True
 
     except Exception as e:
         logger.error(
-            f"Unexpected error processing bill {bill_number} from congress {congress_number}: {e}"
+            f"Unexpected error processing bill {number} from congress {congress_number}: {e}"
         )
         return False

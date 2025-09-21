@@ -78,7 +78,7 @@ def search_page(request):
             results.append(
                 {
                     "object": member,
-                    "type": "member",
+                    "kind": "member",
                     "title": member.full_name(),
                     "pk": member.pk,
                     "snippet": f"{member.full_name()} ({member.state})",
@@ -101,7 +101,7 @@ def search_page(request):
             results.append(
                 {
                     "object": congress,
-                    "type": "congress",
+                    "kind": "congress",
                     "title": f"Congress {congress.congress_number}",
                     "snippet": f"Congress {congress.congress_number} ({congress.start_date.year})",
                 }
@@ -109,8 +109,8 @@ def search_page(request):
         # Search bills
         bills = (
             Bills.objects.annotate(
-                search=SearchVector("title", "gemini_summary", "type", "bill_number", "tags"),
-                rank=SearchRank(SearchVector("title", "gemini_summary", "type", "bill_number", "tags"), search_query),
+                search=SearchVector("title", "gemini_summary", "type", "number", "tags"),
+                rank=SearchRank(SearchVector("title", "gemini_summary", "type", "number", "tags"), search_query),
             )
             .filter(search=search_query)
             .order_by("-rank")
@@ -120,9 +120,13 @@ def search_page(request):
             results.append(
                 {
                     "object": bill,
-                    "type": "bill",
+                    "kind": "bill",
                     "title": bill.title,
-                    "snippet": f"{bill.bill_number}: {bill.gemini_summary}...",
+                    "snippet": f"{bill.number}: {bill.gemini_summary}...",
+                    "number": bill.number,
+                    "congress": bill.congress_id,
+                    "type": bill.type,
+                    "url": bill.url,
                 }
             )
             
@@ -135,7 +139,7 @@ def search_page(request):
             results.append(
                 {
                     "object": membership,
-                    "type": "membership",
+                    "kind": "membership",
                     "title": f"{membership.member.full_name()}",
                     "snippet": f"{membership.member.full_name()} ({membership.party})",
                     "state": membership.state,
@@ -144,5 +148,5 @@ def search_page(request):
                     "start_year": membership.start_year,
                 }
             )
-
+    print(f"Search results for {results}")
     return render(request, "core/search.html", {"query": query, "results": results})
