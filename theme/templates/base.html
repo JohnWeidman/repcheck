@@ -34,14 +34,16 @@
         {% tailwind_css %}
         <style>@import url('https://fonts.googleapis.com/css2?family=Forum&display=swap');</style>
     </head>
-    <body style="background-image: url('{% static 'theme/images/backgroundrepcheck.webp' %}')">
+    <body style="background-image: url('{% static 'theme/images/backgroundrepcheck.webp' %}')" class="bg-cover bg-fixed bg-center">
+
         <div class="drawer lg:drawer-open min-h-screen bg-base-100 bg-opacity-75">
             <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
             <div class="drawer-content flex flex-col bg-zinc-200 bg-opacity-20">
                 <label for="my-drawer-2"
                        class="bg-info w-full text-white font-bold drawer-button lg:hidden p-4">Menu</label>
                 <div id="content"
-                     class="bg-gradient-to-t from-zinc-200 md:from-70% from-90% flex-grow">
+                     class="bg-gradient-to-t from-zinc-200 from-25% flex-grow">
+
                     {% block content %}
                         {% comment %} Page content goes here {% endcomment %}
                     {% endblock content %}
@@ -65,29 +67,31 @@
                         <span class="text-7xl">Menu</span>
                         <ul class="menu p-0 text-black">
                             <li>
-                                <a class="bg-green-600 bg-opacity-90 hover:text-white rounded-none px-4 py-3"
+                                <a class="bg-green-600 rounded-none px-4 py-3 hover:text-white"
                                    href="{% url 'landing_page' %}">Home</a>
                             </li>
                             <li>
-                                <a class="bg-neutral bg-opacity-90 transition ease-in-out hover:text-white rounded-none px-4 py-3"
-                                href="{% url 'citizen_resources' %}">Citizens</a>
-                            </li>
-                            <li>
-                                <a class="bg-secondary bg-opacity-90 transition ease-in-out hover:text-white rounded-none px-4 py-3"
-                                href="{% url 'congress' %}">Congress</a>
-                            </li>
-                            <li>
-                                <a class="bg-primary bg-opacity-90 transition ease-in-out hover:text-white rounded-none px-4 py-3"
-                                href="{% url 'legislation_landing_page' %}">Legislation</a>
+                                <a class="bg-neutral rounded-none px-4 py-3 hover:text-white"
+                                   href="{% url 'citizen_resources' %}">Citizens</a>
                             </li>
                             {% if logged_in %}
                             <li>
-                                <a class="bg-accent bg-opacity-90 transition ease-in-out hover:text-white rounded-none px-4 py-3" href="{% url 'home' %}">Profile</a>
+                                <a class="bg-secondary rounded-none px-4 py-3 hover:text-white"
+                                   href="{% url 'congress' %}">Congress</a>
                             </li>
                             <li>
-                                <a class="bg-base-100 bg-opacity-90 transition ease-in-out hover:text-white rounded-none px-4 py-3">Logout</a>
+                                <a class="bg-primary rounded-none px-4 py-3 hover:text-white"
+                                   href="{% url 'legislation_landing_page' %}">Legislation</a>
                             </li>
-                            {% endif %}
+                            {% if logged_in %}
+                                <li>
+                                    <a class="bg-accent rounded-none px-4 py-3 hover:text-white"
+                                       href="{% url 'home' %}">Profile</a>
+                                </li>
+                                <li>
+                                    <a class="bg-base-100 rounded-none px-4 py-3 hover:text-white">Logout</a>
+                                </li>
+                        {% endif %}
                         </ul>
                         <div class="flex items-end h-90 justify-start mt-8 p-20">
                             <a href="{% url 'landing_page' %}">

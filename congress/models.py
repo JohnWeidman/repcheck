@@ -67,7 +67,8 @@ class Membership(models.Model):
     
 
     def is_current(self):
-        return self.congress.congress_number in [119]  # TODO: Update with actual logic. Getting members that have died as current members
+        if self.end_year is None:
+            return True
 
     class Meta:
         unique_together = (

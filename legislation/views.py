@@ -68,6 +68,7 @@ class LegislationView(View):
             response_status = 200
         else:
             url = f"{BASE_URL}/{self.endpoint_type}/{congress_id}?api_key={API_KEY}&limit={limit}&offset={offset}"
+
             response = requests.get(url)
             response_status = response.status_code
 
@@ -169,10 +170,11 @@ def legislation_landing_page(request):
 
 
 @require_http_methods(["GET"])
+@cache_page(CACHE_TIMEOUT)
 def bill_details_htmx(request):
     """HTMX endpoint to fetch and render detailed bill information"""
     api_url = request.GET.get("url")
-    
+
     if api_url:
         separator = "&" if "?" in api_url else "?"
         api_url_with_key = f"{api_url}{separator}api_key={API_KEY}"
@@ -194,7 +196,7 @@ def bill_details_htmx(request):
         except Bills.DoesNotExist:
             db_bill = None
             print("Bill not found in local DB")
-        
+
         if "sponsors" in bill_data:
             for sponsor in bill_data["sponsors"]:
                 try:
@@ -204,12 +206,10 @@ def bill_details_htmx(request):
                 except Member.DoesNotExist:
                     sponsor["member_pk"] = None
                     sponsor["has_detail_page"] = False
-        
         return render(
             request, "legislation/partials/bill_details_modal.html", 
             {"bill": bill_data, "db_bill": db_bill}
         )
-        
     except requests.RequestException as e:
         return HttpResponse(
             f"""
@@ -218,6 +218,7 @@ def bill_details_htmx(request):
             </div>
             """
         )
+
 
 im_just_a_bill = BillView.as_view()
 laws = LawView.as_view()

@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'django.core.cache',
-    'phonenumber_field',
     'tailwind',
     'theme',
     'django_browser_reload',
@@ -71,7 +70,7 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
         'LOCATION': os.getenv("REDIS_URL", "redis://localhost:6379/0"),
         'KEY_PREFIX': 'repcheck',
-        'TIMEOUT': 60 * 60 * 24,  # 24 hours
+        'TIMEOUT': 60 * 60 * 12,
     }
 }
 

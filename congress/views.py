@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Congress, Member, Membership, MemberDetails
 from django.db.models import OuterRef, Subquery, Prefetch, Q
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSimilarity, SearchRank
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.cache import cache
 from django.views.decorators.cache import cache_page
@@ -71,14 +71,11 @@ def house_not_home(request):
         )
 
         if search_query:
-            vector = SearchVector("name", "state", "district", "party", config="english")
-            query = SearchQuery(search_query, config="english", search_type="websearch")
-            house_members = house_members.annotate(rank=SearchRank(vector, query))
-    
-            # Filter to only relevant results (rank > 0), then sort by user preference
-            house_members = house_members.filter(rank__gt=0.01).order_by(*order_by)
-        else:
-            house_members = house_members.order_by(*order_by)
+            vector = SearchVector("name", "state", "party", "district", "bioguide_id", config="english")
+            query = SearchQuery(search_query, config="english")
+            house_members = house_members.annotate(search=vector).filter(search=query)
+
+        house_members = house_members.order_by(*order_by)
         cache_data = {"queryset": list(house_members)}
         cache.set(congress_cache_key, cache_data, 60 * 60 * 6)
         
@@ -166,8 +163,9 @@ def i_am_the_senate(request):
 
         if search_query:
             senate_members = senate_members.annotate(
-                search=SearchVector("name", "state", "party")
-            ).filter(search=SearchQuery(search_query, search_type="websearch"))
+
+                search=SearchVector("name", "state", "party", config="english")
+            ).filter(search=SearchQuery(search_query, config="english"))
 
         senate_members = senate_members.order_by(*order_by)
         cache_data = {"queryset": list(senate_members)}

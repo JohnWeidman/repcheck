@@ -12,6 +12,13 @@ import json
 from .models import DailyCongressRecord
 from congress.models import Member, Congress, Membership
 from legislation.models import Bills
+from django.shortcuts import render, get_object_or_404
+from django.views.decorators.cache import cache_page
+import requests
+import os
+from dotenv import load_dotenv
+import time
+
 
 load_dotenv()
 GEMINI_MODEL = "gemini-2.5-flash"
@@ -136,3 +143,21 @@ def search_page(request):
         
     print(f"Search results for {results}")
     return render(request, "core/search.html", {"query": query, "results": results})
+
+
+@cache_page(CACHE_TIMEOUT)
+def home(request):
+    url = f"{BASE_URL}/bill?api_key={API_KEY}&limit=12"
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            bills = response.json().get("bills", [])
+        else:
+            bills = []
+    except requests.RequestException:
+        bills = []
+    context = {
+        "bills": bills,
+    }
+    return render(request, "core/home.html", context)
+
