@@ -1,5 +1,6 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+from datetime import datetime
 
 
 class Congress(models.Model):
@@ -11,7 +12,22 @@ class Congress(models.Model):
     class Meta:
         ordering = ["-congress_number"]
         verbose_name_plural = "Congresses"
-
+        
+    @classmethod
+    def get_current_congress_number(cls):
+        current_date = datetime.now().date()
+        congress_obj = cls.objects.filter(
+            start_date__lte=current_date,
+            end_date__gte=current_date
+        ).first()
+        return congress_obj.congress_number if congress_obj else None
+    @classmethod
+    def get_current_congress_object(cls):
+        current_date = datetime.now().date()
+        return cls.objects.filter(
+            start_date__lte=current_date,
+            end_date__gte=current_date
+        ).first()
     def __str__(self):
         return f"Congress {self.congress_number} ({self.start_date} - {self.end_date})"
 
@@ -41,12 +57,14 @@ class Membership(models.Model):
     congress = models.ForeignKey(Congress, on_delete=models.CASCADE)
     chamber = models.CharField(max_length=25)
     party = models.CharField(max_length=50)
+    state= models.CharField(max_length=50, default="")
     district = models.IntegerField(null=True, blank=True)
     start_year = models.IntegerField()
     end_year = models.IntegerField(null=True, blank=True)
     sponsored_legislation_count = models.IntegerField(default=0)
     cosponsored_legislation_count = models.IntegerField(default=0)
     leadership_role = models.CharField(max_length=50, null=True, blank=True)
+    
 
     def is_current(self):
         if self.end_year is None:

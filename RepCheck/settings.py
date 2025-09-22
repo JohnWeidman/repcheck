@@ -13,8 +13,15 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from shutil import which
 import os
+<<<<<<< HEAD
 import secrets
 import dj_database_url
+=======
+from dotenv import load_dotenv
+from celery.schedules import crontab
+
+load_dotenv()
+>>>>>>> master
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,7 +46,6 @@ CONGRESS_API_KEY=os.getenv("CONGRESS_API_KEY")
 # Application definition
 
 INSTALLED_APPS = [
-    'phonenumber_field',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -55,6 +61,7 @@ INSTALLED_APPS = [
     'citizens',
     'congress',
     'legislation',
+    'django_celery_beat',
 ]
 
 CACHES = {
@@ -160,7 +167,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 
@@ -181,6 +188,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+<<<<<<< HEAD
 # Force HTTPS
 SECURE_SSL_REDIRECT = False
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -198,3 +206,35 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_AGE = 3600  # 1 hour
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_HTTPONLY = True
+=======
+
+# Celery Configuration
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://redis:6379/0')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+
+# Add to your existing Celery configuration
+CELERY_BEAT_SCHEDULE = {
+    'fetch-and-process-bills': {
+        'task': 'legislation.tasks.fetch_and_process_bills_task',
+        'schedule': crontab(minute="00,15,30,45"),  # Every 15 minutes
+    },
+    'update-bills-cache': {
+        'task': 'core.views.update_bills_cache',
+        'schedule': crontab(minute="10,25,40,55"),  
+    },
+    'fetch-daily-congress-record': {
+        'task': 'core.tasks.fetch_daily_congress_record',
+        'schedule': crontab(hour="*/1", minute="31"),  # Every hour
+    },
+}
+CELERY_IMPORTS = ('legislation.tasks', 'core.views')
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+CELERY_TIMEZONE = TIME_ZONE  
+>>>>>>> master

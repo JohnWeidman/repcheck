@@ -1,15 +1,17 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Congress, Member, Membership, MemberDetails
 from django.db.models import OuterRef, Subquery, Prefetch, Q
-from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSimilarity
+from django.contrib.postgres.search import SearchVector, SearchQuery, TrigramSimilarity, SearchRank
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.cache import cache
 from django.views.decorators.cache import cache_page
 
 
 def congress(request):
+    current_congress = Congress.get_current_congress_object()
     context = {
         "congresses": Congress.objects.all(),
+        "current_congress" : current_congress
     }
     return render(request, "congress/congress.html", context)
 
@@ -161,6 +163,7 @@ def i_am_the_senate(request):
 
         if search_query:
             senate_members = senate_members.annotate(
+
                 search=SearchVector("name", "state", "party", config="english")
             ).filter(search=SearchQuery(search_query, config="english"))
 

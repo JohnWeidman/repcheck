@@ -17,19 +17,50 @@
            class="rounded-lg shadow-lg mb-4">
       <h1 class="text-6xl font-bold text-center">Welcome to RepCheck</h1>
       <p class="text-center text-lg mt-4">
-        We are here to help you track and understand legislation that matters to you, and to hold our representatives accountable through transparency.
+
+        We are here to help you track and understand legislation that matters to you,
+        <br>
+        and to hold our representatives accountable through transparency.
+
       </p>
       <div class="md:h-24 h-32 text-6xl text-center mt-16 animate-bounce">↧</div>
       <div class="flex flex-col md:flex-row justify-center items-center gap-4 text-4xl font-bold">
         <a href="{% url 'congress' %}"
-           class="flex items-center badge-info transition ease-in-out duration-300 hover:bg-secondary hover:bg-opacity-75 hover:scale-105 rounded-lg m-3 h-28 p-4 text-white">
+           class="flex items-center badge-info tranistion ease-in-out duration-300 hover:bg-secondary hover:bg-opacity-75 rounded-lg m-3 h-28 p-4 text-white">
           Track Legislators
         </a>
         <a href="{% url 'legislation_landing_page' %}"
-           class="flex items-center badge-info transition ease-in-out duration-300 hover:bg-secondary hover:bg-opacity-75 hover:scale-105 rounded-lg m-3 h-28 p-4 text-white">
+           class="flex items-center badge-info tranistion ease-in-out duration-300 hover:bg-secondary hover:bg-opacity-75 rounded-lg m-3 h-28 p-4 text-white">
           Track Legislation
         </a>
       </div>
+    </div>
+    <div class="flex flex-col justify-center items-center gap-4 mt-10 w-full max-w-4xl mx-auto bg-zinc-200 shadow-lg border-2 border-base-100 rounded-md p-10">
+      <h1 class="text-2xl">Search for the representatives and legislation that matter to you</h1>
+      <form onsubmit="performSearch(event)"
+            class="flex flex-col gap-2 md:flex-row items-center justify-center">
+        <input type="text"
+               placeholder="Search for legislation or representatives..."
+               class="input input-bordered min-w-96 bg-transparent border-base-200 border-2"
+               id="search-input"
+               value="{{ search_query|default:'' }}">
+        <button type="submit" class="btn btn-primary w-52 mx-auto">Search</button>
+      </form>
+    </div>
+    <div class="flex flex-col justify-center items-center gap-4 mt-10 w-full max-w-4xl mx-auto text-2xl badge-xl bg-zinc-200 shadow-lg border-2 border-base-100 rounded-md p-10">
+      <h1 class="text-2xl text-center font-bold">
+        Have you ever wondered...
+        <br>
+        "What actually happens in congress?"
+      </h1>
+      <p class="text-center">Below is a summary of the daily congressional digest <br>created by Google Gemini</p>
+      <p class="text-xl font-bold">Summary:</p>
+      <p class="text-xl">{{ summary|default:"No summary available." }}</p>
+      <p class="text-xl">
+        <a href="{{ url }}"
+           target="_blank"
+           class="text-blue-500 hover:underline">Source</a>
+      </p>
     </div>
     <div class="flex flex-col">
       <nav class="text-4xl font-bold text-center mt-10">
@@ -42,4 +73,15 @@
       </div>
     </div>
   </div>
+  <script>
+function performSearch(event) {
+    event.preventDefault(); // Prevent default form submission
+    const searchValue = document.getElementById('search-input').value;
+    
+    if (searchValue.trim()) {
+        // Redirect to search page with query parameter
+        window.location.href = `/search/?q=${encodeURIComponent(searchValue)}`;
+    }
+}
+</script>
 {% endblock content %}
