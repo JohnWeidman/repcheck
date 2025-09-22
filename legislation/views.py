@@ -7,6 +7,7 @@ import requests
 import os
 from dotenv import load_dotenv
 from congress.models import Congress, Member
+from legislation.models import Bills
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 
@@ -67,18 +68,16 @@ class LegislationView(View):
             response_status = 200
         else:
             url = f"{BASE_URL}/{self.endpoint_type}/{congress_id}?api_key={API_KEY}&limit={limit}&offset={offset}"
-            try:
-                response = requests.get(url)
-                response_status = response.status_code
 
-                if response_status == 200:
-                    response_data = response.json()
-                    cache.set(api_cache_key, response_data, CACHE_TIMEOUT)
-                else:
-                    response_data = {}
-            except requests.RequestException:
-                response_status = 500
+            response = requests.get(url)
+            response_status = response.status_code
+
+            if response_status == 200:
+                response_data = response.json()
+                cache.set(api_cache_key, response_data, CACHE_TIMEOUT)
+            else:
                 response_data = {}
+
         if response_status == 200:
             api_key = "bills" if self.endpoint_type == "law" else self.context_key
             data = response_data.get(api_key, [])
@@ -176,26 +175,27 @@ def bill_details_htmx(request):
     """HTMX endpoint to fetch and render detailed bill information"""
     api_url = request.GET.get("url")
 
-    if not api_url:
-        return HttpResponse(
-            '<div class="alert alert-error">URL parameter is required</div>'
-        )
-
-    if not api_url.startswith("https://api.congress.gov/"):
-        return HttpResponse('<div class="alert alert-error">Invalid API URL</div>')
-
+    if api_url:
+        separator = "&" if "?" in api_url else "?"
+        api_url_with_key = f"{api_url}{separator}api_key={API_KEY}"
+    else:
+        api_url_with_key = None
+    
     try:
-        api_key = os.getenv("CONGRESS_API_KEY")
-        if api_key:
-            separator = "&" if "?" in api_url else "?"
-            api_url_with_key = f"{api_url}{separator}api_key={api_key}"
-        else:
-            api_url_with_key = api_url
-
         response = requests.get(api_url_with_key, timeout=10)
         response.raise_for_status()
-
         bill_data = response.json().get("bill", {})
+        
+        try:
+            db_bill = Bills.objects.get(
+                type=bill_data.get("type").lower(),
+                number=bill_data.get("number"),
+                congress_id=bill_data.get("congress"),
+            )
+            print(db_bill)
+        except Bills.DoesNotExist:
+            db_bill = None
+            print("Bill not found in local DB")
 
         if "sponsors" in bill_data:
             for sponsor in bill_data["sponsors"]:
@@ -206,18 +206,17 @@ def bill_details_htmx(request):
                 except Member.DoesNotExist:
                     sponsor["member_pk"] = None
                     sponsor["has_detail_page"] = False
-
         return render(
-            request, "legislation/partials/bill_details_modal.html", {"bill": bill_data}
+            request, "legislation/partials/bill_details_modal.html", 
+            {"bill": bill_data, "db_bill": db_bill}
         )
-
     except requests.RequestException as e:
         return HttpResponse(
             f"""
             <div class="alert alert-error">
                 <span>Failed to fetch bill details: {str(e)}</span>
             </div>
-        """
+            """
         )
 
 
