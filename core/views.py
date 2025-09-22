@@ -83,7 +83,10 @@ def search_page(request):
                     "pk": member.pk,
                     "snippet": f"{member.full_name()} ({member.state})",
                     "state": member.state,
-                    
+                    "party": Membership.objects.filter(member=member).last().party if Membership.objects.filter(member=member).exists() else "N/A",
+                    "district": Membership.objects.filter(member=member).last().district if Membership.objects.filter(member=member).exists() else "N/A",
+                    "image_url": member.image_url,
+                    "full_name": member.full_name(),
                 }
             )
 
@@ -130,24 +133,6 @@ def search_page(request):
                     "url": bill.url,
                 }
             )
-            
-        memberships = Membership.objects.annotate(
-            search=SearchVector("party", "district", "chamber", "state"),
-            rank=SearchRank(SearchVector( "party", "district", "chamber", "state"), search_query),
-        ).filter(search=search_query).order_by("-rank")
         
-        for membership in memberships:
-            results.append(
-                {
-                    "object": membership,
-                    "kind": "membership",
-                    "title": f"{membership.member.full_name()}",
-                    "snippet": f"{membership.member.full_name()} ({membership.party})",
-                    "state": membership.state,
-                    "chamber": membership.chamber,
-                    "district": membership.district,
-                    "start_year": membership.start_year,
-                }
-            )
     print(f"Search results for {results}")
     return render(request, "core/search.html", {"query": query, "results": results})
