@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: repcheck_web
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env
+    environment:
+      - REDIS_URL=${REDIS_URL}
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: repcheck_celery_beat
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env
+    environment:
+      - REDIS_URL=${REDIS_URL}
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    command: ["celery", "-A", "RepCheck", "beat", "--loglevel=info", "--scheduler", "django_celery_beat.schedulers:DatabaseScheduler"]
+  redis:
+    image: redis:7-alpine
+    container_name: repcheck_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: repcheck_celery
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/0
+      REDIS_URL: redis://redis:6379/0
+    command: ["celery", "-A", "RepCheck", "worker", "--loglevel=info"]
+
+  db:
+    image: postgres:13
+    container_name: repcheck_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+volumes:
+  postgres_data:
+      driver: local
+  redis_data:
+      driver: local
