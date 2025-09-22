@@ -74,7 +74,6 @@
                                 <a class="bg-neutral rounded-none px-4 py-3 hover:text-white"
                                    href="{% url 'citizen_resources' %}">Citizens</a>
                             </li>
-                            {% if logged_in %}
                             <li>
                                 <a class="bg-secondary rounded-none px-4 py-3 hover:text-white"
                                    href="{% url 'congress' %}">Congress</a>
@@ -91,7 +90,7 @@
                                 <li>
                                     <a class="bg-base-100 rounded-none px-4 py-3 hover:text-white">Logout</a>
                                 </li>
-                        {% endif %}
+                            {% endif %}
                         </ul>
                         <div class="flex items-end h-90 justify-start mt-8 p-20">
                             <a href="{% url 'landing_page' %}">

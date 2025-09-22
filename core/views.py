@@ -54,12 +54,21 @@ def update_bills_cache(force_update=False):
 
 
 def home(request):
+    url = f"{BASE_URL}/bill?api_key={API_KEY}&limit=12"
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            bills = response.json().get("bills", [])
+        else:
+            bills = []
+    except requests.RequestException:
+        bills = []
     today = DailyCongressRecord.objects.order_by("-issue_date").first()
     summary = today.summary if today else "No summary available for today."
-    url = today.pdf_url
-    bills = cache.get("bills_data", [])
+    print(f"Today's summary: {summary}")
+    pdf_url = today.pdf_url
     return render(
-        request, "core/home.html", {"bills": bills, "summary": summary, "url": url}
+        request, "core/home.html", {"bills": bills, "summary": summary, "url": pdf_url}
     )
 
 
@@ -143,21 +152,4 @@ def search_page(request):
         
     print(f"Search results for {results}")
     return render(request, "core/search.html", {"query": query, "results": results})
-
-
-@cache_page(CACHE_TIMEOUT)
-def home(request):
-    url = f"{BASE_URL}/bill?api_key={API_KEY}&limit=12"
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            bills = response.json().get("bills", [])
-        else:
-            bills = []
-    except requests.RequestException:
-        bills = []
-    context = {
-        "bills": bills,
-    }
-    return render(request, "core/home.html", context)
 
