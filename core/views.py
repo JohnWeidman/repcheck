@@ -63,9 +63,12 @@ def home(request):
     except requests.RequestException:
         bills = []
     today = DailyCongressRecord.objects.order_by("-issue_date").first()
-    summary = today.summary if today else "No summary available for today."
-    print(f"Today's summary: {summary}")
-    pdf_url = today.pdf_url
+    if not today:
+        summary = "No summary available for today."
+        pdf_url = None
+    else:
+        summary = today.summary if today else "No summary available for today."
+        pdf_url = today.pdf_url
     return render(
         request, "core/home.html", {"bills": bills, "summary": summary, "url": pdf_url}
     )
