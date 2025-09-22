@@ -4,7 +4,7 @@
     <div class="badge badge-outline">Congress {{ bill.congress }}</div>
     <div class="badge badge-secondary">{{ bill.originChamber }}</div>
     {% if bill.policyArea %}<div class="badge badge-accent">{{ bill.policyArea.name }}</div>{% endif %}
-    {% comment %} {% if db_bill.tags %}<div>{{ db_bill.tags }}</div>{% endif %} {% endcomment %}
+    {% if db_bill.tags %}<div>{{ db_bill.tags }}</div>{% endif %}
     {% if bill.laws %}
         {% for law in bill.laws %}<div class="badge badge-success">{{ law.type }} {{ law.number }}</div>{% endfor %}
     {% endif %}

@@ -123,6 +123,7 @@ def search_page(request):
                     "kind": "bill",
                     "title": bill.title,
                     "snippet": f"{bill.number}: {bill.gemini_summary}...",
+                    "gemini_summary": bill.gemini_summary,
                     "number": bill.number,
                     "congress": bill.congress_id,
                     "type": bill.type,

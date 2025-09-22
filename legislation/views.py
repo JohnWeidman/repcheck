@@ -186,12 +186,14 @@ def bill_details_htmx(request):
         
         try:
             db_bill = Bills.objects.get(
-                originChamber=bill_data.get("type").lower(),
+                type=bill_data.get("type").lower(),
                 number=bill_data.get("number"),
-                congress__congress_number=bill_data.get("congress"),
+                congress_id=bill_data.get("congress"),
             )
+            print(db_bill)
         except Bills.DoesNotExist:
             db_bill = None
+            print("Bill not found in local DB")
         
         if "sponsors" in bill_data:
             for sponsor in bill_data["sponsors"]:
