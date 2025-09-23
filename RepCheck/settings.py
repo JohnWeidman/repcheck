@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'django.core.cache',
+    'RepCheck',
     'tailwind',
     'theme',
     'core',
