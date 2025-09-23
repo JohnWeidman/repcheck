@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     'django.core.cache',
     'tailwind',
     'theme',
-    'django_browser_reload',
     'core',
     'citizens',
     'congress',
