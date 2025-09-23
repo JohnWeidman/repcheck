@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
 import requests
 import os
+import logging
 from dotenv import load_dotenv
 from congress.models import Congress, Member
 from legislation.models import Bills
@@ -211,12 +212,14 @@ def bill_details_htmx(request):
             {"bill": bill_data, "db_bill": db_bill}
         )
     except requests.RequestException as e:
+        logging.error(f"Error fetching bill details: {e}"),
         return HttpResponse(
             f"""
             <div class="alert alert-error">
-                <span>Failed to fetch bill details: {str(e)}</span>
+                <span>Failed to fetch bill details</span>
             </div>
             """
+        
         )
 
 
