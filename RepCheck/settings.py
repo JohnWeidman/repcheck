@@ -220,19 +220,18 @@ CELERY_TIMEZONE = TIME_ZONE
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 
-# Add to your existing Celery configuration
 CELERY_BEAT_SCHEDULE = {
     'fetch-and-process-bills': {
         'task': 'legislation.tasks.fetch_and_process_bills_task',
-        'schedule': crontab(minute="00,15,30,45"),  # Every 15 minutes
+        'schedule': crontab(minute="0,10,20,30,40,50"),  # Every 10 minutes
     },
     'update-bills-cache': {
-        'task': 'core.views.update_bills_cache',
-        'schedule': crontab(minute="10,25,40,55"),  
+        'task': 'core.tasks.update_bills_cache',
+        'schedule': crontab(minute=0),  # Every hour at :00
     },
     'fetch-daily-congress-record': {
         'task': 'core.tasks.fetch_daily_congress_record',
-        'schedule': crontab(hour="*/1", minute="31"),  # Every hour
+        'schedule': crontab(hour=10, minute=30),  # Daily at 10:30 AM
     },
 }
 CELERY_IMPORTS = ('legislation.tasks', 'core.views')

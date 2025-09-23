@@ -3,6 +3,8 @@ import requests
 import httpx
 import os
 import json
+import hashlib
+from django.core.cache import cache
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
@@ -98,3 +100,31 @@ def fetch_daily_congress_record():
             " Failed to fetch most recent congressional record date",
             response.status_code,
         )
+
+
+# In core/tasks.py
+
+
+@shared_task
+def update_bills_cache(force_update=False):
+    API_KEY = os.getenv("CONGRESS_API_KEY")
+    BASE_URL = "https://api.congress.gov/v3"
+    
+    url = f"{BASE_URL}/bill?api_key={API_KEY}&limit=12"
+    response = requests.get(url, timeout=10)  # Add timeout
+
+    if response.status_code == 200:
+        bills = response.json().get("bills", [])
+        current_hash = hashlib.md5(
+            json.dumps(bills, sort_keys=True).encode()
+        ).hexdigest()
+
+        cached_hash = cache.get("bills_hash")
+
+        if force_update or current_hash != cached_hash:
+            cache.set("bills_data", bills, timeout=None)
+            cache.set("bills_hash", current_hash, timeout=None)
+            return "Cache updated"
+        return "No changes"
+
+    return f"API Error: {response.status_code}"
