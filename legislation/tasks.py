@@ -162,7 +162,7 @@ def process_single_bill_with_gemini(bill, client=None):
             if bill.get("latestAction")
             else None
         )
-        url = f"api.congress.gov/v3/bill/{congress_number}/{bill_type}/{number}"
+        url = f"https://api.congress.gov/v3/bill/{congress_number}/{bill_type}/{number}"
 
         # Get or create the Congress instance
         try:
