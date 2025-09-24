@@ -138,5 +138,4 @@ def search_page(request):
                 }
             )
 
-    print(f"Search results for {results}")
     return render(request, "core/search.html", {"query": query, "results": results})
