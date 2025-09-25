@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'congress',
     'legislation',
     'django_celery_beat',
+    'RepCheck',
 ]
 
 CACHES = {
